@@ -32,6 +32,16 @@ class Entry:
                 print ("Added [", note,"] to entry.")
         elif DEBUG != None:
             print ("[", note,"] not added to entry (dupe).")
+    def get_flags(self):
+        return str(self.flags).strip("[]").replace("'", "")
+    def get_color(self):
+        result = -1
+        i = 0
+        for k in keywords:
+            if k.capitalize() in self.flags:
+                result = i
+            i = i+1
+        return result
     def disp(self):
         print ("ST#: ", self.street_num, "\nSTN: ", self.street_name, "\nUnit: ", self.unit_num, "\nTel: ", self.tel)
         print ("Flags: ")
@@ -74,25 +84,41 @@ def generate_spreadsheet(data):
     worksheet.write('C1', 'Street', bold)
     worksheet.write('D1', 'Unit', bold)
     worksheet.write('E1', 'Phone', bold)
+    worksheet.write('L1', 'Keywords', bold)
     worksheet.set_column(0, 0, 5)
     worksheet.set_column(1, 1, 5)
     worksheet.set_column(2, 2, 20)
     worksheet.set_column(3, 3, 5)
     worksheet.set_column(4, 7, 15)
+    worksheet.set_column(11, 11, 25)
     row = 2
 
-    kw_color_hi = workbook.add_format()
-    kw_color_hi.set_bg_color('lime')
-    kw_color_hi.set_center_across()
-    kw_color_lo = workbook.add_format()
-    kw_color_lo.set_fg_color('#DDFFDD')
+    colors = ["#00FFFF", "#DDFFFF",
+              "#00FFFF", "#DDFFFF",
+              "#00FF00", "#DDFFDD",
+              "#00FF00", "#DDFFDD",
+              "#FF00FF", "#FFDDFF",
+              "#C0F0C0", "#CFFFCF",
+              "#FFFF00", "#FFFFDD"]
+    formats = []
+    i = 0
+    for i in range(0, len(colors)):
+        f = workbook.add_format()
+        f.set_bg_color(colors[i])
+        formats.append(f)
+    #kw_color_hi = workbook.add_format()
+    #kw_color_hi.set_bg_color('lime')
+    #kw_color_hi.set_center_across()
+    #kw_color_lo = workbook.add_format()
+    #kw_color_lo.set_bg_color('#DDFFDD')
 
     for e in data:
+        f = e.get_color()
         if e.flagged():
-            worksheet.write(row, 0, "*", kw_color_hi)
-            worksheet.write(row, 1, e.street_num, kw_color_lo)
-            worksheet.write(row, 2, e.street_name, kw_color_lo)
-            worksheet.write(row, 3, e.unit_num, kw_color_lo)
+            worksheet.write(row, 0, "*", formats[f*2])
+            worksheet.write(row, 1, e.street_num, formats[f*2+1])
+            worksheet.write(row, 2, e.street_name, formats[f*2+1])
+            worksheet.write(row, 3, e.unit_num, formats[f*2+1])
         else:
             worksheet.write(row, 1, e.street_num)
             worksheet.write(row, 2, e.street_name)
@@ -100,17 +126,20 @@ def generate_spreadsheet(data):
         i = 0
         for n in e.tel:
             if e.flagged():
-                worksheet.write(row, 4+i, n, kw_color_lo)
+                worksheet.write(row, 4+i, n, formats[f*2+1])
             else:
                 worksheet.write(row, 4+i, n)
             i = i+1
+        worksheet.write(row, 11, e.get_flags())
         row = row+1
 
-    worksheet.write(row+1, 0, "Key", kw_color_hi)
+    worksheet.write(row+1, 0, "Key")
     col = 2
+    i = 0
     for k in keywords:
         row = row+1
-        worksheet.write(row, col, k, kw_color_lo)
+        worksheet.write(row, col, k, formats[i])
+        i = i+2
 
     workbook.close()
 
@@ -226,10 +255,11 @@ start_time = time.time()
 #  Starting main loop
 add_keyword("renewing")
 add_keyword("renew")
-add_keyword("do not contact")
 add_keyword("works for")
 add_keyword("work for")
+add_keyword("do not contact")
 add_keyword("employee")
+add_keyword("photo")
 
 address_count = main()
 

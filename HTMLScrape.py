@@ -14,14 +14,56 @@ class Entry:
         self.street_name = name 
         self.unit_num = unit 
         self.tel = tel
+        self.additional_notes = [] 
+        self.flags = []
+    def flagged(self):
+        return len(self.flags) != 0
+    def add_flag(self, flag):
+        if flag.capitalize() not in self.flags: 
+            self.flags.append(flag.capitalize()) 
+            if DEBUG != None:
+                print ("Added [", flag,"] to entry.")
+        elif DEBUG != None:
+            print ("[", flag,"] not added to entry (dupe).")
+    def add_note(self, note):
+        if note not in self.additional_notes: 
+            self.additional_notes.append(note)
+            if DEBUG != None:
+                print ("Added [", note,"] to entry.")
+        elif DEBUG != None:
+            print ("[", note,"] not added to entry (dupe).")
     def disp(self):
         print ("ST#: ", self.street_num, "\nSTN: ", self.street_name, "\nUnit: ", self.unit_num, "\nTel: ", self.tel)
+        print ("Flags: ")
+        for f in self.flags: 
+            print ("-", f)
+        print ("Notes: ")
+        for n in self.additional_notes: 
+            print ("-", n)
 
 # Regular expressions used to extract the relevant info
 # The address seems to be is formatted consistantly ( street num and street name, unit, zipcode city and state )
 re_address = re.compile("(.*),(.*),(.*),(.*)")
 # This is used to extract the street number from the address
 re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
+keywords = []
+
+def find_keyword(kw, data, entry):
+    re_kw = re.compile(kw.lower())
+    result = re_kw.search(data.lower())
+    if result != None:
+       entry.add_flag(kw) 
+    if DEBUG != None:
+        print ("Couldn't find '", kw, "' in '", data, "'")
+    entry.add_note(data)
+
+def add_keyword(kw):
+    if kw not in keywords:
+        keywords.append(kw)
+
+def check_keywords(entry, data):
+    for kw in keywords:
+        find_keyword(kw, data, entry)
 
 
 def generate_spreadsheet(data):
@@ -32,19 +74,43 @@ def generate_spreadsheet(data):
     worksheet.write('C1', 'Street', bold)
     worksheet.write('D1', 'Unit', bold)
     worksheet.write('E1', 'Phone', bold)
-    worksheet.set_column(1, 7, 15)
-    worksheet.set_column(2, 2, 30)
+    worksheet.set_column(0, 0, 5)
+    worksheet.set_column(1, 1, 5)
+    worksheet.set_column(2, 2, 20)
+    worksheet.set_column(3, 3, 5)
+    worksheet.set_column(4, 7, 15)
     row = 2
 
+    kw_color_hi = workbook.add_format()
+    kw_color_hi.set_bg_color('lime')
+    kw_color_hi.set_center_across()
+    kw_color_lo = workbook.add_format()
+    kw_color_lo.set_fg_color('#DDFFDD')
+
     for e in data:
-        worksheet.write(row, 1, e.street_num)
-        worksheet.write(row, 2, e.street_name)
-        worksheet.write(row, 3, e.unit_num)
+        if e.flagged():
+            worksheet.write(row, 0, "*", kw_color_hi)
+            worksheet.write(row, 1, e.street_num, kw_color_lo)
+            worksheet.write(row, 2, e.street_name, kw_color_lo)
+            worksheet.write(row, 3, e.unit_num, kw_color_lo)
+        else:
+            worksheet.write(row, 1, e.street_num)
+            worksheet.write(row, 2, e.street_name)
+            worksheet.write(row, 3, e.unit_num)
         i = 0
         for n in e.tel:
-            worksheet.write(row, 4+i, n)
+            if e.flagged():
+                worksheet.write(row, 4+i, n, kw_color_lo)
+            else:
+                worksheet.write(row, 4+i, n)
             i = i+1
         row = row+1
+
+    worksheet.write(row+1, 0, "Key", kw_color_hi)
+    col = 2
+    for k in keywords:
+        row = row+1
+        worksheet.write(row, col, k, kw_color_lo)
 
     workbook.close()
 
@@ -71,6 +137,7 @@ def parse_entry(address, number):
     add = parse_address(address)
     tel = parse_phone(number)
     app = Entry(add['name'], add['number'], add['unit'], tel)
+    check_keywords(app, number)
     if DEBUG != None:
         app.disp()
     return app 
@@ -157,6 +224,13 @@ print ("Starting.\n")
 start_time = time.time()
 
 #  Starting main loop
+add_keyword("renewing")
+add_keyword("renew")
+add_keyword("do not contact")
+add_keyword("works for")
+add_keyword("work for")
+add_keyword("employee")
+
 address_count = main()
 
 print ("\nProcessed ", address_count, " units in %s seconds." % (time.time() - start_time))

@@ -18,11 +18,13 @@ This will only work if you download and save the "Showing sheet" page as showing
 '''
 
 ##To-do
-####!!!
-- add keyword detection
-- add color coding to the spreadsheet
-####!!
+- customization through files and command line
 - reorganize code base
 - add documentation
-####!
 - GUI and/or command line options
+
+##History
+v0.1.1
+Basic static keyword detection and highlighting.
+v0.1
+Basic info scraping and spreadheet output.

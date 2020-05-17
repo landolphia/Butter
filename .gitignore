@@ -2,3 +2,5 @@ showing.html
 *.swp
 *~
 *.xlsx
+chromedriver.exe
+private.slr

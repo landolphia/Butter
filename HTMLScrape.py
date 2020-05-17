@@ -1,266 +1,52 @@
 import sys
-import re
 import time
-import phonenumbers
-import xlsxwriter
-from lxml import html
+from selenium import webdriver
 
-DEBUG = None 
+DEBUG = 1
 
-class Entry:
-    #  This object is used to store the info for an unit.
-    def __init__(self, name, num, unit, tel):
-        self.street_num = num 
-        self.street_name = name 
-        self.unit_num = unit 
-        self.tel = tel
-        self.additional_notes = [] 
-        self.flags = []
-    def flagged(self):
-        return len(self.flags) != 0
-    def add_flag(self, flag):
-        if flag.capitalize() not in self.flags: 
-            self.flags.append(flag.capitalize()) 
-            if DEBUG != None:
-                print ("Added [", flag,"] to entry.")
-        elif DEBUG != None:
-            print ("[", flag,"] not added to entry (dupe).")
-    def add_note(self, note):
-        if note not in self.additional_notes: 
-            self.additional_notes.append(note)
-            if DEBUG != None:
-                print ("Added [", note,"] to entry.")
-        elif DEBUG != None:
-            print ("[", note,"] not added to entry (dupe).")
-    def get_flags(self):
-        return str(self.flags).strip("[]").replace("'", "")
-    def get_color(self):
-        result = -1
-        i = 0
-        for k in keywords:
-            if k.capitalize() in self.flags:
-                result = i
-            i = i+1
-        return result
-    def disp(self):
-        print ("ST#: ", self.street_num, "\nSTN: ", self.street_name, "\nUnit: ", self.unit_num, "\nTel: ", self.tel)
-        print ("Flags: ")
-        for f in self.flags: 
-            print ("-", f)
-        print ("Notes: ")
-        for n in self.additional_notes: 
-            print ("-", n)
-
-# Regular expressions used to extract the relevant info
-# The address seems to be is formatted consistantly ( street num and street name, unit, zipcode city and state )
-re_address = re.compile("(.*),(.*),(.*),(.*)")
-# This is used to extract the street number from the address
-re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
-keywords = []
-
-def find_keyword(kw, data, entry):
-    re_kw = re.compile(kw.lower())
-    result = re_kw.search(data.lower())
-    if result != None:
-       entry.add_flag(kw) 
-    if DEBUG != None:
-        print ("Couldn't find '", kw, "' in '", data, "'")
-    entry.add_note(data)
-
-def add_keyword(kw):
-    if kw not in keywords:
-        keywords.append(kw)
-
-def check_keywords(entry, data):
-    for kw in keywords:
-        find_keyword(kw, data, entry)
-
-
-def generate_spreadsheet(data):
-    workbook = xlsxwriter.Workbook('units.xlsx')
-    worksheet = workbook.add_worksheet()
-    bold = workbook.add_format({'bold': True})
-    worksheet.write('B1', 'Number', bold)
-    worksheet.write('C1', 'Street', bold)
-    worksheet.write('D1', 'Unit', bold)
-    worksheet.write('E1', 'Phone', bold)
-    worksheet.write('L1', 'Keywords', bold)
-    worksheet.set_column(0, 0, 5)
-    worksheet.set_column(1, 1, 5)
-    worksheet.set_column(2, 2, 20)
-    worksheet.set_column(3, 3, 5)
-    worksheet.set_column(4, 7, 15)
-    worksheet.set_column(11, 11, 25)
-    row = 2
-
-    colors = ["#00FFFF", "#DDFFFF",
-              "#00FFFF", "#DDFFFF",
-              "#00FF00", "#DDFFDD",
-              "#00FF00", "#DDFFDD",
-              "#FF00FF", "#FFDDFF",
-              "#C0F0C0", "#CFFFCF",
-              "#FFFF00", "#FFFFDD"]
-    formats = []
-    i = 0
-    for i in range(0, len(colors)):
-        f = workbook.add_format()
-        f.set_bg_color(colors[i])
-        formats.append(f)
-    #kw_color_hi = workbook.add_format()
-    #kw_color_hi.set_bg_color('lime')
-    #kw_color_hi.set_center_across()
-    #kw_color_lo = workbook.add_format()
-    #kw_color_lo.set_bg_color('#DDFFDD')
-
-    for e in data:
-        f = e.get_color()
-        if e.flagged():
-            worksheet.write(row, 0, "*", formats[f*2])
-            worksheet.write(row, 1, e.street_num, formats[f*2+1])
-            worksheet.write(row, 2, e.street_name, formats[f*2+1])
-            worksheet.write(row, 3, e.unit_num, formats[f*2+1])
+class Payload:
+    def __init__(self):
+        with open ("private.slr", "r") as slurp:
+            data = slurp.readlines()
+        if  len(data) != 2:
+            print("Cannot find credential in private.slr.")
+            sys.exit()
         else:
-            worksheet.write(row, 1, e.street_num)
-            worksheet.write(row, 2, e.street_name)
-            worksheet.write(row, 3, e.unit_num)
-        i = 0
-        for n in e.tel:
-            if e.flagged():
-                worksheet.write(row, 4+i, n, formats[f*2+1])
-            else:
-                worksheet.write(row, 4+i, n)
-            i = i+1
-        worksheet.write(row, 11, e.get_flags())
-        row = row+1
-
-    worksheet.write(row+1, 0, "Key")
-    col = 2
-    i = 0
-    for k in keywords:
-        row = row+1
-        worksheet.write(row, col, k, formats[i])
-        i = i+2
-
-    workbook.close()
-
-def vet_nodes(tenants):
-    #  Checks if the elements that have been scraped actually contains
-    # the info we're looking for, aka the Tenant field.
-    #  If so we add the text content in a list of numbers.
-    result = []
-    for p in tenants:
-        if p.text == "Tenants:":
-            number = p.getnext()
-            number = number.text_content() + number.tail
-            number = number.replace("&", "and")
             if DEBUG != None:
-                print ("P: ", p.text)
-                print ("N: ", number)
-            result.append(number)
+                print ("Slurp: ", data)
+                print ("Fixed:", data[0].rstrip(), " / ", data[1].rstrip())
+            self.user_id = "id"
+            self.pass_id = "password"
+            self.button = "//input[@type='submit']"
+            self.username = data[0].rstrip()
+            self.password = data[1].rstrip()
+            self.login_url = "https://offcampus.bu.edu/"
+
+
+def login(driver):
+    payload = Payload()
+    result = None
+    
+    #driver.get (payload.login_url)
+
+    #driver.find_element_by_id(payload.user_id).send_keys(payload.username)
+    #driver.find_element_by_id(payload.pass_id).send_keys(payload.password)
+
+    #result = driver.find_element(By.XPATH, payload.button).click()
 
     return result
 
-def parse_entry(address, number):
-    #  Here we're parsing the HTML we've scraped, element by element.
-    #  This returns an Entry object filled with the info from the page.
-    add = parse_address(address)
-    tel = parse_phone(number)
-    app = Entry(add['name'], add['number'], add['unit'], tel)
-    check_keywords(app, number)
-    if DEBUG != None:
-        app.disp()
-    return app 
-
-def parse_phone(number):
-    #  Parsing phone number(s) from the tenant field and adding them
-    # to a list of phone numbers for the unit.
-    result = []
-    if DEBUG != None:
-        print ("-fetching numbers from: \"", number, "\"")
-        print ("-cleaning up phone number.")
-    for match in phonenumbers.PhoneNumberMatcher(number, "US"):
-        result.append(phonenumbers.format_number(match.number, phonenumbers.PhoneNumberFormat.NATIONAL))
-    return result
-
-def parse_address(address):
-    #  Parses the address from the address div and returns an object
-    # containing the number and name of the street, and the unit.
-    old = address
-    if DEBUG != None:
-        print ("-stripping whitespace.")
-    address = address.strip()
-    if DEBUG != None:
-        print ("-splitting address.")
-    result = re_address.split(address)
-    if DEBUG != None:
-        print ("-cleaning up entry.")
-    result = list(filter(None, result))
-    temp_add = re_num.split(result[0])
-    if DEBUG != None:
-        print ("-cleaning up name.")
-    temp_add = list(filter(None, temp_add))
-    temp_add[0] = temp_add[0].strip()
-    temp_add[1] = temp_add[1].strip()
-    if DEBUG != None:
-        print ("-fetching unit# from: \"", result[1], "\"")
-    if DEBUG != None:
-        print ("-cleaning up unit number.")
-    temp_unit = result[1][1:].strip()
-    #print ("Unit number ", temp_unit[1:])
-
-    return {
-            "number": temp_add[0],
-            "name": temp_add[1],
-            "unit": temp_unit[1:]
-            }
 
 def main():
-    #  Open ./showing.html and loads it
-    with open('showing.html', 'r') as myfile:
-        data = myfile.read()
+    print ("Starting...\n")
+    start_time = time.time()
 
-    tree = html.fromstring(data)
-    addresses = tree.xpath('//div[@class="address"]/text()')
-    pTenants = tree.xpath('//div[@class="feature_item "]/strong')
-    numbers = []
+    #driver = webdriver.Chrome('./chromedriver.exe')
+    print ("Result: \n", login(None))
 
-#if len(addresses) != len(landlords):
-#    print ("[ERROR #1] Mismatch, please contact your local JJ.")
-#    sys.exit(1)
+    #driver.close()
+    #driver.quit()
+    
+    print ("\nDone in %s seconds." % (time.time() - start_time))
 
-    appartments = []
-    print ("Found ", len(addresses), " addresses.")
-    print ("Found ", len(pTenants), " potential nodes.")
-    numbers = vet_nodes(pTenants)
-    print ("Found ", len(numbers), " actual tenants.\n")
-
-
-    #  Iterate over all the addresses found, combines the info into
-    # an object and adds it to the list of units.
-    for i in range(0, len(addresses)):
-        if DEBUG != None:
-            print ("Procession unit#", i+1)
-        app = parse_entry(addresses[i], numbers[i])
-        appartments.append(app)
-
-
-    print ("\nCreating Excel file.")
-    generate_spreadsheet(appartments)
-    return len(addresses)
-
-
-print ("Starting.\n")
-start_time = time.time()
-
-#  Starting main loop
-add_keyword("renewing")
-add_keyword("renew")
-add_keyword("works for")
-add_keyword("work for")
-add_keyword("do not contact")
-add_keyword("employee")
-add_keyword("photo")
-
-address_count = main()
-
-print ("\nProcessed ", address_count, " units in %s seconds." % (time.time() - start_time))
+main()

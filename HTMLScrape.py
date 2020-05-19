@@ -1,15 +1,18 @@
 import sys
 import time
+import xlsxwriter
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+
 DEBUG = 1
+
+TEMP_LISTING = "listing_to_post.xlsx"
 
 class Payload:
     def __init__(self):
@@ -22,16 +25,23 @@ class Payload:
             if DEBUG != None:
                 print ("Slurp: ", data)
                 print ("Fixed:", data[0].rstrip(), " / ", data[1].rstrip())
+            # IDs
+            self.form_id = "login"
             self.user_id = "username"
             self.pass_id = "password"
+            self.full_address_div_id = "address-autocomplete-place"
+            self.full_address_input_id = "address-autocomplete"
+            # XPATHs
             self.login_link = "//form[@id=\"login\"]/preceding-sibling::a"
-            self.add_listing_link = "//a[@href=\"/user/add-listing/"
+            self.address_input = "//*[@id=\"address_autocomplete\"]"
+            #self.add_listing_link = "//a[@href=\"/user/add-listing/"
             self.button = "//input[@type=\"submit\"]"
-            self.form = "login"
             self.username = data[0].rstrip()
             self.password = data[1].rstrip()
+            # Pages
             self.login_url = "https://offcampus.bu.edu/login/"
             self.add_listing_url = "https://offcampus.bu.edu/user/add-listing/"
+            # Dummy data
 
 
 def login(driver, payload, wait):
@@ -47,7 +57,7 @@ def login(driver, payload, wait):
     login = driver.get(payload.login_url)
     
     print("Waiting for page to load.")
-    wait.until(EC.presence_of_element_located((By.ID, payload.form)))
+    wait.until(EC.presence_of_element_located((By.ID, payload.form_id)))
     print("Page loaded.")
     link = driver.find_element(By.XPATH, payload.login_link)
     print("Clicking on link to show form.")
@@ -70,16 +80,29 @@ def login(driver, payload, wait):
     return result
 
 def add_listing(driver, payload, wait):
+    print("Loading new listing page.")
     login = driver.get (payload.add_listing_url)
 
-    print("Waiting for new listing link to load.")
-    wait.until(EC.presence_of_element_located((By.XPATH, payload.add_listing_link)))
+    return 
+    
+def fill_full_address(driver, payload, wait):
+    result = None
+
+    print("Waiting for address input to load.")
+    wait.until(EC.presence_of_element_located((By.ID, payload.full_address_div_id)))
     print("Loaded.")
 
-    link = driver.find_element(By.XPATH, payload.add_listing_link)
+    result = driver.find_element_by_xpath(payload.address_input)
+    print("Input: ", result)
+    #result.send_keys(payload.full_address)
 
-    return link 
-    
+    return result
+
+def get_listing_data()
+    workbook   = xlsxwriter.Workbook('listing_to_post.xlsx')
+
+
+    workbook.close()
 
 
 def main():
@@ -102,6 +125,10 @@ def main():
 
     print ("Login: \n", login(driver, payload, wait))
     print ("Add new listing: \n", add_listing(driver, payload, wait))
+    print ("Enter full address: \n", fill_full_address(driver, payload, wait))
+
+    #print("Getting listing data")
+    #get_listing_data()
 
     input("Press enter.")
     driver.close()

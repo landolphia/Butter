@@ -39,23 +39,25 @@ def main():
     print ("Starting...\n")
     start_time = time.time()
 
-    navigator = navigation.Navigator(DEBUG)
+    #navigator = navigation.Navigator(DEBUG)
 
-    if DEBUG != None:
-        print ("Driver: ", navigator.driver)
+    #if DEBUG != None:
+    #    print ("Driver: ", navigator.driver)
 
-    payload = Payload()
+    #payload = Payload()
 
-    print ("Login: \n", navigator.login(payload))
-    print ("Add new listing: \n", navigator.add_listing(payload))
-    print ("Enter full address: \n", navigator.fill_full_address(payload))
+    #print ("Login: \n", navigator.login(payload))
+    #print ("Add new listing: \n", navigator.add_listing(payload))
+    #print ("Enter full address: \n", navigator.fill_full_address(payload))
 
-    #print("Getting listing data")
-    #get_listing_data()
+    #input("Press enter.")
 
-    input("Press enter.")
+    #navigator.close()
 
-    navigator.close()
+    parser = spreadsheet.Spreadsheet(DEBUG)
+    print("Getting listing data.\n")
+    result = parser.get_listing_data()
+    #print("Data:\n", result)
     
     print ("\nDone in %s seconds." % (time.time() - start_time))
 

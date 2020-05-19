@@ -25,15 +25,16 @@ class Payload:
             self.user_id = "username"
             self.pass_id = "password"
             self.login_link = "//form[@id=\"login\"]/preceding-sibling::a"
+            self.add_listing_link = "//a[@href=\"/user/add-listing/"
             self.button = "//input[@type=\"submit\"]"
             self.form = "login"
             self.username = data[0].rstrip()
             self.password = data[1].rstrip()
             self.login_url = "https://offcampus.bu.edu/login/"
+            self.add_listing_url = "https://offcampus.bu.edu/user/add-listing/"
 
 
-def login(driver):
-    payload = Payload()
+def login(driver, payload, wait):
     result = None
     
     if driver == None:
@@ -43,8 +44,7 @@ def login(driver):
     if DEBUG != None:
         print("Signing into ", payload.login_url)
 
-    wait = WebDriverWait(driver, 100)
-    login = driver.get (payload.login_url)
+    login = driver.get(payload.login_url)
     
     print("Waiting for page to load.")
     wait.until(EC.presence_of_element_located((By.ID, payload.form)))
@@ -69,6 +69,18 @@ def login(driver):
 
     return result
 
+def add_listing(driver, payload, wait):
+    login = driver.get (payload.add_listing_url)
+
+    print("Waiting for new listing link to load.")
+    wait.until(EC.presence_of_element_located((By.XPATH, payload.add_listing_link)))
+    print("Loaded.")
+
+    link = driver.find_element(By.XPATH, payload.add_listing_link)
+
+    return link 
+    
+
 
 def main():
     print ("Starting...\n")
@@ -84,12 +96,17 @@ def main():
     driver = webdriver.Chrome()
     if DEBUG != None:
         print ("Driver: ", driver)
-    print ("Result: \n", login(driver))
 
+    payload = Payload()
+    wait = WebDriverWait(driver, 100)
+
+    print ("Login: \n", login(driver, payload, wait))
+    print ("Add new listing: \n", add_listing(driver, payload, wait))
+
+    input("Press enter.")
     driver.close()
     driver.quit()
     
     print ("\nDone in %s seconds." % (time.time() - start_time))
-    input("Press enter.")
 
 main()

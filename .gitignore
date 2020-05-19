@@ -3,5 +3,6 @@
 *~
 *.xlsx
 *.html
+*.pyc
 chromedriver.exe
 private.slr

@@ -4,7 +4,7 @@ import time
 import spreadsheet
 import navigation
 
-DEBUG = 1
+DEBUG = None 
 
 class Payload:
     def __init__(self):

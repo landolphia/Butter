@@ -1,5 +1,6 @@
-#import xlsxwriter
 import re
+import sys 
+import pprint 
 import pandas as pd
 
 TEMP_LISTING = "listing_to_post.xlsx"
@@ -10,11 +11,12 @@ re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
 class Spreadsheet:
     #  This object is used to store the info for an unit.
     def __init__(self, debug):
-        self.debug = debug
+        self.DEBUG = debug
         #Page 1 and 2
         self.full_address = None
         self.street_num = None
         self.street_name = None
+        self.unit = None
         self.city = None
         self.state = None
         self.zip = None
@@ -24,51 +26,57 @@ class Spreadsheet:
                 "put in address": 1,
                 "display exact address": 2,
                 }
-    def get_street_num(address):
-        return "BLah"
-    def get_street_name(address):
-        return "BLah"
-    def get_city(address):
-        return "BLah"
-    def get_state(address):
-        return "BLah"
-    def get_zip(address):
-        return "Blah"
-    def get_display_exact(string):
-        return "Blah"
+        self.data = pd.read_excel(TEMP_LISTING, sheet_name = 6)
+    def disp(self):
+        pprint.pprint(vars(self))
+    def get_key(self, key):
+        return self.data.iloc[self.index[key]][3]
     def get_listing_data(self):
-        listing = pd.read_excel(TEMP_LISTING, sheet_name = 6)
+        if self.DEBUG != None:
+            for key in self.index:
+                print (key + ": \t\t", self.get_key(key))
 
-        for key in self.index:
-            print (key + ": \t\t", listing.iloc[self.index[key]][3])
+        address = self.get_key("actual address")
+        print("\nParsing address: ", address)
 
-        print("\nParsing address: 1193 Commonwealth Ave., #15, Boston, MA\n")
-        print(self.parse_address("1193 Commonwealth Ave., #15, Boston, MA"))
-        
-        return listing.head()
+        self.set_address(address)
+        self.display_exact_address = False if self.get_key("display exact address") == 'N' else True
+
+        self.disp()
+        return self.data.head()
+    def set_address(self, address):
+        address = self.parse_address(address)
+        self.full_address = address["full"]
+        self.street_num = address["number"]
+        self.street_name = address["name"]
+        self.unit = address["unit"]
+        self.city = address["city"]
+        self.state = address["state"] 
+        self.zip = address["zip"]
     def parse_address(self, address):
         old = address
-        if self.debug != None:
+        if self.DEBUG != None:
             print ("-stripping whitespace.")
         address = address.strip()
-        if self.debug != None:
+        if self.DEBUG != None:
             print ("-splitting address.")
         result = re_address.split(address)
-        if self.debug != None:
+        if self.DEBUG != None:
             print ("-cleaning up entry.")
         result = list(filter(None, result))
         temp_add = re_num.split(result[0])
-        if self.debug != None:
+        if self.DEBUG != None:
             print ("-cleaning up name.")
         temp_add = list(filter(None, temp_add))
         temp_add[0] = temp_add[0].strip()
         temp_add[1] = temp_add[1].strip()
-        if self.debug != None:
+        if self.DEBUG != None:
             print ("-fetching unit# from: \"", result[1], "\"")
-        if self.debug != None:
+        if self.DEBUG != None:
             print ("-cleaning up unit number.")
         temp_unit = result[1][1:].strip()
 
+        print("FIX THE ZIPCODE ISSUE!!!\n!!!!!!!!!!!!!!!!!!!!!!!!")
         return {
                 "full": old,
                 "number": temp_add[0],

@@ -1,4 +1,7 @@
-showing.html
 *.swp
+*.log
 *~
 *.xlsx
+*.html
+chromedriver.exe
+private.slr

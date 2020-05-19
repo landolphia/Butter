@@ -259,7 +259,6 @@ add_keyword("works for")
 add_keyword("work for")
 add_keyword("do not contact")
 add_keyword("employee")
-add_keyword("photo")
 
 address_count = main()
 

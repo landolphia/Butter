@@ -2,6 +2,7 @@
 *.log
 *~
 *.xlsx
+*.pyc
 *.html
 chromedriver.exe
 private.slr

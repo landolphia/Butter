@@ -8,9 +8,21 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Navigator:
     def __init__(self, debug):
+            self.search_url = "https://www.google.com/search?q="
             self.driver = webdriver.Chrome()
             self.wait = WebDriverWait(self.driver, 100)
             self.DEBUG = debug
+    def get_zip(self, address):
+        result = None
+
+        if self.driver == None:
+            print ("Driver not loaded. Exiting program. [", self.driver, "]")
+            sys.exit()
+
+        result = self.driver.get(self.search_url+address+"+zip+code")
+        print("result: ", result)
+        input("Waity")
+
     def login(self, payload):
         result = None
         
@@ -64,4 +76,5 @@ class Navigator:
         return result
     def close(self):
         self.driver.close()
+    def quit(self):
         self.driver.quit()

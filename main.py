@@ -1,6 +1,8 @@
 import sys
 import time
 
+import googlemaps 
+
 import spreadsheet
 import navigation
 
@@ -10,7 +12,7 @@ class Payload:
     def __init__(self):
         with open ("private.slr", "r") as slurp:
             data = slurp.readlines()
-        if  len(data) != 2:
+        if  len(data) != 3:
             print("Cannot find credential in private.slr.")
             sys.exit()
         else:
@@ -30,6 +32,7 @@ class Payload:
             self.button = "//input[@type=\"submit\"]"
             self.username = data[0].rstrip()
             self.password = data[1].rstrip()
+            self.api_key = data[2].rstrip()
             # Pages
             self.login_url = "https://offcampus.bu.edu/login/"
             self.add_listing_url = "https://offcampus.bu.edu/user/add-listing/"
@@ -39,12 +42,23 @@ def main():
     print ("Starting...\n")
     start_time = time.time()
 
+    payload = Payload()
+    gmaps = googlemaps.Client(payload.api_key)
+    address = "1193 Commonwealth Ave., #45, Boston, MA"
+
+    geocode_result = gmaps.geocode(address)
+    for a in geocode_result[0]:
+       print("A:", a)
+    for a in geocode_result[0]["address_components"]:
+        if a["types"][0] == "postal_code": print("B:", a["short_name"])
+    sys.exit()
+
     #navigator = navigation.Navigator(DEBUG)
+    #navigator.get_zip("1193 Commonwealth Ave., #45, Boston, MA")
 
     #if DEBUG != None:
     #    print ("Driver: ", navigator.driver)
 
-    #payload = Payload()
 
     #print ("Login: \n", navigator.login(payload))
     #print ("Add new listing: \n", navigator.add_listing(payload))
@@ -52,7 +66,7 @@ def main():
 
     #input("Press enter.")
 
-    #navigator.close()
+    #navigator.quit()
 
     parser = spreadsheet.Spreadsheet(DEBUG)
     print("Getting listing data.\n")

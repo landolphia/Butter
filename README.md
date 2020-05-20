@@ -4,12 +4,14 @@
 ##What is this?
 
 This script goes through the HTML of the listings page and generates a spreadsheet with the information needed.
+Or, the script gets listing data from an Excel spreadsheet and creates a listing online.
 
 ##Usage
 
 You need Python installed to run/compile this.
 You also need Selenium's Chromedriver running from the directory you're running Butter from, depending on what you're trying to do.
 You also-also need the login info in a file called private.slr, username/password one two consecutive lines.
+Guess what, more needs... Google API key, third entry in the private.slr file.
 This will only work if you download and save the "Showing sheet" page as showing.html in the same directory as this.
 Uses the following modules.
 
@@ -19,6 +21,7 @@ Uses the following modules.
  pip install xlswriter
  pip install pandas
  pip install selenium
+ pip install googlemaps
  py HTMLScrape.py
 '''
 
@@ -27,8 +30,12 @@ Uses the following modules.
 - reorganize code base
 - add documentation
 - GUI and/or command line options
+- spread payload in appropriate modules
 
 ##History
+v0.1.5
+Retrieving postal code
+Navigation progress
 v0.1.4
 Excel slurping
 v0.1.3

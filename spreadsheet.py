@@ -14,7 +14,7 @@ class Spreadsheet:
     #  This object is used to store the info for an unit.
     def __init__(self, debug, creds):
         self.DEBUG = debug
-        #Page 1 and 2
+        # Page 1 and 2
         self.full_address = None
         self.street_num = None
         self.street_name = None
@@ -23,6 +23,7 @@ class Spreadsheet:
         self.state = None
         self.zip = None
         self.display_exact_address = None
+        # Extra
         self.index = {
                 "actual address": 0,
                 "put in address": 1,
@@ -46,7 +47,7 @@ class Spreadsheet:
         self.display_exact_address = False if self.get_key("display exact address") == 'N' else True
 
         self.disp()
-        return self.data.head()
+        return self
     def set_address(self, address):
         address = self.parse_address(address)
         self.full_address = address["full"]

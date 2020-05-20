@@ -3,6 +3,8 @@ import sys
 import pprint 
 import pandas as pd
 
+import geohelper
+
 TEMP_LISTING = "listing_to_post.xlsx"
 
 re_address = re.compile("(.*),(.*),(.*),(.*)")
@@ -10,7 +12,7 @@ re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
 
 class Spreadsheet:
     #  This object is used to store the info for an unit.
-    def __init__(self, debug):
+    def __init__(self, debug, creds):
         self.DEBUG = debug
         #Page 1 and 2
         self.full_address = None
@@ -27,6 +29,7 @@ class Spreadsheet:
                 "display exact address": 2,
                 }
         self.data = pd.read_excel(TEMP_LISTING, sheet_name = 6)
+        self.geo = geohelper.GeoHelper(debug, creds)
     def disp(self):
         pprint.pprint(vars(self))
     def get_key(self, key):
@@ -52,37 +55,37 @@ class Spreadsheet:
         self.unit = address["unit"]
         self.city = address["city"]
         self.state = address["state"] 
-        self.zip = address["zip"]
+        if self.DEBUG != None:
+            print("Getting postal code.")
+        self.zip = self.geo.get_zip(self.full_address)
     def parse_address(self, address):
         old = address
         if self.DEBUG != None:
-            print ("-stripping whitespace.")
+            print ("Stripping whitespace.")
         address = address.strip()
         if self.DEBUG != None:
-            print ("-splitting address.")
+            print ("Splitting address.")
         result = re_address.split(address)
         if self.DEBUG != None:
-            print ("-cleaning up entry.")
+            print ("Cleaning up entry.")
         result = list(filter(None, result))
         temp_add = re_num.split(result[0])
         if self.DEBUG != None:
-            print ("-cleaning up name.")
+            print ("Cleaning up name.")
         temp_add = list(filter(None, temp_add))
         temp_add[0] = temp_add[0].strip()
         temp_add[1] = temp_add[1].strip()
         if self.DEBUG != None:
-            print ("-fetching unit# from: \"", result[1], "\"")
+            print ("Fetching unit# from: \"", result[1], "\"")
         if self.DEBUG != None:
-            print ("-cleaning up unit number.")
+            print ("Cleaning up unit number.")
         temp_unit = result[1][1:].strip()
 
-        print("FIX THE ZIPCODE ISSUE!!!\n!!!!!!!!!!!!!!!!!!!!!!!!")
         return {
                 "full": old,
                 "number": temp_add[0],
                 "name": temp_add[1],
                 "unit": temp_unit[1:],
                 "city": result[2],
-                "zip": "NONE",
                 "state": result[3]
                 }    

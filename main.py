@@ -36,25 +36,14 @@ class Payload:
             # Pages
             self.login_url = "https://offcampus.bu.edu/login/"
             self.add_listing_url = "https://offcampus.bu.edu/user/add-listing/"
-            # Dummy data
 
 def main():
     print ("Starting...\n")
     start_time = time.time()
 
     payload = Payload()
-    gmaps = googlemaps.Client(payload.api_key)
-    address = "1193 Commonwealth Ave., #45, Boston, MA"
-
-    geocode_result = gmaps.geocode(address)
-    for a in geocode_result[0]:
-       print("A:", a)
-    for a in geocode_result[0]["address_components"]:
-        if a["types"][0] == "postal_code": print("B:", a["short_name"])
-    sys.exit()
 
     #navigator = navigation.Navigator(DEBUG)
-    #navigator.get_zip("1193 Commonwealth Ave., #45, Boston, MA")
 
     #if DEBUG != None:
     #    print ("Driver: ", navigator.driver)
@@ -68,10 +57,10 @@ def main():
 
     #navigator.quit()
 
-    parser = spreadsheet.Spreadsheet(DEBUG)
+    parser = spreadsheet.Spreadsheet(DEBUG, payload.api_key)
     print("Getting listing data.\n")
     result = parser.get_listing_data()
-    #print("Data:\n", result)
+    print("Data:\n", result)
     
     print ("\nDone in %s seconds." % (time.time() - start_time))
 

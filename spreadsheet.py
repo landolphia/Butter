@@ -23,13 +23,18 @@ class Spreadsheet:
         self.state = None
         self.zip = None
         self.display_exact_address = None
+        # Location page
+        self.property_name = None
         # Extra
         self.index = {
                 "actual address": 0,
                 "put in address": 1,
                 "display exact address": 2,
+                "property name": 3,
                 }
         self.data = pd.read_excel(TEMP_LISTING, sheet_name = 6)
+        # This replaces empty cells with None (instead of nan)
+        self.data = self.data.where(pd.notnull(self.data), None)
         self.geo = geohelper.GeoHelper(debug, creds)
     def disp(self):
         pprint.pprint(vars(self))
@@ -45,6 +50,12 @@ class Spreadsheet:
 
         self.set_address(address)
         self.display_exact_address = False if self.get_key("display exact address") == 'N' else True
+
+        self.property_name = self.get_key("property name")
+        print("This is the property name: ", self.property_name)
+        if self.property_name == None:
+            print("No property name found, using address.")
+            self.property_name = "[" + self.full_address + "]"
 
         self.disp()
         return self

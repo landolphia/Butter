@@ -61,11 +61,6 @@ class Navigator:
     
         return True 
     def fill_address(self, payload):
-        #self.address_id = "address"
-        #self.city_id = "city"
-        #self.state_id = "state"
-        #self.zip_id = "zip"
-        #self.exact_flag_id = "opt_street-0
         print("Waiting for address input to load.")
         self.wait.until(EC.presence_of_element_located((By.ID, payload.address_id)))
         print("Loaded.")
@@ -91,6 +86,66 @@ class Navigator:
         result.submit()
 
         return True 
+    def fill_location_page(self, payload):
+        print("Waiting for headline input to load.")
+        self.wait.until(EC.presence_of_element_located((By.ID, payload.property_name_input_id)))
+        print("Loaded.")
+    
+        result = self.driver.find_element_by_id(payload.property_name_input_id)
+        result.send_keys(payload.listing.property_name)
+        result.send_keys(Keys.ENTER)
+    
+        return True 
+    def fill_rent_page(self, payload):
+        print("Waiting for rent link to load.")
+        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.rent_link)))
+        print("Loaded.")
+    
+        result = self.driver.find_element_by_xpath(payload.rent_link)
+        result.click()
+        input("Press enter to go on.")
+    
+        return True
+    def fill_specifics_page(self, payload):
+        print("Waiting for specifics link to load.")
+        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.specifics_link)))
+        print("Loaded.")
+    
+        result = self.driver.find_element_by_xpath(payload.specifics_link)
+        result.click()
+        input("Press enter to go on.")
+    
+        return True
+    def fill_amenities_page(self, payload):
+        print("Waiting for amenities link to load.")
+        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.amenities_link)))
+        print("Loaded.")
+    
+        result = self.driver.find_element_by_xpath(payload.amenities_link)
+        result.click()
+        input("Press enter to go on.")
+    
+        return True
+    def fill_contact_page(self, payload):
+        print("Waiting for contact link to load.")
+        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.contact_link)))
+        print("Loaded.")
+    
+        result = self.driver.find_element_by_xpath(payload.contacat_link)
+        result.click()
+        input("Press enter to go on.")
+    
+        return True
+    def fill_photos_page(self, payload):
+        print("Waiting for photos link to load.")
+        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.photos_link)))
+        print("Loaded.")
+    
+        result = self.driver.find_element_by_xpath(payload.photos_link)
+        result.click()
+        input("Press enter to go on.")
+
+        return True
     def close(self):
         self.driver.close()
     def quit(self):

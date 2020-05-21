@@ -25,12 +25,33 @@ class Spreadsheet:
         self.display_exact_address = None
         # Location page
         self.property_name = None
+        # Rent page
+        self.building_type = None
+        self.multiple_floorplans = None
+        self.req_broker_fee = None
+        self.req_first_month = None
+        self.req_last_month = None
+        self.req_upfront_costs = None
+        self.req_references = None
+        self.req_security_deposit = None
+        self.specials = None
         # Extra
         self.index = {
+                # Location
                 "actual address": 0,
                 "put in address": 1,
                 "display exact address": 2,
                 "property name": 3,
+                # Rent
+                "building type": 6,
+                "multiple floorplans": 7,
+                "broker": 13,
+                "first": 14,
+                "last": 15,
+                "upfront": 16,
+                "references": 17,
+                "security": 18,
+                "specials": 19,
                 }
         self.data = pd.read_excel(TEMP_LISTING, sheet_name = 6)
         # This replaces empty cells with None (instead of nan)
@@ -40,6 +61,18 @@ class Spreadsheet:
         pprint.pprint(vars(self))
     def get_key(self, key):
         return self.data.iloc[self.index[key]][3]
+    def NY_to_bool(self, key):
+        return False if self.get_key(key) == 'N' else True
+    def format_rent_data(self):
+        self.multiple_floorplans = self.NY_to_bool("multiple floorplans")
+        self.req_broker_fee = self.NY_to_bool("broker")
+        self.req_first_month = self.NY_to_bool("first")
+        self.req_last_month = self.NY_to_bool("last")
+        self.req_upfront_costs = self.NY_to_bool("upfront")
+        self.req_references = self.NY_to_bool("references")
+        self.req_security_deposit = self.NY_to_bool("security")
+
+        return True
     def get_listing_data(self):
         if self.DEBUG != None:
             for key in self.index:
@@ -49,14 +82,8 @@ class Spreadsheet:
         print("\nParsing address: ", address)
 
         self.set_address(address)
-        self.display_exact_address = False if self.get_key("display exact address") == 'N' else True
-
-        self.property_name = self.get_key("property name")
-        print("This is the property name: ", self.property_name)
-        if self.property_name == None:
-            print("No property name found, using address.")
-            self.property_name = "[" + self.full_address + "]"
-
+        self.format_rent_data()
+        
         self.disp()
         return self
     def set_address(self, address):
@@ -67,9 +94,18 @@ class Spreadsheet:
         self.unit = address["unit"]
         self.city = address["city"]
         self.state = address["state"] 
+
         if self.DEBUG != None:
             print("Getting postal code.")
         self.zip = self.geo.get_zip(self.full_address)
+
+        self.display_exact_address = self.NY_to_bool("display exact address")
+
+        self.property_name = self.get_key("property name")
+        print("This is the property name: ", self.property_name)
+        if self.property_name == None:
+            print("No property name found, using address.")
+            self.property_name = "[" + self.full_address + "]"
     def parse_address(self, address):
         old = address
         if self.DEBUG != None:

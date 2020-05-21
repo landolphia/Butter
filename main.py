@@ -32,6 +32,16 @@ class Payload:
         ###TODO!!!
         # Rent page
         self.rent_link =  "//a[@data-target=\"rent\"]"
+        self.building_type_select_id = "buildingtype"
+        self.multiple_floorplans_radio_no_id = "multi-unit-no"
+        self.multiple_floorplans_radio_yes_id = "multi-unit-yes"
+        self.reqs_broker_id = "security_deposit_amenities-231"
+        self.reqs_first_id = "security_deposit_amenities-161"
+        self.reqs_last_id = "security_deposit_amenities-162"
+        self.reqs_upfront_id = "security_deposit_amenities-165"
+        self.reqs_references_id = "security_deposit_amenities-164"
+        self.reqs_security_id = "security_deposit_amenities-163"
+        self.specials_id = "specials"
         # Specifics page
         self.specifics_link =  "//a[@data-target=\"details\"]"
         # Amenities page
@@ -70,6 +80,9 @@ def main():
     parser = spreadsheet.Spreadsheet(DEBUG, payload.api_key)
     print("Getting listing data.\n")
     payload.listing = parser.get_listing_data()
+
+    input("Press enter to exit.")
+    sys.exit()
     
     # Filling forms with the data
     navigator = navigation.Navigator(DEBUG)

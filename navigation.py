@@ -104,6 +104,16 @@ class Navigator:
         result = self.driver.find_element_by_xpath(payload.rent_link)
         result.click()
         input("Press enter to go on.")
+        #self.building_type_select_id = "buildingtype"
+        #self.multiple_floorplans_radio_no_id = "multi-unit-no"
+        #self.multiple_floorplans_radio_yes_id = "multi-unit-yes"
+        #self.reqs_broker_id = "security_deposit_amenities-231"
+        #self.reqs_first_id = "security_deposit_amenities-161"
+        #self.reqs_last_id = "security_deposit_amenities-162"
+        #self.reqs_upfront_id = "security_deposit_amenities-165"
+        #self.reqs_references_id = "security_deposit_amenities-164"
+        #self.reqs_security_id = "security_deposit_amenities-163"
+        #self.specials_id = "specials 
     
         return True
     def fill_specifics_page(self, payload):

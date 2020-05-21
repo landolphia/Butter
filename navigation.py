@@ -102,8 +102,8 @@ class Navigator:
         print("Loaded.")
     
         result = self.driver.find_element_by_xpath(payload.rent_link)
-        result.click()
         input("Press enter to go on.")
+        result.click()
         #self.building_type_select_id = "buildingtype"
         #self.multiple_floorplans_radio_no_id = "multi-unit-no"
         #self.multiple_floorplans_radio_yes_id = "multi-unit-yes"

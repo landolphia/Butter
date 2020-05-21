@@ -83,6 +83,7 @@ class Spreadsheet:
 
         self.set_address(address)
         self.format_rent_data()
+        print("FIX ME!!!!!!!!!!!!!!!!!!!!!!!\n Should take care of floorplan details here.")
         
         self.disp()
         return self
@@ -105,7 +106,7 @@ class Spreadsheet:
         print("This is the property name: ", self.property_name)
         if self.property_name == None:
             print("No property name found, using address.")
-            self.property_name = "[" + self.full_address + "]"
+            self.property_name = "[JJ]" + self.full_address
     def parse_address(self, address):
         old = address
         if self.DEBUG != None:

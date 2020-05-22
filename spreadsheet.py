@@ -35,6 +35,8 @@ class Spreadsheet:
         self.req_references = None
         self.req_security_deposit = None
         self.specials = None
+        # Specifics page
+        self.
         # Extra
         self.index = {
                 # Location
@@ -52,6 +54,87 @@ class Spreadsheet:
                 "references": 17,
                 "security": 18,
                 "specials": 19,
+                # Specifics
+                "number of occupants": 22,
+                "allow subletting": 23,
+                "is sublet": 24,
+                "roommate situation": 25,
+                "availability date": 26,
+                "availibility renew": 27,
+                # Amenities
+                "pet policy": 29,
+                "lead paint": 30,
+                # Amenities/features
+                "ac": 32,
+                "carpet": 33,
+                "dining room": 34,
+                "disability access": 35,
+                "dishwasher": 36,
+                "fireplace": 37,
+                "furnished": 38,
+                "garbage disposal": 39,
+                "hardwood floors": 40,
+                "high-speed internet": 41,
+                "living room": 42,
+                "microwave": 43,
+                "patio": 44,
+                "private garden": 45,
+                "shared garden": 46,
+                "smoke free": 47,
+                "storage additional": 48,
+                "storage included": 49,
+                "study": 50,
+                # Amenities/Agency
+                "fee agent broker": 52,
+                "no fee": 53,
+                # Amenities/community
+                "fitness room": 55,
+                "individual leases": 56,
+                "near bus stop": 57,
+                "near T stop": 58,
+                "pool": 59,
+                "roommate matching": 60,
+                "tennis court": 61,
+                # Amenities/lease
+                "12 months": 63,
+                "9 months": 64,
+                "fall sublet": 65,
+                "flexible": 66,
+                "month to month": 67,
+                "short term": 68,
+                "spring sublet": 69,
+                "summer sublet": 70,
+                # Amenities/security
+                "courtesy officer": 72,
+                "dead-bolt": 73,
+                "exterior lighting": 74,
+                "intercom": 75,
+                "security guard": 76,
+                "security system": 77,
+                "video surveillance": 78,
+                # Amenities/utilities
+                "cable": 80,
+                "electricity": 81,
+                "gas": 82,
+                "heat": 83,
+                "high speed internet": 84,
+                "hot water": 85,
+                "local phone": 86,
+                "recycling": 87,
+                "trash removal": 88,
+                "water sewer": 89,
+                # Amenities/parking
+                "garage parking": 91,
+                "no parking": 92,
+                "off street parking": 93,
+                "on street parking": 94,
+                # Amenities/laundry
+                "laundry room in community": 96,
+                "no laundry in unit": 97,
+                "washer dryer hookups": 98,
+                "washer dryer in unit": 99,
+                # Amenities/description
+                "description": 104
                 }
         self.data = pd.read_excel(TEMP_LISTING, sheet_name = 6)
         # This replaces empty cells with None (instead of nan)

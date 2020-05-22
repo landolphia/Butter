@@ -235,17 +235,27 @@ class Spreadsheet:
         self.req_security_deposit = self.NY_to_bool("security")
 
         return True
+    def format_specifics(self):
+        self.number_of_occupants = self.get_key("number of occupants")
+        self.availability_date = self.get_key("availability date")
+        self.allow_subletting = self.NY_to_bool("allow subletting")
+        self.is_sublet = self.NY_to_bool("is sublet")
+        self.roommate_situation = self.NY_to_bool("roommate situation")
+        self.availibility_renew = self.NY_to_bool("availibility renew")
+
+        return True
     def get_listing_data(self):
         if self.DEBUG != None:
             for key in self.index:
                 print (key + ": \t\t", self.get_key(key))
 
         address = self.get_key("actual address")
-        print("\nParsing address: ", address)
 
         self.set_address(address)
         self.format_rent_data()
         print("FIX ME!!!!!!!!!!!!!!!!!!!!!!!\n Should take care of floorplan details here.")
+        print("Filling in specifics.")
+        self.format_specifics()
         
         self.disp()
         return self

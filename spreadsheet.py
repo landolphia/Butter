@@ -65,7 +65,7 @@ class Spreadsheet:
         self.storage_additional = None
         self.storage_included = None
         self.study = None
-        # Amenities/Agency
+        # Amenities/agency
         self.fee_agent_broker = None
         self.no_fee = None
         # Amenities/community
@@ -163,7 +163,7 @@ class Spreadsheet:
                 "storage additional": 48,
                 "storage included": 49,
                 "study": 50,
-                # Amenities/Agency
+                # Amenities/agency
                 "fee agent broker": 52,
                 "no fee": 53,
                 # Amenities/community
@@ -224,7 +224,7 @@ class Spreadsheet:
     def get_key(self, key):
         return self.data.iloc[self.index[key]][3]
     def NY_to_bool(self, key):
-        return False if self.get_key(key) == 'N' else True
+        return True if self.get_key(key) == 'Y' else False 
     def format_rent_data(self):
         self.multiple_floorplans = self.NY_to_bool("multiple floorplans")
         self.req_broker_fee = self.NY_to_bool("broker")
@@ -233,6 +233,110 @@ class Spreadsheet:
         self.req_upfront_costs = self.NY_to_bool("upfront")
         self.req_references = self.NY_to_bool("references")
         self.req_security_deposit = self.NY_to_bool("security")
+
+        return True
+    def format_amenities_features(self):
+        self.ac = self.NY_to_bool("ac")
+        self.carpet = self.NY_to_bool("carpet")
+        self.dining_room = self.NY_to_bool("dining room")
+        self.disability_access = self.NY_to_bool("disability access")
+        self.dishwasher = self.NY_to_bool("dishwasher")
+        self.fireplace = self.NY_to_bool("fireplace")
+        self.furnished = self.NY_to_bool("furnished")
+        self.garbage_disposal = self.NY_to_bool("garbage disposal")
+        self.hardwood_floors = self.NY_to_bool("hardwood floors")
+        self.high_speed_internet = self.NY_to_bool("high-speed internet")
+        self.living_room = self.NY_to_bool("living room")
+        self.microwave = self.NY_to_bool("microwave")
+        self.patio = self.NY_to_bool("patio")
+        self.private_garden = self.NY_to_bool("private garden")
+        self.shared_garden = self.NY_to_bool("shared garden")
+        self.smoke_free = self.NY_to_bool("smoke free")
+        self.storage_additional = self.NY_to_bool("storage additional")
+        self.storage_included = self.NY_to_bool("storage included")
+        self.study = self.NY_to_bool("study")
+
+        return True
+    def format_amenities_community(self):
+        self.fitness_room = self.NY_to_bool("fitness room")
+        self.individual_leases = self.NY_to_bool("individual leases")
+        self.near_bus_stop = self.NY_to_bool("near bus stop")
+        self.near_T_stop = self.NY_to_bool("near T stop")
+        self.pool = self.NY_to_bool("pool")
+        self.roommate_matching = self.NY_to_bool("roommate matching")
+        self.tennis_court = self.NY_to_bool("tennis court")
+
+        return True
+    def format_amenities_agency(self):
+        self.fee_agent_broker = self.NY_to_bool("fee agent broker") 
+        self.no_fee = self.NY_to_bool("no fee") 
+
+        return True
+    def format_amenities_lease(self):
+        self.twelve_months = self.NY_to_bool("12 months")
+        self.nine_months = self.NY_to_bool("9 months")
+        self.fall_sublet = self.NY_to_bool("fall sublet")
+        self.flexible = self.NY_to_bool("flexible")
+        self.month_to_month = self.NY_to_bool("month to month")
+        self.short_term = self.NY_to_bool("short term")
+        self.spring_sublet = self.NY_to_bool("spring sublet")
+        self.summer_sublet = self.NY_to_bool("summer sublet")
+        
+        return True
+    def format_amenities_security(self):
+        self.courtesy_officer = self.NY_to_bool("courtesy officer")
+        self.dead_bolt = self.NY_to_bool("dead-bolt")
+        self.exterior_lighting = self.NY_to_bool("exterior lighting")
+        self.intercom = self.NY_to_bool("intercom")
+        self.security_guard = self.NY_to_bool("security guard")
+        self.security_system = self.NY_to_bool("security system")
+        self.video_surveillance = self.NY_to_bool("video surveillance")
+
+        return True
+    def format_amenities_utilities(self):
+        self.cable = self.NY_to_bool("cable")
+        self.electricity = self.NY_to_bool("electricity")
+        self.gas = self.NY_to_bool("gas")
+        self.heat = self.NY_to_bool("heat")
+        self.high_speed_internet = self.NY_to_bool("high speed internet")
+        self.hot_water = self.NY_to_bool("hot water")
+        self.local_phone = self.NY_to_bool("local phone")
+        self.recycling = self.NY_to_bool("recycling")
+        self.trash_removal = self.NY_to_bool("trash removal")
+        self.water_sewer = self.NY_to_bool("water sewer")
+
+        return True
+    def format_amenities_parking(self):
+        self.garage_parking = self.NY_to_bool("garage parking")
+        self.no_parking = self.NY_to_bool("no parking")
+        self.off_street_parking = self.NY_to_bool("off street parking")
+        self.on_street_parking = self.NY_to_bool("on street parking")
+
+        return True
+    def format_amenities_laundry(self):
+        self.laundry_room_in_community = self.NY_to_bool("laundry room in community")
+        self.no_laundry_in_unit = self.NY_to_bool("no laundry in unit")
+        self.washer_dryer_hookups = self.NY_to_bool("washer dryer hookups")
+        self.washer_dryer_in_unit = self.NY_to_bool("washer dryer in unit")
+
+        return True
+    def format_amenities_description(self):
+        self.description = self.NY_to_bool("description")
+
+        return True
+    def format_amenities_data(self):
+        self.pet_policy = self.NY_to_bool("pet policy")
+        self.lead_paint = self.NY_to_bool("lead paint")
+
+        self.format_amenities_features()
+        self.format_amenities_agency()
+        self.format_amenities_community()
+        self.format_amenities_lease()
+        self.format_amenities_security()
+        self.format_amenities_utilities()
+        self.format_amenities_parking()
+        self.format_amenities_laundry()
+        self.format_amenities_description()
 
         return True
     def format_specifics(self):

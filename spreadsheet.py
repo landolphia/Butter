@@ -358,7 +358,7 @@ class Spreadsheet:
 
         return True
     def disp_amenities_description(self):
-        print("Displaying description\n[THIS PART ISN'T FINISHED!!!!!\n")
+        print("Displaying description\n[THIS PART ISN'T FINISHED!!!!!]\n")
         print("Description: ", self.description)
 
         return True
@@ -527,7 +527,6 @@ class Spreadsheet:
         self.disp_rent()
         self.disp_specifics()
         self.disp_amenities()
-        input("Wait.")
 
         self.disp()
 

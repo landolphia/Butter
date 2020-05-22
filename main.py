@@ -81,8 +81,6 @@ def main():
     print("Getting listing data.\n")
     payload.listing = parser.get_listing_data()
 
-    input("Press enter to exit.")
-    sys.exit()
     
     # Filling forms with the data
     navigator = navigation.Navigator(DEBUG)
@@ -98,6 +96,8 @@ def main():
 
     #TODO !!!
     print ("Filling rent: ", navigator.fill_rent_page(payload))
+    input("Press enter to exit.")
+    sys.exit()
     #print ("Filling specifics: ", navigator.fill_specifics_page(payload))
     #print ("Filling amenities: ", navigator.fill_amenities_page(payload))
     #print ("Filling contact: ", navigator.fill_contact_page(payload))

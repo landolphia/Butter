@@ -104,16 +104,57 @@ class Navigator:
         result = self.driver.find_element_by_xpath(payload.rent_link)
         input("Press enter to go on.")
         result.click()
-        #self.building_type_select_id = "buildingtype"
-        #self.multiple_floorplans_radio_no_id = "multi-unit-no"
-        #self.multiple_floorplans_radio_yes_id = "multi-unit-yes"
-        #self.reqs_broker_id = "security_deposit_amenities-231"
-        #self.reqs_first_id = "security_deposit_amenities-161"
-        #self.reqs_last_id = "security_deposit_amenities-162"
-        #self.reqs_upfront_id = "security_deposit_amenities-165"
-        #self.reqs_references_id = "security_deposit_amenities-164"
-        #self.reqs_security_id = "security_deposit_amenities-163"
-        #self.specials_id = "specials 
+
+        result = self.driver.find_element_by_id(payload.building_type_select_id)
+        for option in result.find_elements_by_tag_name('option'):
+            if option.text.strip() == payload.listing.building_type:
+                option.click()
+
+        if payload.listing.multiple_floorplans:
+            result = self.driver.find_element_by_id(payload.multiple_floorplans_radio_yes_id)
+        else:
+            result = self.driver.find_element_by_id(payload.multiple_floorplans_radio_no_id)
+        result.click()
+
+
+        result = self.driver.find_element_by_id(payload.reqs_broker_id)
+        if payload.listing.req_broker_fee == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.reqs_first_id)
+        if payload.listing.req_first_month == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.reqs_last_id)
+        if payload.listing.req_last_month == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.reqs_upfront_id)
+        if payload.listing.req_upfront_costs == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.reqs_references_id)
+        if payload.listing.req_references == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.reqs_security_id)
+        if payload.listing.req_security_deposit == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.specials_id)
+        result.send_keys(payload.listing.specials)
     
         return True
     def fill_specifics_page(self, payload):
@@ -123,7 +164,6 @@ class Navigator:
     
         result = self.driver.find_element_by_xpath(payload.specifics_link)
         result.click()
-        input("Press enter to go on.")
     
         return True
     def fill_amenities_page(self, payload):

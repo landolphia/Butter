@@ -36,7 +36,86 @@ class Spreadsheet:
         self.req_security_deposit = None
         self.specials = None
         # Specifics page
-        self.
+        self.number_of_occupants = None
+        self.allow_subletting = None
+        self.is_sublet = None
+        self.roommate_situation = None
+        self.availability_date = None
+        self.availibility_renew = None
+        # Amenities
+        self.pet_policy = None
+        self.lead_paint = None
+        # Amenities/features
+        self.ac = None
+        self.carpet = None
+        self.dining_room = None
+        self.disability_access = None
+        self.dishwasher = None
+        self.fireplace = None
+        self.furnished = None
+        self.garbage_disposal = None
+        self.hardwood_floors = None
+        self.high_speed_internet = None
+        self.living_room = None
+        self.microwave = None
+        self.patio = None
+        self.private_garden = None
+        self.shared_garden = None
+        self.smoke_free = None
+        self.storage_additional = None
+        self.storage_included = None
+        self.study = None
+        # Amenities/Agency
+        self.fee_agent_broker = None
+        self.no_fee = None
+        # Amenities/community
+        self.fitness_room = None
+        self.individual_leases = None
+        self.near_bus_stop = None
+        self.near_T_stop = None
+        self.pool = None
+        self.roommate_matching = None
+        self.tennis_court = None
+        # Amenities/lease
+        self.twelve_months = None
+        self.nine_months = None
+        self.fall_sublet = None
+        self.flexible = None
+        self.month_to_month = None
+        self.short_term = None
+        self.spring_sublet = None
+        self.summer_sublet = None
+        # Amenities/security
+        self.courtesy_officer = None
+        self.dead_bolt = None
+        self.exterior_lighting = None
+        self.intercom = None
+        self.security_guard = None
+        self.security_system = None
+        self.video_surveillance = None
+        # Amenities/utilities
+        self.cable = None
+        self.electricity = None
+        self.gas = None
+        self.heat = None
+        self.high_speed_internet = None
+        self.hot_water = None
+        self.local_phone = None
+        self.recycling = None
+        self.trash_removal = None
+        self.water_sewer = None
+        # Amenities/parking
+        self.garage_parking = None
+        self.no_parking = None
+        self.off_street_parking = None
+        self.on_street_parking = None
+        # Amenities/laundry
+        self.laundry_room_in_community = None
+        self.no_laundry_in_unit = None
+        self.washer_dryer_hookups = None
+        self.washer_dryer_in_unit = None
+        # Amenities/description
+        self.description = None
         # Extra
         self.index = {
                 # Location

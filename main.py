@@ -82,6 +82,7 @@ def main():
     payload.listing = parser.get_listing_data()
 
     input("Press enter to exit.")
+    sys.exit()
     
     # Filling forms with the data
     navigator = navigation.Navigator(DEBUG)

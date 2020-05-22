@@ -213,7 +213,7 @@ class Spreadsheet:
                 "washer dryer hookups": 98,
                 "washer dryer in unit": 99,
                 # Amenities/description
-                "description": 104
+                "description": 109
                 }
         self.data = pd.read_excel(TEMP_LISTING, sheet_name = 6)
         # This replaces empty cells with None (instead of nan)
@@ -226,6 +226,7 @@ class Spreadsheet:
     def NY_to_bool(self, key):
         return True if self.get_key(key) == 'Y' else False 
     def format_rent_data(self):
+        self.building_type = self.get_key("building type")
         self.multiple_floorplans = self.NY_to_bool("multiple floorplans")
         self.req_broker_fee = self.NY_to_bool("broker")
         self.req_first_month = self.NY_to_bool("first")
@@ -234,6 +235,145 @@ class Spreadsheet:
         self.req_references = self.NY_to_bool("references")
         self.req_security_deposit = self.NY_to_bool("security")
 
+        return True
+    def disp_location(self):
+        print("Location data\n")
+        print("Full address: ", self.full_address)
+        print("Street#: ", self.street_num)
+        print("Street name: ", self.street_name)
+        print("Unit: ", self.unit)
+        print("City: ", self.city)
+        print("State: ", self.state)
+        print("Zip code: ", self.zip)
+        print("Display exact address: ", self.display_exact_address)
+        print("Property name: ", self.property_name)
+
+        return True
+    def disp_rent(self):
+        print("Rent data\n")
+        print("Building type: ", self.building_type)
+        print("Multiple floorplans: ", self.multiple_floorplans)
+        print("Broker fee: ", self.req_broker_fee)
+        print("First month: ", self.req_first_month)
+        print("Last month: ", self.req_last_month)
+        print("Upfront costs: ", self.req_upfront_costs)
+        print("References: ", self.req_references)
+        print("Security deposit: ", self.req_security_deposit)
+
+        return True
+    def disp_amenities_features(self):
+        print("Displaying features\n")
+
+        print("Pet policy: ", self.pet_policy)
+        print("Lead paint: ", self.lead_paint)
+        print("Air conditioning: ", self.ac)
+        print("Carpet: ", self.carpet)
+        print("Dining room: ", self.dining_room)
+        print("Disability access: ", self.disability_access)
+        print("Dishwasher: ", self.dishwasher)
+        print("Fireplace: ", self.fireplace)
+        print("Furnished: ", self.furnished)
+        print("Garbage disposal: ", self.garbage_disposal)
+        print("Hardwood floors: ", self.hardwood_floors)
+        print("High speed internet: ", self.high_speed_internet)
+        print("Living room: ", self.living_room)
+        print("Microwave: ", self.microwave)
+        print("Patio: ", self.patio)
+        print("Private garden: ", self.private_garden)
+        print("Shared garden: ", self.shared_garden)
+        print("Smoke free: ", self.smoke_free)
+        print("Storage additional: ", self.storage_additional)
+        print("Storage included: ", self.storage_included)
+        print("Study: ", self.study)
+        
+        return True
+    def disp_amenities_community(self):
+        print("Displaying community\n")
+        print("Fitness room: ", self.fitness_room)
+        print("Individual leases: ", self.individual_leases)
+        print("Near bus stop: ", self.near_bus_stop)
+        print("New T stop: ", self.near_T_stop)
+        print("Pool: ", self.pool)
+        print("Roommate matching: ", self.roommate_matching)
+        print("Tennis court: ", self.tennis_court)
+
+        return True
+    def disp_amenities_agency(self):
+        print("Displaying agency\n")
+        print("Fee agent broker: ", self.fee_agent_broker)
+        print("No fee: ", self.no_fee)
+        return True
+    def disp_amenities_lease(self):
+        print("Displaying lease\n")
+        print("12 months: ", self.twelve_months)
+        print("9 months: ", self.nine_months)
+        print("Fall sublet: ", self.fall_sublet)
+        print("Flexible: ", self.flexible)
+        print("Month to month: ", self.month_to_month)
+        print("Short term: ", self.short_term)
+        print("Spring sublet: ", self.spring_sublet)
+        print("Summer sublet: ", self.summer_sublet)
+
+        return True
+    def disp_amenities_security(self):
+        print("Displaying security\n")
+    
+        print("Courtesy officer: ", self.courtesy_officer)
+        print("Dead bolt: ", self.dead_bolt)
+        print("Exterior lighting: ", self.exterior_lighting)
+        print("Intercom: ", self.intercom)
+        print("Security guard: ", self.security_guard)
+        print("Security system: ", self.security_system)
+        print("Video surveillance: ", self.video_surveillance)
+
+        return True
+    def disp_amenities_utilities(self):
+        print("Displaying utilities\n")
+        print("Cable: ", self.cable)
+        print("Electricity: ", self.electricity)
+        print("Gas: ", self.gas)
+        print("Heat: ", self.heat)
+        print("High speed internet: ", self.high_speed_internet)
+        print("Hot water: ", self.hot_water)
+        print("Local phone: ", self.local_phone)
+        print("Recycling: ", self.recycling)
+        print("Trash removal: ", self.trash_removal)
+        print("Water sewer: ", self.water_sewer)
+
+        return True
+    def disp_amenities_parking(self):
+        print("Displaying parking\n")
+        print("Garage park: ", self.garage_parking)
+        print("No park: ", self.no_parking)
+        print("Off street park: ", self.off_street_parking)
+        print("On street park: ", self.on_street_parking)
+
+        return True
+    def disp_amenities_laundry(self):
+        print("Displaying laundry\n")
+        print("Laundry room in community: ", self.laundry_room_in_community)
+        print("Laundry in unit: ", self.no_laundry_in_unit)
+        print("W/D hookups: ", self.washer_dryer_hookups)
+        print("W/D in unit: ", self.washer_dryer_in_unit)
+
+        return True
+    def disp_amenities_description(self):
+        print("Displaying description\n[THIS PART ISN'T FINISHED!!!!!\n")
+        print("Description: ", self.description)
+
+        return True
+    def disp_amenities(self):
+        print("Displaying amenities\n")
+        self.disp_amenities_features()
+        self.disp_amenities_community()
+        self.disp_amenities_agency()
+        self.disp_amenities_lease()
+        self.disp_amenities_security()
+        self.disp_amenities_utilities()
+        self.disp_amenities_parking()
+        self.disp_amenities_laundry()
+        self.disp_amenities_description()
+        
         return True
     def format_amenities_features(self):
         self.ac = self.NY_to_bool("ac")
@@ -321,12 +461,13 @@ class Spreadsheet:
 
         return True
     def format_amenities_description(self):
-        self.description = self.NY_to_bool("description")
+        self.description = self.get_key("description")
 
         return True
     def format_amenities_data(self):
-        self.pet_policy = self.NY_to_bool("pet policy")
-        self.lead_paint = self.NY_to_bool("lead paint")
+        self.pet_policy = self.get_key("pet policy")
+        if self.DEBUG != None: print("Fix the pet policy!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        self.lead_paint = self.get_key("lead paint")
 
         self.format_amenities_features()
         self.format_amenities_agency()
@@ -339,7 +480,7 @@ class Spreadsheet:
         self.format_amenities_description()
 
         return True
-    def format_specifics(self):
+    def format_specifics_data(self):
         self.number_of_occupants = self.get_key("number of occupants")
         self.availability_date = self.get_key("availability date")
         self.allow_subletting = self.NY_to_bool("allow subletting")
@@ -348,20 +489,48 @@ class Spreadsheet:
         self.availibility_renew = self.NY_to_bool("availibility renew")
 
         return True
+    def disp_specifics(self):
+        print("Number of occupants: ", self.number_of_occupants)
+        print("Availability date: ", self.availability_date)
+        print("Allow subletting: ", self.allow_subletting)
+        print("Is sublet: ", self.is_sublet)
+        print("Roommate situation: ", self.roommate_situation)
+        print("Availability renew: ", self.availibility_renew)
+        
+        return True
+    def format_location_data(self):
+        address = self.get_key("actual address")
+
+        self.set_address(address)
+
+        self.display_exact_address = self.NY_to_bool("display exact address")
+
+        self.property_name = self.get_key("property name")
+        print("This is the property name: ", self.property_name)
+        if self.property_name == None:
+            print("No property name found, using address.")
+            self.property_name = "[JJ's testing supplies]" + self.full_address
+
+        return True
     def get_listing_data(self):
         if self.DEBUG != None:
             for key in self.index:
                 print (key + ": \t\t", self.get_key(key))
 
-        address = self.get_key("actual address")
-
-        self.set_address(address)
+        self.format_location_data()
         self.format_rent_data()
         print("FIX ME!!!!!!!!!!!!!!!!!!!!!!!\n Should take care of floorplan details here.")
-        print("Filling in specifics.")
-        self.format_specifics()
+        self.format_specifics_data()
+        self.format_amenities_data()
         
+        self.disp_location()
+        self.disp_rent()
+        self.disp_specifics()
+        self.disp_amenities()
+        input("Wait.")
+
         self.disp()
+
         return self
     def set_address(self, address):
         address = self.parse_address(address)
@@ -376,13 +545,6 @@ class Spreadsheet:
             print("Getting postal code.")
         self.zip = self.geo.get_zip(self.full_address)
 
-        self.display_exact_address = self.NY_to_bool("display exact address")
-
-        self.property_name = self.get_key("property name")
-        print("This is the property name: ", self.property_name)
-        if self.property_name == None:
-            print("No property name found, using address.")
-            self.property_name = "[JJ]" + self.full_address
     def parse_address(self, address):
         old = address
         if self.DEBUG != None:

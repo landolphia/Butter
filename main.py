@@ -45,11 +45,17 @@ class Payload:
         # Specifics page
         self.specifics_link =  "//a[@data-target=\"details\"]"
         self.max_occupants_id = "max-occupants"
-        self.allow_sublet_id = "allow_sublets_display"
-        self.is_sublet_id = "sublets_display"
-        self.roommate_situation_id = "shared_display"
-        self.available_date_id = "move-in"
-        self.available_renew_id = "renew-option"
+        self.allow_sublet_id = "allow_sublets-display"
+        self.is_sublet_id = "sublet-display"
+        self.roommate_situation_id = "shared-display"
+        self.available_now_id = "move-in-now"
+        self.available_date_id = "move-in-date"
+        self.available_date_start_id = "start"
+        self.available_range_id = "move-in-range"
+        self.available_date_end_id = "end"
+        self.available_renew_unk_id = "renew-option-unknown"
+        self.available_renew_yes_id = "renew-option-yes"
+        self.available_renew_no_id = "renew-option-no"
         # Amenities page
         # Features
         self.amenities_link =  "//a[@data-target=\"amenities\"]"

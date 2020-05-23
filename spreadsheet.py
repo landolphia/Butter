@@ -41,7 +41,7 @@ class Spreadsheet:
         self.is_sublet = None
         self.roommate_situation = None
         self.availability_date = None
-        self.availibility_renew = None
+        self.availability_renew = None
         # Amenities
         self.pet_policy = None
         self.lead_paint = None
@@ -139,7 +139,7 @@ class Spreadsheet:
                 "is sublet": 24,
                 "roommate situation": 25,
                 "availability date": 26,
-                "availibility renew": 27,
+                "availability renew": 27,
                 # Amenities
                 "pet policy": 29,
                 "lead paint": 30,
@@ -486,7 +486,7 @@ class Spreadsheet:
         self.allow_subletting = self.NY_to_bool("allow subletting")
         self.is_sublet = self.NY_to_bool("is sublet")
         self.roommate_situation = self.NY_to_bool("roommate situation")
-        self.availibility_renew = self.NY_to_bool("availibility renew")
+        self.availability_renew = self.get_key("availability renew") # Because this can be unknown
 
         return True
     def disp_specifics(self):
@@ -495,7 +495,7 @@ class Spreadsheet:
         print("Allow subletting: ", self.allow_subletting)
         print("Is sublet: ", self.is_sublet)
         print("Roommate situation: ", self.roommate_situation)
-        print("Availability renew: ", self.availibility_renew)
+        print("Availability renew: ", self.availability_renew)
         
         return True
     def format_location_data(self):

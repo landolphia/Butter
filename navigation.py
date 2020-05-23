@@ -158,6 +158,7 @@ class Navigator:
     
         return True
     def fill_specifics_page(self, payload):
+        print("TODO!!!!")
         print("Waiting for specifics link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.specifics_link)))
         print("Loaded.")
@@ -165,8 +166,53 @@ class Navigator:
         result = self.driver.find_element_by_xpath(payload.specifics_link)
         result.click()
 
+        result = self.driver.find_element_by_id(payload.max_occupants_id)
+        for option in result.find_elements_by_tag_name('option'):
+            if option.text.strip() == str(payload.listing.number_of_occupants):
+                option.click()
+                break
+        if option.text.strip() != str(payload.listing.number_of_occupants):
+            print("The number of occupants needs to be manually adjusted. [", payload.listing.number_of_occupants, "]")
+
+        result = self.driver.find_element_by_id(payload.allow_sublet_id)
+        if payload.listing.allow_subletting == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+            
+        result = self.driver.find_element_by_id(payload.is_sublet_id)
+        if payload.listing.is_sublet == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        result = self.driver.find_element_by_id(payload.roommate_situation_id)
+        if payload.listing.roommate_situation == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+
+        if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
+            result = self.driver.find_element_by_id(payload.available_now_id)
+        else: #FIXME check if date or range and enter range
+            print("Fix me!!! range and date")
+            print("With start and end input id's and spreadsheet cell parsing.")
+            result = self.driver.find_element_by_id(payload.available_range_id)
+            result = self.driver.find_element_by_id(payload.available_date_id)
+        result.click()
+
+        renew = str(payload.listing.availability_renew)
+        if str(renew).lower() == "unknown":
+            result = self.driver.find_element_by_id(payload.available_renew_unk_id)
+        elif renew.lower() == "y":
+            result = self.driver.find_element_by_id(payload.available_renew_yes_id)
+        else:
+            result = self.driver.find_element_by_id(payload.available_renew_no_id)
+        result.click()
+
         return True
     def fill_amenities_page(self, payload):
+        print("TODO!!!!")
         print("Waiting for amenities link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.amenities_link)))
         print("Loaded.")
@@ -177,6 +223,7 @@ class Navigator:
     
         return True
     def fill_contact_page(self, payload):
+        print("TODO!!!!")
         print("Waiting for contact link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.contact_link)))
         print("Loaded.")
@@ -187,6 +234,7 @@ class Navigator:
     
         return True
     def fill_photos_page(self, payload):
+        print("TODO!!!!")
         print("Waiting for photos link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.photos_link)))
         print("Loaded.")

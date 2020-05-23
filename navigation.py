@@ -164,7 +164,7 @@ class Navigator:
     
         result = self.driver.find_element_by_xpath(payload.specifics_link)
         result.click()
-    
+
         return True
     def fill_amenities_page(self, payload):
         print("Waiting for amenities link to load.")

@@ -44,8 +44,88 @@ class Payload:
         self.specials_id = "specials"
         # Specifics page
         self.specifics_link =  "//a[@data-target=\"details\"]"
+        self.max_occupants_id = "max-occupants"
+        self.allow_sublet_id = "allow_sublets_display"
+        self.is_sublet_id = "sublets_display"
+        self.roommate_situation_id = "shared_display"
+        self.available_date_id = "move-in"
+        self.available_renew_id = "renew-option"
         # Amenities page
+        # Features
         self.amenities_link =  "//a[@data-target=\"amenities\"]"
+        self.pet_policy_id = "pet_policy"
+        self.lead_paint_id = "lead_paint"
+        self.ac_id = "amenity[1]-1"
+        self.carpet_id = "amenity[1]-20"
+        self.dining_room_id = "amenity[1]-202"
+        self.disability_access_id = "amenity[1]-15"
+        self.dishwasher_id = "amenity[1]-26"
+        self.fireplace_id = "amenity[1]-8"
+        self.furnished_id = "amenity[1]-7"
+        self.garbage_disp_id = "amenity[1]-82"
+        self.hardwood_id = "amenity[1]-21"
+        self.internet_id = "amenity[1]-303"
+        self.living_room_id = "amenity[1]-200"
+        self.microwave_id = "amenity[1]-204"
+        self.patio_id = "amenity[1]-6"
+        self.private_garden_id = "amenity[1]-205"
+        self.shared_garden_id = "amenity[1]-206"
+        self.smoke_free_id = "amenity[1]-41"
+        self.additional_storage_id = "amenity[1]-207"
+        self.included_storage_id = "amenity[1]-208"
+        self.study_id = "amenity[1]-203"
+        # Agency
+        self.agent_fee_id = "amenity[8]-50"
+        self.no_fee_id = "amenity[8]-51"
+        # Community
+        self.fitness_room_id = "amenity[2]-45"
+        self.individual_leases_id = "amenity[2]-46"
+        self.near_bus_id = "amenity[2]-19"
+        self.near_T_id = "amenity[2]-133"
+        self.pool_id = "amenity[2]-10"
+        self.roommate_matching_id = "amenity[2]-44"
+        self.tennis_court_id = "amenity[2]-11"
+        # Lease
+        self.twelve_months_id = "amenity[5]-16"
+        self.nine_months_id = "amenity[5]-17"
+        self.fall_sublet_id = "amenity[5]-76"
+        self.flexible_lease_id = "amenity[5]-18"
+        self.month_to_month_id = "amenity[5]-63"
+        self.short_term_lease_id = "amenity[5]-42"
+        self.spring_sublet_id = "amenity[5]-77"
+        self.summer_sublet_id = "amenity[5]-75"
+        # Security
+        self.courtesy_officer_id = "amenity[9]-120"
+        self.dead_bolt_id = "amenity[9]-95"
+        self.exterior_light_id = "amenity[9]-99"
+        self.intercom_id = "amenity[9]-97"
+        self.security_guard_id = "amenity[9]-100"
+        self.security_system_id = "amenity[9]-25"
+        self.video_surv_id = "amenity[9]-98"
+        # Utilities
+        self.cable_id = "amenity[3]-5"
+        self.electricity_id = "amenity[3]-4"
+        self.gas_id = "amenity[3]-3"
+        self.heat_id = "amenity[3]-2"
+        self.util_internet_id = "amenity[3]-35"
+        self.hot_water_id = "amenity[3]-226"
+        self.local_phone_id = "amenity[3]-39"
+        self.recycling_id = "amenity[3]-124"
+        self.trash_id = "amenity[3]-22"
+        self.water_id = "amenity[3]-23"
+        # Parking
+        self.garage_park_id = "amenity[4]-37"
+        self.no_parking_id = "amenity[4]-142"
+        self.off_street_park_id = "amenity[4]-36"
+        self.on_street_park_id = "amenity[4]-38"
+        # Laundry
+        self.laundry_in_comm_id = "amenity[7]-12"
+        self.no_laundry_id = "amenity[7]-143"
+        self.wd_hookups_id = "amenity[7]-33"
+        self.wd_in_unit = "amenity[7]-9"
+        # Description
+        #TODO !!!! FIXME
+        self.description_id = "mceu_13"
         # Contact page
         self.contact_link =  "//a[@data-target=\"contact\"]"
         # Photos page
@@ -95,10 +175,10 @@ def main():
     print ("Filling location details: ", navigator.fill_location_page(payload))
 
     #TODO !!!
-    print ("Filling rent: ", navigator.fill_rent_page(payload))
+    #print ("Filling rent: ", navigator.fill_rent_page(payload))
+    print ("Filling specifics: ", navigator.fill_specifics_page(payload))
     input("Press enter to exit.")
     sys.exit()
-    #print ("Filling specifics: ", navigator.fill_specifics_page(payload))
     #print ("Filling amenities: ", navigator.fill_amenities_page(payload))
     #print ("Filling contact: ", navigator.fill_contact_page(payload))
     #print ("Filling photos: ", navigator.fill_photos_page(payload))

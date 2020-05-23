@@ -378,16 +378,19 @@ class Spreadsheet:
     def format_amenities_features(self):
         self.ac = self.NY_to_bool("ac")
         self.carpet = self.NY_to_bool("carpet")
+        self.carpet = True
         self.dining_room = self.NY_to_bool("dining room")
         self.disability_access = self.NY_to_bool("disability access")
         self.dishwasher = self.NY_to_bool("dishwasher")
         self.fireplace = self.NY_to_bool("fireplace")
         self.furnished = self.NY_to_bool("furnished")
+        self.furnished = True
         self.garbage_disposal = self.NY_to_bool("garbage disposal")
         self.hardwood_floors = self.NY_to_bool("hardwood floors")
         self.high_speed_internet = self.NY_to_bool("high-speed internet")
         self.living_room = self.NY_to_bool("living room")
         self.microwave = self.NY_to_bool("microwave")
+        self.microwave = True
         self.patio = self.NY_to_bool("patio")
         self.private_garden = self.NY_to_bool("private garden")
         self.shared_garden = self.NY_to_bool("shared garden")
@@ -400,15 +403,18 @@ class Spreadsheet:
     def format_amenities_community(self):
         self.fitness_room = self.NY_to_bool("fitness room")
         self.individual_leases = self.NY_to_bool("individual leases")
+        self.individual_leases = True
         self.near_bus_stop = self.NY_to_bool("near bus stop")
         self.near_T_stop = self.NY_to_bool("near T stop")
         self.pool = self.NY_to_bool("pool")
+        self.pool = True
         self.roommate_matching = self.NY_to_bool("roommate matching")
         self.tennis_court = self.NY_to_bool("tennis court")
 
         return True
     def format_amenities_agency(self):
         self.fee_agent_broker = self.NY_to_bool("fee agent broker") 
+        self.fee_agent_broker = True
         self.no_fee = self.NY_to_bool("no fee") 
 
         return True
@@ -417,9 +423,11 @@ class Spreadsheet:
         self.nine_months = self.NY_to_bool("9 months")
         self.fall_sublet = self.NY_to_bool("fall sublet")
         self.flexible = self.NY_to_bool("flexible")
+        self.flexible = True
         self.month_to_month = self.NY_to_bool("month to month")
         self.short_term = self.NY_to_bool("short term")
         self.spring_sublet = self.NY_to_bool("spring sublet")
+        self.spring_sublet = True
         self.summer_sublet = self.NY_to_bool("summer sublet")
         
         return True
@@ -427,9 +435,11 @@ class Spreadsheet:
         self.courtesy_officer = self.NY_to_bool("courtesy officer")
         self.dead_bolt = self.NY_to_bool("dead-bolt")
         self.exterior_lighting = self.NY_to_bool("exterior lighting")
+        self.exterior_lighting = True
         self.intercom = self.NY_to_bool("intercom")
         self.security_guard = self.NY_to_bool("security guard")
         self.security_system = self.NY_to_bool("security system")
+        self.security_system = True
         self.video_surveillance = self.NY_to_bool("video surveillance")
 
         return True
@@ -437,11 +447,13 @@ class Spreadsheet:
         self.cable = self.NY_to_bool("cable")
         self.electricity = self.NY_to_bool("electricity")
         self.gas = self.NY_to_bool("gas")
+        self.gas = True
         self.heat = self.NY_to_bool("heat")
         self.high_speed_internet = self.NY_to_bool("high speed internet")
         self.hot_water = self.NY_to_bool("hot water")
         self.local_phone = self.NY_to_bool("local phone")
         self.recycling = self.NY_to_bool("recycling")
+        self.recycling = True
         self.trash_removal = self.NY_to_bool("trash removal")
         self.water_sewer = self.NY_to_bool("water sewer")
 
@@ -449,6 +461,7 @@ class Spreadsheet:
     def format_amenities_parking(self):
         self.garage_parking = self.NY_to_bool("garage parking")
         self.no_parking = self.NY_to_bool("no parking")
+        self.no_parking = True
         self.off_street_parking = self.NY_to_bool("off street parking")
         self.on_street_parking = self.NY_to_bool("on street parking")
 
@@ -456,6 +469,7 @@ class Spreadsheet:
     def format_amenities_laundry(self):
         self.laundry_room_in_community = self.NY_to_bool("laundry room in community")
         self.no_laundry_in_unit = self.NY_to_bool("no laundry in unit")
+        self.no_laundry_in_unit = True
         self.washer_dryer_hookups = self.NY_to_bool("washer dryer hookups")
         self.washer_dryer_in_unit = self.NY_to_bool("washer dryer in unit")
 

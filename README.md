@@ -9,9 +9,9 @@ Or, the script gets listing data from an Excel spreadsheet and creates a listing
 ##Usage
 
 You need Python installed to run/compile this.
-You also need Selenium's Chromedriver running from the directory you're running Butter from, depending on what you're trying to do.
+You also need Selenium's Chromedriver in the directory you're running Butter from, depending on what you're trying to do.
 You also-also need the login info in a file called private.slr, username/password one two consecutive lines.
-Guess what, more needs... Google API key, third entry in the private.slr file.
+Guess what, more needs... Google API key, third entry in the private.slr file. This is used for Geocoding API access.
 This will only work if you download and save the "Showing sheet" page as showing.html in the same directory as this.
 Uses the following modules.
 
@@ -22,10 +22,11 @@ Uses the following modules.
  pip install pandas
  pip install selenium
  pip install googlemaps
- py HTMLScrape.py
+ py main.py
 '''
 
 ##To-do
+- remove lxml
 - customization through files and command line
 - reorganize code base
 - add documentation
@@ -33,6 +34,8 @@ Uses the following modules.
 - spread payload in appropriate modules
 
 ##History
+v0.1.6
+Finished preliminary scraping and posting.
 v0.1.5
 Retrieving postal code
 Navigation progress

@@ -166,7 +166,6 @@ def main():
     parser = spreadsheet.Spreadsheet(DEBUG, payload.api_key)
     print("Getting listing data.\n")
     payload.listing = parser.get_listing_data()
-
     
     # Filling forms with the data
     navigator = navigation.Navigator(DEBUG)
@@ -179,19 +178,11 @@ def main():
     print ("Entering full address: ", navigator.fill_full_address(payload))
     print ("Entering address details: ", navigator.fill_address(payload))
     print ("Filling location details: ", navigator.fill_location_page(payload))
-
-    #TODO !!!
-    #print ("Filling rent: ", navigator.fill_rent_page(payload))
+    print ("Filling rent: ", navigator.fill_rent_page(payload))
     print ("Filling specifics: ", navigator.fill_specifics_page(payload))
-    input("Press enter to exit.")
-    sys.exit()
-    #print ("Filling amenities: ", navigator.fill_amenities_page(payload))
+    print ("Filling amenities: ", navigator.fill_amenities_page(payload))
     #print ("Filling contact: ", navigator.fill_contact_page(payload))
     #print ("Filling photos: ", navigator.fill_photos_page(payload))
-    #END TODO!!!
-
-    input("Press enter to quit.")
-    navigator.quit()
 
     print ("\nDone in %s seconds." % (time.time() - start_time))
 

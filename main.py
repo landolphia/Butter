@@ -1,19 +1,18 @@
 import sys
+import logging
 import time
-
-import googlemaps 
 
 import spreadsheet
 import navigation
 
-DEBUG = None 
-
 class Payload:
     def __init__(self):
+        logging.basicConfig(filename='run.log', filemode='w', level=logging.DEBUG)
+
         with open ("private.slr", "r") as slurp:
             data = slurp.readlines()
         if  len(data) != 3:
-            print("Cannot find credential in private.slr.")
+            logging.error("Could not find credentials in private.slr.")
             sys.exit()
         else:
             if DEBUG != None:
@@ -59,6 +58,7 @@ def main():
     print("Getting listing data.\n")
     payload.listing = parser.get_listing_data()
     
+    sys.exit()
     # Filling forms with the data
     navigator = navigation.Navigator(DEBUG)
 

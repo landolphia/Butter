@@ -1,3 +1,30 @@
+Main
+- slurps credentials
+- contains xpaths and ids, and link to pages
+
+NOW:
+Get info from spreadsheet
+navigate site and populate with info
+THEN:
+- get args from command line
+- use logging
+
+Spreadsheet
+- contains regexs
+- uses geohelper and pandas
+- contains object with the spreadsheet's data
+THEN:
+- separate Pandas', gMaps, and my own data
+- consider bettering get-key
+- should be able to scrape multiple listings from a single spreadsheet with arguments, or different files, or sheets
+
+Navigation
+- contains and uses Selenium's webdriver
+THEN:
+- create wrappers
+- better data checking
+
+
 #Butter
 #v0.1.x
 

@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Navigator:
     def __init__(self, debug):
-            self.search_url = "https://www.google.com/search?q="
             self.driver = webdriver.Chrome()
             self.wait = WebDriverWait(self.driver, 100)
             self.DEBUG = debug

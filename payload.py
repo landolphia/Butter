@@ -7,10 +7,10 @@ class Payload:
         self.log = logging.getLogger("root")
         self.log.info("Initializing Payload.")
     
-        self.credentials = self.__get_credentials("private.slr")
+        self.credentials = self.__get_credentials__("private.slr")
 
         self.__init__data__()
-    def __get_credentials(self, slr):
+    def __get_credentials__(self, slr):
         result = {}
         self.log.info("Getting credentials.")
     
@@ -139,50 +139,49 @@ class Payload:
         self.__add__element__("amenities", "pool", , "amenity[2]-10", None, 59, None)
         self.__add__element__("amenities", "roommate matching", "amenity[2]-44", None, 60, None)
         self.__add__element__("amenities", "tennis court", "amenity[2]-11", None, 61, None)
-#        ###TODO!!!
-#        # Lease
-#        self.twelve_months_id = "amenity[5]-16"
-#        self.nine_months_id = "amenity[5]-17"
-#        self.fall_sublet_id = "amenity[5]-76"
-#        self.flexible_lease_id = "amenity[5]-18"
-#        self.month_to_month_id = "amenity[5]-63"
-#        self.short_term_lease_id = "amenity[5]-42"
-#        self.spring_sublet_id = "amenity[5]-77"
-#        self.summer_sublet_id = "amenity[5]-75"
-#        # Security
-#        self.courtesy_officer_id = "amenity[9]-120"
-#        self.dead_bolt_id = "amenity[9]-95"
-#        self.exterior_light_id = "amenity[9]-99"
-#        self.intercom_id = "amenity[9]-97"
-#        self.security_guard_id = "amenity[9]-100"
-#        self.security_system_id = "amenity[9]-25"
-#        self.video_surv_id = "amenity[9]-98"
-#        # Utilities
-#        self.cable_id = "amenity[3]-5"
-#        self.electricity_id = "amenity[3]-4"
-#        self.gas_id = "amenity[3]-3"
-#        self.heat_id = "amenity[3]-2"
-#        self.util_internet_id = "amenity[3]-35"
-#        self.hot_water_id = "amenity[3]-226"
-#        self.local_phone_id = "amenity[3]-39"
-#        self.recycling_id = "amenity[3]-124"
-#        self.trash_id = "amenity[3]-22"
-#        self.water_id = "amenity[3]-23"
-#        # Parking
-#        self.garage_park_id = "amenity[4]-37"
-#        self.no_parking_id = "amenity[4]-142"
-#        self.off_street_park_id = "amenity[4]-36"
-#        self.on_street_park_id = "amenity[4]-38"
-#        # Laundry
-#        self.laundry_in_comm_id = "amenity[7]-12"
-#        self.no_laundry_id = "amenity[7]-143"
-#        self.wd_hookups_id = "amenity[7]-33"
-#        self.wd_in_unit = "amenity[7]-9"
-#        # Description
-#        #TODO !!!! FIXME
-#        self.description_id = "mceu_13"
-#        # Contact page
-#        self.contact_link =  "//a[@data-target=\"contact\"]"
-#        # Photos page
-#        self.photos_link =  "//a[@data-target=\"images\"]"
-#        #END TODO!!!
+        # Lease
+        self.__add__element__("amenities", "12 months", "amenity[5]-16", None, 63, None)
+        self.__add__element__("amenities", "9 months", "amenity[5]-17", None, 64, None)
+        self.__add__element__("amenities", "fall sublet", "amenity[5]-76", None, 65, None)
+        self.__add__element__("amenities", "flexible lease", "amenity[5]-18", None, 66, None)
+        self.__add__element__("amenities", "month to month", "amenity[5]-63", None, 67, None)
+        self.__add__element__("amenities", "short term lease", "amenity[5]-42", None, 68, None)
+        self.__add__element__("amenities", "spring sublet", "amenity[5]-77", None, 69, None)
+        self.__add__element__("amenities", "summer sublet", "amenity[5]-75", None, 70, None)
+        # Security
+        self.__add__element__("amenities", "courtesy officer", "amenity[9]-120", None, 72, None)
+        self.__add__element__("amenities", "dead bolt", "amenity[9]-95", None, 73, None)
+        self.__add__element__("amenities", "exterior light", "amenity[9]-99", None, 74, None)
+        self.__add__element__("amenities", "intercom", "amenity[9]-97", None, 75, None)
+        self.__add__element__("amenities", "security guard", "amenity[9]-100", None, 76, None)
+        self.__add__element__("amenities", "security system", "amenity[9]-25", None, 77, None)
+        self.__add__element__("amenities", "video surveillance", "amenity[9]-98", None, 78, None)
+        # Utilities
+        self.__add__element__("amenities", "cable", "amenity[3]-5", None, 80, None)
+        self.__add__element__("amenities", "electricity", "amenity[3]-4", None, 81, None)
+        self.__add__element__("amenities", "gas", "amenity[3]-3", None, 82, None)
+        self.__add__element__("amenities", "heat", "amenity[3]-2", None, 83, None)
+        self.__add__element__("amenities", "internet", "amenity[3]-35", None, 84, None)
+        self.__add__element__("amenities", "hot water", "amenity[3]-226", None, 85, None)
+        self.__add__element__("amenities", "local phone", "amenity[3]-39", None, 86, None)
+        self.__add__element__("amenities", "recycling", "amenity[3]-124", None, 87, None)
+        self.__add__element__("amenities", "trash", "amenity[3]-22", None, 88, None)
+        self.__add__element__("amenities", "water", "amenity[3]-23", None, 89, None)
+        # Parking
+        self.__add__element__("amenities", "garage", "amenity[4]-37", None, 91, None)
+        self.__add__element__("amenities", "no parking", "amenity[4]-142", None, 92, None)
+        self.__add__element__("amenities", "off street park", "amenity[4]-36", None, 93, None)
+        self.__add__element__("amenities", "on street park", "amenity[4]-38", None, 94, None)
+        # Laundry
+        self.__add__element__("amenities", "laundry room", "amenity[7]-12", None, 96, None)
+        self.__add__element__("amenities", "laundry room", "amenity[7]-143", None, 97, None)
+        self.__add__element__("amenities", "laundry room", "amenity[7]-33", None, 98, None)
+        self.__add__element__("amenities", "laundry room", "amenity[7]-9", None, 99, None)
+        # Description
+        self.__add__element__("description", "description", "mceu_13", None, 10, None)
+        #TODO
+        # Contact page
+        #self.contact_link =  "//a[@data-target=\"contact\"]"
+        # Photos page
+        #self.photos_link =  "//a[@data-target=\"images\"]"
+        #END TODO!!!

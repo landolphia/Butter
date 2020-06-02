@@ -18,6 +18,10 @@ class Navigator:
             if self.driver == None:
                 self.log.error("Driver not loaded. Exiting program. [%s]" % self.driver)
                 sys.exit()
+    def dropdown(self, element, value):
+        for option in element.find_elements_by_tag_name('option'):
+            if option.text.strip().lower() == value.lower()
+                option.click()
     def checkbox(self, element, value):
         if value == True:
             self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
@@ -80,10 +84,7 @@ class Navigator:
         result = self.driver.find_element_by_id(payload.id("location", "zip"))
         result.send_keys(payload.get_value("location", "zip"))
     
-        dd = self.driver.find_element_by_id(payload.id("location", "state"))
-        for option in dd.find_elements_by_tag_name('option'):
-            if option.text.strip() == payload.get_value("location", "state"):
-                option.click()
+        self.dropdown(self.driver.find_element_by_id(payload.id("location", "state"), payload.get_value("location", "state")))
 
         element = self.driver.find_element_by_id(payload.id("location", "exact flag"))
         self.checkbox(element , payload.get_value("location", "exact flag"))
@@ -100,70 +101,42 @@ class Navigator:
         if description == None: description = ("[JJ] ", payload.get_value("location", "address"))
         result.send_keys(description)
         result.send_keys(Keys.ENTER)
-
-    #TODO FIXME
-    def fill_rent_page(self, payload):
-        print("This si where I pick up")
-        sys.exit()
+    def fill_rent(self, payload):
         print("Waiting for rent link to load.")
-        wait_for_xpath(payload.
-        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.rent_link)))
+        self.wait_for_xpath(payload.xpath("rent", "rent link"))
         print("Loaded.")
-    
-        result = self.driver.find_element_by_xpath(payload.rent_link)
-        result.click()
+   
+        link = self.driver.find_element_by_xpath(payload.xpath("rent", "rent link"))
+        link.click()
 
-        result = self.driver.find_element_by_id(payload.building_type_select_id)
-        for option in result.find_elements_by_tag_name('option'):
-            if option.text.strip() == payload.listing.building_type:
-                option.click()
+        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "building type"), payload.get_value("rent", "building type")))
 
-        if payload.listing.multiple_floorplans:
-            result = self.driver.find_element_by_id(payload.multiple_floorplans_radio_yes_id)
+        if payload.get_value("rent", "floorplans yes"):
+            radio = self.driver.find_element_by_id(payload.id("rent", "floorplans yes"))
         else:
-            result = self.driver.find_element_by_id(payload.multiple_floorplans_radio_no_id)
-        result.click()
+            radio = self.driver.find_element_by_id(payload.id("rent", "floorplans no"))
+        radio.click()
 
+        element = self.driver.find_element_by_id(payload.id("rent", "broker"))
+        self.checkbox(element, payload.get_value("rent", "broker"))
 
-        result = self.driver.find_element_by_id(payload.reqs_broker_id)
-        if payload.listing.req_broker_fee == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+        element = self.driver.find_element_by_id(payload.id("rent", "first"))
+        self.checkbox(element, payload.get_value("rent", "first"))
 
-        result = self.driver.find_element_by_id(payload.reqs_first_id)
-        if payload.listing.req_first_month == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+        element = self.driver.find_element_by_id(payload.id("rent", "last"))
+        self.checkbox(element, payload.get_value("rent", "last"))
 
-        result = self.driver.find_element_by_id(payload.reqs_last_id)
-        if payload.listing.req_last_month == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+        element = self.driver.find_element_by_id(payload.id("rent", "upfront"))
+        self.checkbox(element, payload.get_value("rent", "upfront"))
 
-        result = self.driver.find_element_by_id(payload.reqs_upfront_id)
-        if payload.listing.req_upfront_costs == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+        element = self.driver.find_element_by_id(payload.id("rent", "references"))
+        self.checkbox(element, payload.get_value("rent", "references"))
 
-        result = self.driver.find_element_by_id(payload.reqs_references_id)
-        if payload.listing.req_references == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+        element = self.driver.find_element_by_id(payload.id("rent", "security"))
+        self.checkbox(element, payload.get_value("rent", "security"))
 
-        result = self.driver.find_element_by_id(payload.reqs_security_id)
-        if payload.listing.req_security_deposit == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
-
-        result = self.driver.find_element_by_id(payload.specials_id)
-        result.send_keys(payload.listing.specials)
-    
+        result = self.driver.find_element_by_id(payload.id("rent", "specials"))
+        result.send_keys(payload.get_value("rent", "specials"))
     
 
 #TODO FIXME
@@ -185,6 +158,9 @@ class Navigator:
             print("The number of occupants needs to be manually adjusted. [", payload.listing.number_of_occupants, "]")
 
         result = self.driver.find_element_by_id(payload.allow_sublet_id)
+
+        self.set_checkbox(payload.ac_id, payload.listing.ac)
+
         if payload.listing.allow_subletting == True:
             self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
         else:
@@ -317,12 +293,6 @@ class Navigator:
         result.send_keys(payload.listing.description)
 
         return True
-    def set_checkbox(self, element_id, check):
-        result = self.driver.find_element_by_id(element_id)
-        if check:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
     def fill_contact_page(self, payload):
         print("TODO!!!!")
         print("Waiting for contact link to load.")

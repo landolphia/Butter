@@ -1,102 +1,112 @@
+import logging
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+
 class Navigator:
-    def __init__(self, debug):
+    def __init__(self):
+            self.log = logging.getLogger("root")
+            self.log.info("Initializing Navigator.")
+
             self.driver = webdriver.Chrome()
             self.wait = WebDriverWait(self.driver, 100)
-            self.DEBUG = debug
+
+            if self.driver == None:
+                self.log.error("Driver not loaded. Exiting program. [%s]" % self.driver)
+                sys.exit()
+    def checkbox(self, element, value):
+        if value == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+    def wait_for_xpath(self, element):
+        self.log.info("Waiting for element to load. [%s]" % element)
+        self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
+        self.log.info("Element loaded.")
+    def wait_for_id(self, element):
+        self.log.info("Waiting for element to load. [%s]" % element)
+        self.wait.until(EC.presence_of_element_located((By.ID, element)))
+        self.log.info("Element loaded.")
     def login(self, payload):
-        result = None
-        
-        if self.driver == None:
-            print ("Driver not loaded. Exiting program. [", self.driver, "]")
-            sys.exit()
-    
-        if self.DEBUG != None:
-            print("Signing into ", payload.login_url)
-    
-        login = self.driver.get(payload.login_url)
-        
-        print("Waiting for page to load.")
-        self.wait.until(EC.presence_of_element_located((By.ID, payload.form_id)))
-        print("Page loaded.")
-        link = self.driver.find_element(By.XPATH, payload.login_link)
-        print("Clicking on link to show form.")
+        url = payload.get_value("login", "login url")
+        logging.info("Logging into %s", url)
+        login = self.driver.get(url)
+
+        link = payload.xpath("login", "login link")
+        self.wait_for_xpath(link)
+        link = self.driver.find_element_by_xpath(link)
         link.click()
-    
-        print("Waiting for form to load.")
-        self.wait.until(EC.presence_of_element_located((By.ID, payload.user_id)))
-        print("Loaded.")
-    
-        self.driver.find_element_by_id(payload.user_id).send_keys(payload.username)
-    
-        self.driver.find_element_by_id(payload.pass_id).send_keys(payload.password)
-    
-        print("Waiting for submit button to load.")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.button)))
-        print("Loaded.")
-    
-        result = self.driver.find_element(By.XPATH, payload.button).click()
-    
-        return True 
+
+        username = payload.get_value("login", "username")
+        password = payload.get_value("login", "password")
+        user_input = payload.id("login", "username")
+        password_input = payload.id("login", "password")
+
+        self.wait_for_id(user_input)
+        
+        self.driver.find_element_by_id(user_input).send_keys(username)
+        self.driver.find_element_by_id(password_input).send_keys(password)
+
+        submit = payload.xpath("login", "submit button")
+        self.driver.find_element(By.XPATH, submit).click()
     def add_listing(self, payload):
-        print("Loading new listing page.")
-        login = self.driver.get(payload.add_listing_url)
-    
-        return True 
-    def fill_full_address(self, payload):
+        url = payload.get_value("login", "add listing url")
+        logging.info("Loading new listing page.")
+        login = self.driver.get(url)
+
         print("Waiting for address input to load.")
-        self.wait.until(EC.presence_of_element_located((By.ID, payload.full_address_div_id)))
+        self.wait_for_id(payload.id("location", "full address"))
         print("Loaded.")
     
-        result = self.driver.find_element_by_xpath(payload.address_input)
+        result = self.driver.find_element_by_xpath(payload.xpath("location", "full address input"))
         print("Input: ", result)
-        result.send_keys(payload.listing.full_address)
+        result.send_keys(payload.get_value("location", "address"))
         result.send_keys(Keys.ENTER)
-    
-        return True 
     def fill_address(self, payload):
         print("Waiting for address input to load.")
-        self.wait.until(EC.presence_of_element_located((By.ID, payload.address_id)))
+        self.wait_for_id(payload.id("location", "address"))
         print("Loaded.")
    
         print("Filling in address details.")
-        result = self.driver.find_element_by_id(payload.address_id)
-        result.send_keys(payload.listing.street_num, " ", payload.listing.street_name)
-        result = self.driver.find_element_by_id(payload.city_id)
-        result.send_keys(payload.listing.city)
-        result = self.driver.find_element_by_id(payload.zip_id)
-        result.send_keys(payload.listing.zip)
+        result = self.driver.find_element_by_id(payload.id("location", "address"))
+        result.send_keys(payload.get_value("location", "address"))
+
+        result = self.driver.find_element_by_id(payload.id("location", "city"))
+        result.send_keys(payload.get_value("location", "city"))
+        result = self.driver.find_element_by_id(payload.id("location", "zip"))
+        result.send_keys(payload.get_value("location", "zip"))
     
-        dd = self.driver.find_element_by_id(payload.state_id)
+        dd = self.driver.find_element_by_id(payload.id("location", "state"))
         for option in dd.find_elements_by_tag_name('option'):
-            if option.text.strip() == payload.listing.state:
+            if option.text.strip() == payload.get_value("location", "state"):
                 option.click()
 
-        result = self.driver.find_element_by_id(payload.exact_flag_id)
-        if result.get_attribute("checked") != payload.listing.display_exact_address:
-                result.click()
+        element = self.driver.find_element_by_id(payload.id("location", "exact flag"))
+        self.checkbox(element , payload.get_value("location", "exact flag"))
 
-        result = self.driver.find_element_by_xpath(payload.address_form_xpath)
-        result.submit()
+        form = self.driver.find_element_by_xpath(payload.xpath("location", "address form"))
+        form.submit()
 
-        return True 
-    def fill_location_page(self, payload):
         print("Waiting for headline input to load.")
-        self.wait.until(EC.presence_of_element_located((By.ID, payload.property_name_input_id)))
+        self.wait_for_id(payload.id("location", "property name"))
         print("Loaded.")
     
-        result = self.driver.find_element_by_id(payload.property_name_input_id)
-        result.send_keys(payload.listing.property_name)
+        result = self.driver.find_element_by_id(payload.id("location", "property name"))
+        description = payload.get_value("location", "property name")
+        if description == None: description = ("[JJ] ", payload.get_value("location", "address"))
+        result.send_keys(description)
         result.send_keys(Keys.ENTER)
-    
-        return True 
+
+    #TODO FIXME
     def fill_rent_page(self, payload):
+        print("This si where I pick up")
+        sys.exit()
         print("Waiting for rent link to load.")
+        wait_for_xpath(payload.
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.rent_link)))
         print("Loaded.")
     
@@ -154,7 +164,9 @@ class Navigator:
         result = self.driver.find_element_by_id(payload.specials_id)
         result.send_keys(payload.listing.specials)
     
-        return True
+    
+
+#TODO FIXME
     def fill_specifics_page(self, payload):
         print("TODO!!!!")
         print("Waiting for specifics link to load.")

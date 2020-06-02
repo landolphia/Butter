@@ -1,8 +1,7 @@
 import googlemaps 
 
 class GeoHelper:
-    def __init__(self, debug, creds):
-        self.DEBUG = debug
+    def __init__(self, creds):
         self.gmaps = googlemaps.Client(creds)
     def get_zip(self, address):
         result = self.gmaps.geocode(address)

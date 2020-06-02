@@ -1,3 +1,37 @@
+While thingy
+
+1. Start logging.
+2. Get credentials.
+3. Get data from .xlsx file.
+4. Navigate and post listing.
+- FOR p in pages:
+	FOR s in steps:
+		do step
+
+DEFINE LOGIN PAGE
+-add step: wait for id login form
+-add step: get+click element login link
+-add step: wait for user id input
+-add step: fill in username
+-add step: fill in password
+-add step: click to login
+
+DEFINE ADD LISTING PAGE
+-add step: go to add listing url
+-add step: wait for full address input
+-add step: fill in full address
+-add step: press enter
+-add step: wait for address input
+-add step: fill in exact address
+-add step: fill in city
+-add step: fill in zip
+-add step: fill in state
+-add step: set display exact address flag
+-add step: submit form
+
+
+
+
 Main
 - slurps credentials
 - contains xpaths and ids, and link to pages
@@ -24,6 +58,19 @@ THEN:
 - create wrappers
 - better data checking
 
+DATA:
+- name to link all of those
+- listing data (address, flags, options)
+- CSS locationdata
+- spreadsheet offsets
+
+MainV2
+cell info -> spreadsheet -> data
+- FOR EACH i IN seed:
+	add cell info to data
+data and css locators -> navigator -> post
+- FOR EACH p IN pages:
+	populate forms with data
 
 #Butter
 #v0.1.x

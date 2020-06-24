@@ -20,7 +20,7 @@ class Navigator:
                 sys.exit()
     def dropdown(self, element, value):
         for option in element.find_elements_by_tag_name('option'):
-            if option.text.strip().lower() == value.lower()
+            if option.text.strip().lower() == str(value).lower():
                 option.click()
     def checkbox(self, element, value):
         if value == True:
@@ -37,7 +37,7 @@ class Navigator:
         self.log.info("Element loaded.")
     def login(self, payload):
         url = payload.get_value("login", "login url")
-        logging.info("Logging into %s", url)
+        logging.info("Log in to %s", url)
         login = self.driver.get(url)
 
         link = payload.xpath("login", "login link")
@@ -62,20 +62,15 @@ class Navigator:
         logging.info("Loading new listing page.")
         login = self.driver.get(url)
 
-        print("Waiting for address input to load.")
         self.wait_for_id(payload.id("location", "full address"))
-        print("Loaded.")
     
         result = self.driver.find_element_by_xpath(payload.xpath("location", "full address input"))
-        print("Input: ", result)
         result.send_keys(payload.get_value("location", "address"))
         result.send_keys(Keys.ENTER)
     def fill_address(self, payload):
-        print("Waiting for address input to load.")
         self.wait_for_id(payload.id("location", "address"))
-        print("Loaded.")
    
-        print("Filling in address details.")
+        logging.info("Filling in address details.")
         result = self.driver.find_element_by_id(payload.id("location", "address"))
         result.send_keys(payload.get_value("location", "address"))
 
@@ -84,67 +79,74 @@ class Navigator:
         result = self.driver.find_element_by_id(payload.id("location", "zip"))
         result.send_keys(payload.get_value("location", "zip"))
     
-        self.dropdown(self.driver.find_element_by_id(payload.id("location", "state"), payload.get_value("location", "state")))
+        self.dropdown(self.driver.find_element_by_id(payload.id("location", "state")), payload.get_value("location", "state"))
 
         element = self.driver.find_element_by_id(payload.id("location", "exact flag"))
-        self.checkbox(element , payload.get_value("location", "exact flag"))
+        self.checkbox(element , payload.get_bool("location", "exact flag"))
 
         form = self.driver.find_element_by_xpath(payload.xpath("location", "address form"))
         form.submit()
 
-        print("Waiting for headline input to load.")
         self.wait_for_id(payload.id("location", "property name"))
-        print("Loaded.")
     
         result = self.driver.find_element_by_id(payload.id("location", "property name"))
         description = payload.get_value("location", "property name")
-        if description == None: description = ("[JJ] ", payload.get_value("location", "address"))
+        if description == None:
+            description = ("[JJ] ", payload.get_value("location", "full address"))
         result.send_keys(description)
         result.send_keys(Keys.ENTER)
     def fill_rent(self, payload):
-        print("Waiting for rent link to load.")
         self.wait_for_xpath(payload.xpath("rent", "rent link"))
-        print("Loaded.")
-   
         link = self.driver.find_element_by_xpath(payload.xpath("rent", "rent link"))
         link.click()
 
-        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "building type"), payload.get_value("rent", "building type")))
+        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "building type")), payload.get_value("rent", "building type"))
 
-        if payload.get_value("rent", "floorplans yes"):
+        if payload.get_bool("rent", "floorplans yes"):
             radio = self.driver.find_element_by_id(payload.id("rent", "floorplans yes"))
         else:
             radio = self.driver.find_element_by_id(payload.id("rent", "floorplans no"))
         radio.click()
 
         element = self.driver.find_element_by_id(payload.id("rent", "broker"))
-        self.checkbox(element, payload.get_value("rent", "broker"))
-
+        self.checkbox(element, payload.get_bool("rent", "broker"))
         element = self.driver.find_element_by_id(payload.id("rent", "first"))
-        self.checkbox(element, payload.get_value("rent", "first"))
-
+        self.checkbox(element, payload.get_bool("rent", "first"))
         element = self.driver.find_element_by_id(payload.id("rent", "last"))
-        self.checkbox(element, payload.get_value("rent", "last"))
-
+        self.checkbox(element, payload.get_bool("rent", "last"))
         element = self.driver.find_element_by_id(payload.id("rent", "upfront"))
-        self.checkbox(element, payload.get_value("rent", "upfront"))
-
+        self.checkbox(element, payload.get_bool("rent", "upfront"))
         element = self.driver.find_element_by_id(payload.id("rent", "references"))
-        self.checkbox(element, payload.get_value("rent", "references"))
-
+        self.checkbox(element, payload.get_bool("rent", "references"))
         element = self.driver.find_element_by_id(payload.id("rent", "security"))
-        self.checkbox(element, payload.get_value("rent", "security"))
+        self.checkbox(element, payload.get_bool("rent", "security"))
 
         result = self.driver.find_element_by_id(payload.id("rent", "specials"))
-        result.send_keys(payload.get_value("rent", "specials"))
-    
+        specials = payload.get_value("rent", "specials")
+        if specials == None:
+            specials = " "
+        result.send_keys(specials)
+        result.send_keys(Keys.ENTER)
 
-#TODO FIXME
-    def fill_specifics_page(self, payload):
+        print("TODO, fix floorplan, add loop for Y.")
+        self.wait_for_id(payload.id("rent", "bedrooms"))
+        
+        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "bedrooms")), payload.get_value("rent", "bedrooms"))
+        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "bathrooms")), payload.get_value("rent", "bathrooms"))
+        result = self.driver.find_element_by_id(payload.id("rent", "square feet"))
+        result.send_keys(payload.get_value("rent", "square feet"))
+        result = self.driver.find_element_by_id(payload.id("rent", "monthly rent"))
+        result.send_keys(Keys.CONTROL + "a")
+        result.send_keys(Keys.DELETE)
+        result.send_keys("$" + str(payload.get_value("rent", "monthly rent")))
+        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "type")), payload.get_value("rent", "type"))
+        print("ENDTODO.")
+
+        result = self.driver.find_element_by_id(payload.id("rent", "specials"))
+        result.send_keys(Keys.ENTER)
+    def fill_specifics(self, payload):
         print("TODO!!!!")
-        print("Waiting for specifics link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.specifics_link)))
-        print("Loaded.")
     
         result = self.driver.find_element_by_xpath(payload.specifics_link)
         result.click()
@@ -197,7 +199,7 @@ class Navigator:
         result.click()
 
         return True
-    def fill_amenities_page(self, payload):
+    def fill_amenities(self, payload):
         print("Waiting for amenities link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.amenities_link)))
         print("Loaded.")

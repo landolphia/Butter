@@ -15,7 +15,7 @@ Guess what, more needs... Google API key, third entry in the private.slr file. T
 This will only work if you download and save the "Showing sheet" page as showing.html in the same directory as this.
 Uses the following modules.
 
-'''Shell
+```Shell
  pip install phonenumbers
  pip install lxml
  pip install xlswriter
@@ -23,15 +23,16 @@ Uses the following modules.
  pip install selenium
  pip install googlemaps
  py main.py
-'''
+```
 
 ##To-do
 - remove lxml
-- customization through files and command line
-- reorganize code base
-- add documentation
 - GUI and/or command line options
 - be careful with value formatting
+- floorplans
+- photos
+- contact
+- description
 
 ##History
 v0.1.6

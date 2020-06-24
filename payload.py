@@ -35,6 +35,8 @@ class Payload:
         return self.data[page][name]["offset"]
     def get_value(self, page, name):
         return self.data[page][name]["value"]
+    def get_bool(self, page, name):
+        return self.data[page][name]["value"] == "Y"
     def set_value(self, page, name, value):
         self.data[page][name]["value"] = value
     def __add__element__(self, page, name, css_id, css_xpath, cell_offset, value):
@@ -51,6 +53,12 @@ class Payload:
             }
         else:
             self.log.error("Error parsing initial data.")
+            self.log.error("Page = " + str(page))
+            self.log.error("Name = " + str(name))
+            self.log.error("CSS ID = " + str(css_id))
+            self.log.error("CSS XPATH = " + str(css_xpath))
+            self.log.error("Cell offset = " + str(cell_offset))
+            self.log.error("Value = " + str(value))
             sys.exit()
     def __init__data__(self):
         self.data = {}
@@ -60,6 +68,7 @@ class Payload:
         self.__add__element__("login", "username", "username", None, None, self.credentials["username"])
         self.__add__element__("login", "password", "password", None, None, self.credentials["password"])
         self.__add__element__("hidden", "gmaps", None, None, None, self.credentials["api_key"])
+        self.credentials = None
     def init(self, ss):
         self.ss = ss
         self.__add__element__("login", "login link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
@@ -79,8 +88,15 @@ class Payload:
         # Rent page
         self.__add__element__("rent", "rent link", None, "//a[@data-target=\"rent\"]", None, None)
         self.__add__element__("rent", "building type", "buildingtype", None, 6, None)
+        print("TODO, fix floorplan, add loop for Y.")
         self.__add__element__("rent", "floorplans no", "multi-unit-no", None, 7, None)
         self.__add__element__("rent", "floorplans yes", "multi-unit-yes", None, 7, None)
+        print("ENDTODO.")
+        self.__add__element__("rent", "bedrooms", "floorplan-0-bedrooms", None, 8, None)
+        self.__add__element__("rent", "bathrooms", "floorplan-0-bathrooms", None, 9, None)
+        self.__add__element__("rent", "square feet", "floorplan-0-sqft", None, 10, None)
+        self.__add__element__("rent", "monthly rent", "floorplan-0-rent_value", None, 11, None)
+        self.__add__element__("rent", "type", "floorplan-0-per_bedroom", None, 12, None)
         self.__add__element__("rent", "broker", "security_deposit_amenities-231", None, 13, None)
         self.__add__element__("rent", "first", "security_deposit_amenities-161", None, 14, None)
         self.__add__element__("rent", "last", "security_deposit_amenities-162", None, 15, None)
@@ -136,7 +152,7 @@ class Payload:
         self.__add__element__("amenities", "individual leases", "amenity[2]-46", None, 56, None)
         self.__add__element__("amenities", "near bus", "amenity[2]-19", None, 57, None)
         self.__add__element__("amenities", "near T", "amenity[2]-133", None, 58, None)
-        self.__add__element__("amenities", "pool", , "amenity[2]-10", None, 59, None)
+        self.__add__element__("amenities", "pool", "amenity[2]-10", None, 59, None)
         self.__add__element__("amenities", "roommate matching", "amenity[2]-44", None, 60, None)
         self.__add__element__("amenities", "tennis court", "amenity[2]-11", None, 61, None)
         # Lease
@@ -161,7 +177,7 @@ class Payload:
         self.__add__element__("amenities", "electricity", "amenity[3]-4", None, 81, None)
         self.__add__element__("amenities", "gas", "amenity[3]-3", None, 82, None)
         self.__add__element__("amenities", "heat", "amenity[3]-2", None, 83, None)
-        self.__add__element__("amenities", "internet", "amenity[3]-35", None, 84, None)
+        self.__add__element__("amenities", "high-speed internet", "amenity[3]-35", None, 84, None)
         self.__add__element__("amenities", "hot water", "amenity[3]-226", None, 85, None)
         self.__add__element__("amenities", "local phone", "amenity[3]-39", None, 86, None)
         self.__add__element__("amenities", "recycling", "amenity[3]-124", None, 87, None)
@@ -173,10 +189,11 @@ class Payload:
         self.__add__element__("amenities", "off street park", "amenity[4]-36", None, 93, None)
         self.__add__element__("amenities", "on street park", "amenity[4]-38", None, 94, None)
         # Laundry
+        print("FIX THIS TOO (names)")
         self.__add__element__("amenities", "laundry room", "amenity[7]-12", None, 96, None)
-        self.__add__element__("amenities", "laundry room", "amenity[7]-143", None, 97, None)
-        self.__add__element__("amenities", "laundry room", "amenity[7]-33", None, 98, None)
-        self.__add__element__("amenities", "laundry room", "amenity[7]-9", None, 99, None)
+        self.__add__element__("amenities", "laundry room#2", "amenity[7]-143", None, 97, None)
+        self.__add__element__("amenities", "laundry room#3", "amenity[7]-33", None, 98, None)
+        self.__add__element__("amenities", "laundry room#4", "amenity[7]-9", None, 99, None)
         # Description
         self.__add__element__("description", "description", "mceu_13", None, 10, None)
         #TODO

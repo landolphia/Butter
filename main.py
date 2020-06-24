@@ -23,15 +23,17 @@ def main():
     data = payload.Payload()
     ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
     data.init(ss)
-    data.disp()
 
     nav = navigation.Navigator()
     nav.login(data)
     nav.add_listing(data)
     nav.fill_address(data)
     nav.fill_rent(data)
-    print("Everything done until Rent Page.")
-    input("Taste")
+    input("Finished up to rent page")
+    #nav.fill_specifics(data)
+    #nav.fill_amenities(data)
+    #nav.fill_contact(data)
+    #nav.fill_photos(data)
 
     nav.quit()
 

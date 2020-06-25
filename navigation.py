@@ -145,60 +145,46 @@ class Navigator:
         result = self.driver.find_element_by_id(payload.id("rent", "specials"))
         result.send_keys(Keys.ENTER)
     def fill_specifics(self, payload):
-        print("TODO!!!!")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.specifics_link)))
-    
-        result = self.driver.find_element_by_xpath(payload.specifics_link)
-        result.click()
+        self.wait_for_xpath(payload.xpath("specifics", "link"))
+        link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))
+        link.click()
 
-        result = self.driver.find_element_by_id(payload.max_occupants_id)
-        for option in result.find_elements_by_tag_name('option'):
-            if option.text.strip() == str(payload.listing.number_of_occupants):
-                option.click()
-                break
-        if option.text.strip() != str(payload.listing.number_of_occupants):
-            print("The number of occupants needs to be manually adjusted. [", payload.listing.number_of_occupants, "]")
+        dd = payload.id("specifics", "max occupants")
+        value = payload.get_value("specifics", "max occupants")
+        self.dropdown(self.driver.find_element_by_id(dd), value)
+        #if option.text.strip() != str(payload.listing.number_of_occupants):
+        #    print("The number of occupants needs to be manually adjusted. [", payload.listing.number_of_occupants, "]")
 
-        result = self.driver.find_element_by_id(payload.allow_sublet_id)
+        element = self.driver.find_element_by_id(payload.id("specifics", "allow sublet"))
+        self.checkbox(element, payload.get_bool("specifics", "allow sublet"))
+        element = self.driver.find_element_by_id(payload.id("specifics", "is sublet"))
+        self.checkbox(element, payload.get_bool("specifics", "is sublet"))
+        element = self.driver.find_element_by_id(payload.id("specifics", "roommate situation"))
+        self.checkbox(element, payload.get_bool("specifics", "roommate situation"))
+        
+        print("This requires thinking. FIXME.")
+        print("Move in date, range, etc.")
 
-        self.set_checkbox(payload.ac_id, payload.listing.ac)
+        #if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
+        #    result = self.driver.find_element_by_id(payload.available_now_id)
+        #else: #FIXME check if date or range and enter range
+        #    print("Fix me!!! range and date")
+        #    print("With start and end input id's and spreadsheet cell parsing.")
+        #    result = self.driver.find_element_by_id(payload.available_range_id)
+        #    result = self.driver.find_element_by_id(payload.available_date_id)
+        #result.click()
 
-        if payload.listing.allow_subletting == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
-            
-        result = self.driver.find_element_by_id(payload.is_sublet_id)
-        if payload.listing.is_sublet == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
+        print("ENDFIXME")
 
-        result = self.driver.find_element_by_id(payload.roommate_situation_id)
-        if payload.listing.roommate_situation == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", result)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", result)
-
-        if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
-            result = self.driver.find_element_by_id(payload.available_now_id)
-        else: #FIXME check if date or range and enter range
-            print("Fix me!!! range and date")
-            print("With start and end input id's and spreadsheet cell parsing.")
-            result = self.driver.find_element_by_id(payload.available_range_id)
-            result = self.driver.find_element_by_id(payload.available_date_id)
-        result.click()
-
-        renew = str(payload.listing.availability_renew).lower()
+        renew = str(payload.get_value("specifics", "renew yes")).lower()
         if renew == "unknown":
-            result = self.driver.find_element_by_id(payload.available_renew_unk_id)
+            radio = self.driver.find_element_by_id(payload.id("specifics", "renew unknown"))
         elif renew == "y":
-            result = self.driver.find_element_by_id(payload.available_renew_yes_id)
+            radio = self.driver.find_element_by_id(payload.id("specifics", "renew yes"))
         else:
-            result = self.driver.find_element_by_id(payload.available_renew_no_id)
-        result.click()
-
-        return True
+            radio = self.driver.find_element_by_id(payload.id("specifics", "renew no"))
+        radio.click()
+        radio.submit()
     def fill_amenities(self, payload):
         print("Waiting for amenities link to load.")
         self.wait.until(EC.presence_of_element_located((By.XPATH, payload.amenities_link)))

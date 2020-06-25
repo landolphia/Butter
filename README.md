@@ -33,8 +33,11 @@ Uses the following modules.
 - photos
 - contact
 - description
+- refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 
 ##History
+v0.1.8
+Refactoring done
 v0.1.6
 Finished preliminary scraping and posting.
 v0.1.5

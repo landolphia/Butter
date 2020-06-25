@@ -9,7 +9,7 @@ import spreadsheet
 def main():
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
+        format="[%(levelname)s] %(message)s",
         handlers=[
             logging.FileHandler("run.log"),
             logging.StreamHandler()
@@ -30,8 +30,7 @@ def main():
     nav.fill_address(data)
     nav.fill_rent(data)
     nav.fill_specifics(data)
-    input("Finished up to specifics page.")
-    #nav.fill_amenities(data)
+    nav.fill_amenities(data)
     #nav.fill_contact(data)
     #nav.fill_photos(data)
 

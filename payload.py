@@ -124,6 +124,9 @@ class Payload:
         # Features
         self.__add__element__("amenities", "link", None, "//a[@data-target=\"amenities\"]", None, None)
         self.__add__element__("amenities", "pet policy", "pet_policy", None, 29, None)
+        print("Should I get the values for pets here instead of in the navigator?")
+        self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
+        self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
         self.__add__element__("amenities", "lead paint", "lead_paint", None, 30, None)
         self.__add__element__("amenities", "ac", "amenity[1]-1", None, 32, None)
         self.__add__element__("amenities", "carpet", "amenity[1]-20", None, 33, None)
@@ -133,7 +136,7 @@ class Payload:
         self.__add__element__("amenities", "fireplace","amenity[1]-8", None, 37, None)
         self.__add__element__("amenities", "furnished","amenity[1]-7", None, 38, None)
         self.__add__element__("amenities", "garbage disposal","amenity[1]-82", None, 39, None)
-        self.__add__element__("amenities", "hardwoord","amenity[1]-21", None, 40, None)
+        self.__add__element__("amenities", "hardwood","amenity[1]-21", None, 40, None)
         self.__add__element__("amenities", "internet","amenity[1]-303", None, 41, None)
         self.__add__element__("amenities", "living room","amenity[1]-200", None, 42, None)
         self.__add__element__("amenities", "microwave","amenity[1]-204", None, 43, None)
@@ -186,14 +189,13 @@ class Payload:
         # Parking
         self.__add__element__("amenities", "garage", "amenity[4]-37", None, 91, None)
         self.__add__element__("amenities", "no parking", "amenity[4]-142", None, 92, None)
-        self.__add__element__("amenities", "off street park", "amenity[4]-36", None, 93, None)
-        self.__add__element__("amenities", "on street park", "amenity[4]-38", None, 94, None)
+        self.__add__element__("amenities", "off street parking", "amenity[4]-36", None, 93, None)
+        self.__add__element__("amenities", "on street parking", "amenity[4]-38", None, 94, None)
         # Laundry
-        print("FIX THIS TOO (names)")
         self.__add__element__("amenities", "laundry room", "amenity[7]-12", None, 96, None)
-        self.__add__element__("amenities", "laundry room#2", "amenity[7]-143", None, 97, None)
-        self.__add__element__("amenities", "laundry room#3", "amenity[7]-33", None, 98, None)
-        self.__add__element__("amenities", "laundry room#4", "amenity[7]-9", None, 99, None)
+        self.__add__element__("amenities", "no laundry", "amenity[7]-143", None, 97, None)
+        self.__add__element__("amenities", "wd hookups", "amenity[7]-33", None, 98, None)
+        self.__add__element__("amenities", "wd in unit", "amenity[7]-9", None, 99, None)
         # Description
         self.__add__element__("description", "description", "mceu_13", None, 10, None)
         #TODO

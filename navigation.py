@@ -146,6 +146,14 @@ class Navigator:
         result.send_keys(Keys.ENTER)
         if payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
+    def fill_floorplans(self, payload):
+        print("Floorplans aren't implemented yet.")
+        # Click on floorplan link
+        # Click on add floorplan
+        # Click on ?
+        # Fill in
+        # Click on save
+        # loop as needed
     def fill_specifics(self, payload):
         self.wait_for_xpath(payload.xpath("specifics", "link"))
         link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))

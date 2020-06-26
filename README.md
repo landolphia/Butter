@@ -29,9 +29,9 @@ Uses the following modules.
 - remove lxml
 - GUI and/or command line options
 - be careful with value formatting
-- floorplans
 - photos
 - contact
+- floorplans
 - move in date
 - ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability

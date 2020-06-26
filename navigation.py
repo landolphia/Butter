@@ -144,6 +144,8 @@ class Navigator:
 
         result = self.driver.find_element_by_id(payload.id("rent", "specials"))
         result.send_keys(Keys.ENTER)
+        if payload.get_bool("rent", "floorplans yes"):
+            self.fill_floorplans()
     def fill_specifics(self, payload):
         self.wait_for_xpath(payload.xpath("specifics", "link"))
         link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))

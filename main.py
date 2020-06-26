@@ -17,7 +17,7 @@ def main():
     )
     log = logging.getLogger("root")
 
-    log.info("Starting...\n")
+    log.info("Starting...")
     start_time = time.time()
     
     data = payload.Payload()

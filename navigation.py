@@ -279,10 +279,13 @@ class Navigator:
         self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "wd hookups")), payload.get_value("amenities", "wd hookups"))
         self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "wd in unit")), payload.get_value("amenities", "wd in unit"))
         # Description
-        print("FIX ME. Post actual description to mceu.")
-        #result = self.driver.find_element_by_id(payload.description_id)
-        #result.send_keys(payload.listing.description)
-        print("END FIX ME.")
+        description = payload.get_value("amenities", "description")
+        iframe = self.driver.find_element_by_id(payload.id("amenities", "tinymce"))
+        self.driver.switch_to.frame(iframe)
+        tinymce = self.driver.find_element_by_id(payload.id("amenities", "description"))
+        tinymce.click()
+        tinymce.send_keys(description)
+        self.driver.switch_to.default_content()
 
         self.driver.find_element_by_id(payload.id("amenities", "wd in unit")).submit()
     def fill_contact_page(self, payload):

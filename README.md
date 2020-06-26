@@ -32,10 +32,13 @@ Uses the following modules.
 - floorplans
 - photos
 - contact
-- description
+- move in date
+- ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 
 ##History
+v0.1.8.1
+Filling description/tinyMCE
 v0.1.8
 Refactoring done
 v0.1.6

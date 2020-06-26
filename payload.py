@@ -197,7 +197,8 @@ class Payload:
         self.__add__element__("amenities", "wd hookups", "amenity[7]-33", None, 98, None)
         self.__add__element__("amenities", "wd in unit", "amenity[7]-9", None, 99, None)
         # Description
-        self.__add__element__("description", "description", "mceu_13", None, 10, None)
+        self.__add__element__("amenities", "tinymce", "description_ifr", None, None, None)
+        self.__add__element__("amenities", "description", "tinymce", None, 109, None)
         #TODO
         # Contact page
         #self.contact_link =  "//a[@data-target=\"contact\"]"

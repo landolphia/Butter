@@ -27,6 +27,12 @@ class Navigator:
             self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
         else:
             self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+    def wait_for_xpath_fp(self, element, fpid):
+        self.log.info("The floorplan id is " + str(fpid)) 
+        sys.exit()
+        self.log.info("Waiting for element to load. [%s]" % element)
+        self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
+        return xpath
     def wait_for_xpath(self, element):
         self.log.info("Waiting for element to load. [%s]" % element)
         self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
@@ -128,7 +134,6 @@ class Navigator:
         result.send_keys(specials)
         result.send_keys(Keys.ENTER)
 
-        print("TODO, fix floorplan, add loop for Y.")
         self.wait_for_id(payload.id("rent", "bedrooms"))
         
         self.dropdown(self.driver.find_element_by_id(payload.id("rent", "bedrooms")), payload.get_value("rent", "bedrooms"))
@@ -140,20 +145,40 @@ class Navigator:
         result.send_keys(Keys.DELETE)
         result.send_keys("$" + str(payload.get_value("rent", "monthly rent")))
         self.dropdown(self.driver.find_element_by_id(payload.id("rent", "type")), payload.get_value("rent", "type"))
-        print("ENDTODO.")
 
         result = self.driver.find_element_by_id(payload.id("rent", "specials"))
         result.send_keys(Keys.ENTER)
         if payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
     def fill_floorplans(self, payload):
-        print("Floorplans aren't being implemented.")
-        #self.wait_for_xpath(payload.xpath("floorplans", "link"))
-        #link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))
-        #link.click()
+        print("Floorplans are currently being implemented.")
+        print("Bailing.")
+        sys.exit()
+        # TODO Figure out how to replace fp id in the css id
+        # TODO Figure out how to generate fp member names to include fp number
+        self.wait_for_xpath(payload.xpath("floorplans", "link"))
+        link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))
+        link.click()
 
-        # Click on add floorplan
-        # Click on ?
+        i = 0
+
+        while False:
+            #FIXME Should click edit instead of add for the first floorplan
+            url = str(driver.current_url)
+            print("The current url is " + url)
+            fpid = url.rsplit('/', 1)[-1]
+            print("The id is " + fpid)
+            xpath = self.wait_for_xpath_fp(payload.xpath("floorplans", "add link", fpid))
+            link = self.driver.find_element_by_xpath(payload.xpath("specifics", "add link"))
+            link.click()
+
+            result = self.driver.find_element_by_xpath(payload.xpath("floorplans", "name"))
+            result.send_keys(payload.get_value("location", "address"))
+            result.send_keys(Keys.ENTER)
+
+            i = i+1
+
+
         # Fill in
         # Click on save
         # loop as needed

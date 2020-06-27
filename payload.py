@@ -2,6 +2,10 @@ import logging
 import pprint
 import sys
 
+
+FP_START = 137 
+FP_LENGTH = 38
+
 class Payload:
     def __init__(self):
         self.log = logging.getLogger("root")
@@ -88,10 +92,8 @@ class Payload:
         # Rent page
         self.__add__element__("rent", "rent link", None, "//a[@data-target=\"rent\"]", None, None)
         self.__add__element__("rent", "building type", "buildingtype", None, 6, None)
-        print("TODO, fix floorplan, add loop for Y.")
         self.__add__element__("rent", "floorplans no", "multi-unit-no", None, 7, None)
         self.__add__element__("rent", "floorplans yes", "multi-unit-yes", None, 7, None)
-        print("ENDTODO.")
         self.__add__element__("rent", "bedrooms", "floorplan-0-bedrooms", None, 8, None)
         self.__add__element__("rent", "bathrooms", "floorplan-0-bathrooms", None, 9, None)
         self.__add__element__("rent", "square feet", "floorplan-0-sqft", None, 10, None)
@@ -200,52 +202,65 @@ class Payload:
         self.__add__element__("amenities", "property id", None, None, 111, None)
         self.__add__element__("amenities", "tinymce", "description_ifr", None, None, None)
         self.__add__element__("amenities", "description", "tinymce", None, 112, None)
+
+        if self.get_bool("rent", "floorplans no"):
+            self.log.info("This listing contains multiple floorplans.")
+            i = 0
+            while(self.floorplan_found(i)):
+                self.init_floorplan(i)
+                i = i + 1
+        self.log.info(str(i) + " floorplan" + ("s" if i > 1 else "") + " found.")
+
+    def floorplan_found(self, n):
+        offset = FP_START + ( n * FP_LENGTH)
+        return self.ss.cell_exists(offset)
+    def init_floorplan(self, n):
+        offset = FP_START + ( n * FP_LENGTH)
         # Floorplans
-        self.__add__element__("floorplans", "link", None, None, 0, None)
-        # Floorplans/Overall offset
-        self.__add__element__("floorplans", "start", None, None, 137, None)
+        self.__add__element__("floorplans", "link" + str(n), None, "//a[@data-target=\"contact\"]", None, None)
+        self.__add__element__("floorplans", "add link" + str(n), None, "//a[@name=\"create-floorplan\"]", None, None)
         # Floorplans/The following cell rows are relative to the offset above.
-        self.__add__element__("floorplans", "name", "floorplan-55606-name", None, 0, None)
-        self.__add__element__("floorplans", "specials", "floorplan-55606-specials", None, 1, None)
-        self.__add__element__("floorplans", "bedrooms", "floorplan-55606-bedrooms", None, 2, None)
-        self.__add__element__("floorplans", "bathrooms", "floorplan-55606-bathrooms", None, 3, None)
-        self.__add__element__("floorplans", "occupants", "floorplan-55606-occupants", None, 4, None)
-        self.__add__element__("floorplans", "square feet", "floorplan-55606-sqft", None, 5, None)
-        self.__add__element__("floorplans", "monthly rent", "floorplan-55606-rent_value", None, 6, None)
-        self.__add__element__("floorplans", "rental type", "floorplan-55606-per_bedroom", None, 7, None)
+        self.__add__element__("floorplans", "name" + str(n), "floorplan-FP_IF-name", None, offset + 0, None)
+        self.__add__element__("floorplans", "specials" + str(n), "floorplan-FP_IF-specials", None, offset + 1, None)
+        self.__add__element__("floorplans", "bedrooms" + str(n), "floorplan-FP_IF-bedrooms", None, offset + 2, None)
+        self.__add__element__("floorplans", "bathrooms" + str(n), "floorplan-FP_IF-bathrooms", None, offset + 3, None)
+        self.__add__element__("floorplans", "occupants" + str(n), "floorplan-FP_IF-occupants", None, offset + 4, None)
+        self.__add__element__("floorplans", "square feet" + str(n), "floorplan-FP_IF-sqft", None, offset + 5, None)
+        self.__add__element__("floorplans", "monthly rent" + str(n), "floorplan-FP_IF-rent_value", None, offset + 6, None)
+        self.__add__element__("floorplans", "rental type" + str(n), "floorplan-FP_IF-per_bedroom", None, offset + 7, None)
         # Floorplans/Amenities
-        self.__add__element__("floorplans", "ac", "floorplan-55606-amenity[1]-1", None, 9, None)
-        self.__add__element__("floorplans", "carpet", "floorplan-55606-amenity[1]-20", None, 10, None)
-        self.__add__element__("floorplans", "dining room", "floorplan-55606-amenity[1]-202", None, 11, None)
-        self.__add__element__("floorplans", "disability access", "floorplan-55606-amenity[1]-15", None, 12, None)
-        self.__add__element__("floorplans", "dishwasher", "floorplan-55606-amenity[1]-26", None, 13, None)
-        self.__add__element__("floorplans", "fireplace", "floorplan-55606-amenity[1]-8", None, 14, None)
-        self.__add__element__("floorplans", "furnished", "floorplan-55606-amenity[1]-7", None, 15, None)
-        self.__add__element__("floorplans", "garbage disposal", "floorplan-55606-amenity[1]-82", None, 16, None)
-        self.__add__element__("floorplans", "hardwood", "floorplan-55606-amenity[1]-21", None, 17, None)
-        self.__add__element__("floorplans", "high-speed internet", "floorplan-55606-amenity[1]-303", None, 18, None)
-        self.__add__element__("floorplans", "living room", "floorplan-55606-amenity[1]-200", None, 19, None)
-        self.__add__element__("floorplans", "microwave", "floorplan-55606-amenity[1]-204", None, 20, None)
-        self.__add__element__("floorplans", "patio", "floorplan-55606-amenity[1]-6", None, 21, None)
-        self.__add__element__("floorplans", "private garden", "floorplan-55606-amenity[1]-205", None, 22, None)
-        self.__add__element__("floorplans", "shared garden", "floorplan-55606-amenity[1]-206", None, 23, None)
-        self.__add__element__("floorplans", "smoke free", "floorplan-55606-amenity[1]-41", None, 24, None)
-        self.__add__element__("floorplans", "additional storage", "floorplan-55606-amenity[1]-207", None, 25, None)
-        self.__add__element__("floorplans", "included storage", "floorplan-55606-amenity[1]-208", None, 26, None)
-        self.__add__element__("floorplans", "study", "floorplan-55606-amenity[1]-203", None, 27, None)
+        self.__add__element__("floorplans", "ac" + str(n), "floorplan-FP_IF-amenity[1]-1", None, offset + 9, None)
+        self.__add__element__("floorplans", "carpet" + str(n), "floorplan-FP_IF-amenity[1]-20", None, offset + 10, None)
+        self.__add__element__("floorplans", "dining room" + str(n), "floorplan-FP_IF-amenity[1]-202", None, offset + 11, None)
+        self.__add__element__("floorplans", "disability access" + str(n), "floorplan-FP_IF-amenity[1]-15", None, offset + 12, None)
+        self.__add__element__("floorplans", "dishwasher" + str(n), "floorplan-FP_IF-amenity[1]-26", None, offset + 13, None)
+        self.__add__element__("floorplans", "fireplace" + str(n), "floorplan-FP_IF-amenity[1]-8", None, offset + 14, None)
+        self.__add__element__("floorplans", "furnished" + str(n), "floorplan-FP_IF-amenity[1]-7", None, offset + 15, None)
+        self.__add__element__("floorplans", "garbage disposal" + str(n), "floorplan-FP_IF-amenity[1]-82", None, offset + 16, None)
+        self.__add__element__("floorplans", "hardwood" + str(n), "floorplan-FP_IF-amenity[1]-21", None, offset + 17, None)
+        self.__add__element__("floorplans", "high-speed internet" + str(n), "floorplan-FP_IF-amenity[1]-303", None, offset + 18, None)
+        self.__add__element__("floorplans", "living room" + str(n), "floorplan-FP_IF-amenity[1]-200", None, offset + 19, None)
+        self.__add__element__("floorplans", "microwave" + str(n), "floorplan-FP_IF-amenity[1]-204", None, offset + 20, None)
+        self.__add__element__("floorplans", "patio" + str(n), "floorplan-FP_IF-amenity[1]-6", None, offset + 21, None)
+        self.__add__element__("floorplans", "private garden" + str(n), "floorplan-FP_IF-amenity[1]-205", None, offset + 22, None)
+        self.__add__element__("floorplans", "shared garden" + str(n), "floorplan-FP_IF-amenity[1]-206", None, offset + 23, None)
+        self.__add__element__("floorplans", "smoke free" + str(n), "floorplan-FP_IF-amenity[1]-41", None, offset + 24, None)
+        self.__add__element__("floorplans", "additional storage" + str(n), "floorplan-FP_IF-amenity[1]-207", None, offset + 25, None)
+        self.__add__element__("floorplans", "included storage" + str(n), "floorplan-FP_IF-amenity[1]-208", None, offset + 26, None)
+        self.__add__element__("floorplans", "study" + str(n), "floorplan-FP_IF-amenity[1]-203", None, offset + 27, None)
         # Floorplans/Availability
-        self.__add__element__("floorplans", "availability not", "floorplan-55606-move-in-not", None, 28, None)
-        self.__add__element__("floorplans", "availability ongoing", "floorplan-55606-move-in-now", None, 28, None)
-        self.__add__element__("floorplans", "availability specific", "floorplan-55606-move-in-date", None, 28, None)
-        self.__add__element__("floorplans", "availability range", "floorplan-55606-move-in-range", None, 28, None)
-        self.__add__element__("floorplans", "start date", "floorplan-55606-start", None, 29, None)
-        self.__add__element__("floorplans", "end date", "floorplan-55606-end", None, 30, None)
+        self.__add__element__("floorplans", "availability not" + str(n), "floorplan-FP_IF-move-in-not", None, offset + 28, None)
+        self.__add__element__("floorplans", "availability ongoing" + str(n), "floorplan-FP_IF-move-in-now", None, offset + 28, None)
+        self.__add__element__("floorplans", "availability specific" + str(n), "floorplan-FP_IF-move-in-date", None, offset + 28, None)
+        self.__add__element__("floorplans", "availability range" + str(n), "floorplan-FP_IF-move-in-range", None, offset + 28, None)
+        self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_IF-start", None, offset + 29, None)
+        self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_IF-end", None, offset + 30, None)
         # Floorplans/Description++
-        self.__add__element__("floorplans", "description", "floorplan-55606-description", None, 31, None)
-        self.__add__element__("floorplans", "virtual tour", "floorplan-55606-virtual-tour", None, 33, None)
-        self.__add__element__("floorplans", "webpage", "floorplan-55606-website", None, 34, None)
-        self.__add__element__("floorplans", "lease", "floorplan-55606-lease", None, 35, None)
-        self.__add__element__("floorplans", "image", "floorplan-55606-image", None, 36, None)
+        self.__add__element__("floorplans", "description" + str(n), "floorplan-FP_IF-description", None, offset + 31, None)
+        self.__add__element__("floorplans", "virtual tour" + str(n), "floorplan-FP_IF-virtual-tour", None, offset + 33, None)
+        self.__add__element__("floorplans", "webpage" + str(n), "floorplan-FP_IF-website", None, offset + 34, None)
+        self.__add__element__("floorplans", "lease" + str(n), "floorplan-FP_IF-lease", None, offset + 35, None)
+        self.__add__element__("floorplans", "image" + str(n), "floorplan-FP_IF-image", None, offset + 36, None)
         #TODO
         # Contact page
         #self.contact_link =  "//a[@data-target=\"contact\"]"

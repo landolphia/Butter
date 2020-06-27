@@ -28,6 +28,9 @@ class Spreadsheet:
         self.geo = geohelper.GeoHelper(creds)
     def disp(self):
         pprint.pprint(vars(self))
+    def cell_exists(self, depth):
+        records = self.data.shape[0]
+        return records > depth 
     def get_key(self, key):
         return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
     def parse_address(self, address):

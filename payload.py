@@ -201,8 +201,10 @@ class Payload:
         self.__add__element__("amenities", "tinymce", "description_ifr", None, None, None)
         self.__add__element__("amenities", "description", "tinymce", None, 112, None)
         # Floorplans
+        self.__add__element__("floorplans", "link", None, None, 0, None)
+        # Floorplans/Overall offset
         self.__add__element__("floorplans", "start", None, None, 137, None)
-        # The following cell rows are used as an offset for the floorplans.
+        # Floorplans/The following cell rows are relative to the offset above.
         self.__add__element__("floorplans", "name", "floorplan-55606-name", None, 0, None)
         self.__add__element__("floorplans", "specials", "floorplan-55606-specials", None, 1, None)
         self.__add__element__("floorplans", "bedrooms", "floorplan-55606-bedrooms", None, 2, None)
@@ -211,7 +213,7 @@ class Payload:
         self.__add__element__("floorplans", "square feet", "floorplan-55606-sqft", None, 5, None)
         self.__add__element__("floorplans", "monthly rent", "floorplan-55606-rent_value", None, 6, None)
         self.__add__element__("floorplans", "rental type", "floorplan-55606-per_bedroom", None, 7, None)
-        # Amenities
+        # Floorplans/Amenities
         self.__add__element__("floorplans", "ac", "floorplan-55606-amenity[1]-1", None, 9, None)
         self.__add__element__("floorplans", "carpet", "floorplan-55606-amenity[1]-20", None, 10, None)
         self.__add__element__("floorplans", "dining room", "floorplan-55606-amenity[1]-202", None, 11, None)
@@ -231,14 +233,14 @@ class Payload:
         self.__add__element__("floorplans", "additional storage", "floorplan-55606-amenity[1]-207", None, 25, None)
         self.__add__element__("floorplans", "included storage", "floorplan-55606-amenity[1]-208", None, 26, None)
         self.__add__element__("floorplans", "study", "floorplan-55606-amenity[1]-203", None, 27, None)
-        # Availability
+        # Floorplans/Availability
         self.__add__element__("floorplans", "availability not", "floorplan-55606-move-in-not", None, 28, None)
         self.__add__element__("floorplans", "availability ongoing", "floorplan-55606-move-in-now", None, 28, None)
         self.__add__element__("floorplans", "availability specific", "floorplan-55606-move-in-date", None, 28, None)
         self.__add__element__("floorplans", "availability range", "floorplan-55606-move-in-range", None, 28, None)
         self.__add__element__("floorplans", "start date", "floorplan-55606-start", None, 29, None)
         self.__add__element__("floorplans", "end date", "floorplan-55606-end", None, 30, None)
-        # Description++
+        # Floorplans/Description++
         self.__add__element__("floorplans", "description", "floorplan-55606-description", None, 31, None)
         self.__add__element__("floorplans", "virtual tour", "floorplan-55606-virtual-tour", None, 33, None)
         self.__add__element__("floorplans", "webpage", "floorplan-55606-website", None, 34, None)

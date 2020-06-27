@@ -10,7 +10,7 @@ Or, the script gets listing data from an Excel spreadsheet and creates a listing
 
 You need Python installed to run/compile this.
 You also need Selenium's Chromedriver in the directory you're running Butter from, depending on what you're trying to do.
-You also-also need the login info in a file called private.slr, username/password one two consecutive lines.
+You also-also need the login info in a file called private.slr, username/password on two consecutive lines.
 Guess what, more needs... Google API key, third entry in the private.slr file. This is used for Geocoding API access.
 This will only work if you download and save the "Showing sheet" page as showing.html in the same directory as this.
 Uses the following modules.
@@ -31,12 +31,13 @@ Uses the following modules.
 - be careful with value formatting
 - photos
 - contact
-- floorplans
 - move in date
 - ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 
 ##History
+v0.1.8.2
+Floorplans implemented
 v0.1.8.1
 Filling description/tinyMCE
 v0.1.8

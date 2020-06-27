@@ -1,5 +1,6 @@
 import logging
 import geohelper
+import os.path
 import pprint 
 import pandas as pd
 import re
@@ -18,6 +19,9 @@ class Spreadsheet:
     def __init__(self, creds):
         self.log = logging.getLogger("root")
         self.log.info("Initializing scraper.")
+        if not (os.path.exists(TEMP_LISTING)):
+            self.log.error("Couldn't find the listing to post.\nThe file should be called '" + TEMP_LISTING + "' and be placed in the running directory.")
+            sys.exit()
         self.data = pd.read_excel(TEMP_LISTING, sheet_name = SHEET_NAME)
         # This replaces empty cells with None (instead of nan)
         self.data = self.data.where(pd.notnull(self.data), None)

@@ -29,8 +29,9 @@ def main():
     nav.add_listing(data)
     nav.fill_address(data)
     nav.fill_rent(data)
-    nav.fill_specifics(data)
-    nav.fill_amenities(data)
+    input("Rent filled.")
+    #nav.fill_specifics(data)
+    #nav.fill_amenities(data)
     #nav.fill_contact(data)
     #nav.fill_photos(data)
 

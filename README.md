@@ -46,9 +46,14 @@ py main.py
 - ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 
-##History
-v0.1.8.3
+## History
+
+Current version: 0.1.8.3
 Tweaks for first release
+
+<details>
+  <summary>Click to expand!</summary>
+  
 v0.1.8.2
 Scrapes multiple floorplans from the spreadsheet
 v0.1.8.1
@@ -71,3 +76,4 @@ v0.1.1
 Basic static keyword detection and highlighting.
 v0.1
 Basic info scraping and spreadheet output.
+</details>

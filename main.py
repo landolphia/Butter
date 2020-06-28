@@ -37,7 +37,7 @@ def process_args(args):
         elif a == "WARNING":
             logLevel = logging.WARNING
         else:
-            if i != 0:
+            if i != 1:
                 print("Argument #" + str(i) + " ignored. [" + str(a) + "]")
         i += 1
 

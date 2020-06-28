@@ -206,19 +206,19 @@ class Payload:
         if self.get_bool("rent", "floorplans no"):
             self.log.info("This listing contains multiple floorplans.")
             i = 0
+            self.__add__element__("floorplans", "link", None, "//a[@data-target=\"floorplans\"]", None, None)
+            self.__add__element__("floorplans", "add link", None, "//button[@name=\"create-floorplan\"]", None, None)
             while(self.floorplan_found(i)):
                 self.init_floorplan(i)
                 i = i + 1
         self.log.info(str(i) + " floorplan" + ("s" if i > 1 else "") + " found.")
+        self.__add__element__("floorplans", "total number",  None, None, None, i)
 
     def floorplan_found(self, n):
         offset = FP_START + ( n * FP_LENGTH)
         return self.ss.cell_exists(offset)
     def init_floorplan(self, n):
         offset = FP_START + ( n * FP_LENGTH)
-        # Floorplans
-        self.__add__element__("floorplans", "link" + str(n), None, "//a[@data-target=\"contact\"]", None, None)
-        self.__add__element__("floorplans", "add link" + str(n), None, "//a[@name=\"create-floorplan\"]", None, None)
         # Floorplans/The following cell rows are relative to the offset above.
         self.__add__element__("floorplans", "name" + str(n), "floorplan-FP_IF-name", None, offset + 0, None)
         self.__add__element__("floorplans", "specials" + str(n), "floorplan-FP_IF-specials", None, offset + 1, None)

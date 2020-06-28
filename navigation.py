@@ -29,6 +29,7 @@ class Navigator:
             self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def wait_for_xpath_fp(self, element, fpid):
         self.log.info("The floorplan id is " + str(fpid)) 
+        print("Need to parse element and inject fpid")
         sys.exit()
         self.log.info("Waiting for element to load. [%s]" % element)
         self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
@@ -134,6 +135,11 @@ class Navigator:
         result.send_keys(specials)
         result.send_keys(Keys.ENTER)
 
+        if payload.get_bool("rent", "floorplans yes"):
+            self.fill_floorplans(payload)
+        else:
+            self.fill_floorplan(payload)
+    def fill_floorplan(self, payload):
         self.wait_for_id(payload.id("rent", "bedrooms"))
         
         self.dropdown(self.driver.find_element_by_id(payload.id("rent", "bedrooms")), payload.get_value("rent", "bedrooms"))
@@ -148,40 +154,38 @@ class Navigator:
 
         result = self.driver.find_element_by_id(payload.id("rent", "specials"))
         result.send_keys(Keys.ENTER)
-        if payload.get_bool("rent", "floorplans yes"):
-            self.fill_floorplans()
     def fill_floorplans(self, payload):
         print("Floorplans are currently being implemented.")
-        print("Bailing.")
-        sys.exit()
         # TODO Figure out how to replace fp id in the css id
         # TODO Figure out how to generate fp member names to include fp number
+
         self.wait_for_xpath(payload.xpath("floorplans", "link"))
-        link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))
+        link = self.driver.find_element_by_xpath(payload.xpath("floorplans", "link"))
         link.click()
 
         i = 0
+        fp_number = payload.get_value("floorplans", "total number")
+        print("There is " + str(fp_number) + " floorplans.")
 
-        while False:
+        while i < fp_number:
+            url = str(self.driver.current_url)
+            fp_id = url.rsplit('/', 1)[-1]
+
             #FIXME Should click edit instead of add for the first floorplan
-            url = str(driver.current_url)
-            print("The current url is " + url)
-            fpid = url.rsplit('/', 1)[-1]
-            print("The id is " + fpid)
-            xpath = self.wait_for_xpath_fp(payload.xpath("floorplans", "add link", fpid))
-            link = self.driver.find_element_by_xpath(payload.xpath("specifics", "add link"))
+            xpath = self.wait_for_xpath(payload.xpath("floorplans", "add link"))
+            link = self.driver.find_element_by_xpath(payload.xpath("floorplans", "add link"))
             link.click()
+            input("Everything's good, I'm gone. Pick up there")
+            sys.exit()
+
+            xpath = self.wait_for_xpath_fp(payload.xpath("floorplans", "add link", fpid))
 
             result = self.driver.find_element_by_xpath(payload.xpath("floorplans", "name"))
             result.send_keys(payload.get_value("location", "address"))
             result.send_keys(Keys.ENTER)
 
             i = i+1
-
-
-        # Fill in
-        # Click on save
-        # loop as needed
+        sys.exit()
     def fill_specifics(self, payload):
         self.wait_for_xpath(payload.xpath("specifics", "link"))
         link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))

@@ -52,13 +52,15 @@ py main.py
 
 ## History
 
-Current version: 0.1.8.3
-
-Tweaks for first release
+Current version: 0.1.8.4
+Better logging:
+- rotates log files
+- console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)
 
 <details>
   <summary> Older versions </summary>
-  
+v0.1.8.3
+Tweaks for first release
 v0.1.8.2
 Scrapes multiple floorplans from the spreadsheet
 v0.1.8.1

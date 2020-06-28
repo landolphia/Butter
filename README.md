@@ -2,7 +2,7 @@
 
 ## What is this?
 
-The script gets listing data from an Excel spreadsheet following the template shown on http://www.landolphia.com/butter and creates a listing online on the specified ad posting platform.
+The script gets listing data from an Excel spreadsheet following the template shown on http://www.landolphia.com/butter and creates a listing online on the specified platform.
 
 ## Requirements
 

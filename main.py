@@ -28,11 +28,18 @@ def init_log(logLevel):
 
 def process_args(args):
     logLevel = logging.INFO
-    if len(args) == 2:
-        if args[1] == "DEBUG":
+
+    i = 1
+
+    for a in args:
+        if a == "DEBUG":
             logLevel = logging.DEBUG
-        elif args[1] == "WARNING":
+        elif a == "WARNING":
             logLevel = logging.WARNING
+        else:
+            if i != 0:
+                print("Argument #" + str(i) + " ignored. [" + str(a) + "]")
+        i += 1
 
     return logLevel
 
@@ -52,7 +59,6 @@ def main():
     #nav.add_listing(data)
     #nav.fill_address(data)
     #nav.fill_rent(data)
-    input("Rent filled.")
     #nav.fill_specifics(data)
     #nav.fill_amenities(data)
     #nav.fill_contact(data)

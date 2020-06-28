@@ -37,7 +37,6 @@ py main.py
 <details>
 	<summary> Click to expand </summary>
 
-- documentation and website
 - finish multiple floorplan flow
 - remove lxml
 - GUI and/or command line options
@@ -49,6 +48,7 @@ py main.py
 - ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 - consider webDriver wait delay, might improve speed
+- consolidate with HTML scraper
 </details>
 
 ## History
@@ -57,6 +57,7 @@ Current version: 0.1.8.4
 Better logging:
 - rotates log files
 - console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)
+- documentation and website
 
 <details>
   <summary> Older versions </summary>

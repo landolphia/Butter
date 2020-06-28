@@ -1,22 +1,27 @@
 import logging
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class Navigator:
     def __init__(self):
             self.log = logging.getLogger("root")
-            self.log.info("Initializing Navigator.")
+            self.log.debug("Initializing Navigator.")
 
             self.driver = webdriver.Chrome()
             self.wait = WebDriverWait(self.driver, 100)
+            # TODO
+            #FluentWait<WebDriver>(driver)
+            #    .withTimeout(50, TimeUnit.SECONDS)
+            #    .pollingevery(3, TimeUnit.SECONDS)
+            #    .ignoring(NoSuchElementException.class)
 
             if self.driver == None:
-                self.log.error("Driver not loaded. Exiting program. [%s]" % self.driver)
+                self.log.error("ChromeDrivee not found. Exiting. [%s]" % self.driver)
                 sys.exit()
     def dropdown(self, element, value):
         for option in element.find_elements_by_tag_name('option'):
@@ -28,20 +33,21 @@ class Navigator:
         else:
             self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def wait_for_xpath_fp(self, element, fpid):
-        self.log.info("The floorplan id is " + str(fpid)) 
-        print("Need to parse element and inject fpid")
+        self.log.debug("The floorplan id is " + str(fpid)) 
+        self.log.debug("Need to parse element and inject fpid.")
+        self.log.info("The program has semi-expectedly stopped. Some features are still being developed.")
         sys.exit()
         self.log.info("Waiting for element to load. [%s]" % element)
         self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
         return xpath
     def wait_for_xpath(self, element):
-        self.log.info("Waiting for element to load. [%s]" % element)
+        self.log.debug("Waiting for element to load. [%s]" % element)
         self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
-        self.log.info("Element loaded.")
+        self.log.debug("Element loaded.")
     def wait_for_id(self, element):
-        self.log.info("Waiting for element to load. [%s]" % element)
+        self.log.debug("Waiting for element to load. [%s]" % element)
         self.wait.until(EC.presence_of_element_located((By.ID, element)))
-        self.log.info("Element loaded.")
+        self.log.debug("Element loaded.")
     def login(self, payload):
         url = payload.get_value("login", "login url")
         logging.info("Log in to %s", url)
@@ -66,7 +72,7 @@ class Navigator:
         self.driver.find_element(By.XPATH, submit).click()
     def add_listing(self, payload):
         url = payload.get_value("login", "add listing url")
-        logging.info("Loading new listing page.")
+        logging.debug("Loading new listing page.")
         login = self.driver.get(url)
 
         self.wait_for_id(payload.id("location", "full address"))
@@ -77,7 +83,7 @@ class Navigator:
     def fill_address(self, payload):
         self.wait_for_id(payload.id("location", "address"))
    
-        logging.info("Filling in address details.")
+        logging.debug("Filling in address details.")
         result = self.driver.find_element_by_id(payload.id("location", "address"))
         result.send_keys(payload.get_value("location", "address"))
 
@@ -155,7 +161,7 @@ class Navigator:
         result = self.driver.find_element_by_id(payload.id("rent", "specials"))
         result.send_keys(Keys.ENTER)
     def fill_floorplans(self, payload):
-        print("Floorplans are currently being implemented.")
+        self.log.warning("Floorplans are still being implemented.")
         # TODO Figure out how to replace fp id in the css id
         # TODO Figure out how to generate fp member names to include fp number
 
@@ -165,7 +171,6 @@ class Navigator:
 
         i = 0
         fp_number = payload.get_value("floorplans", "total number")
-        print("There is " + str(fp_number) + " floorplans.")
 
         while i < fp_number:
             url = str(self.driver.current_url)
@@ -175,7 +180,7 @@ class Navigator:
             xpath = self.wait_for_xpath(payload.xpath("floorplans", "add link"))
             link = self.driver.find_element_by_xpath(payload.xpath("floorplans", "add link"))
             link.click()
-            input("Everything's good, I'm gone. Pick up there")
+            self.log.warning("Some features are still being implemented. Exiting program.")
             sys.exit()
 
             xpath = self.wait_for_xpath_fp(payload.xpath("floorplans", "add link", fpid))
@@ -204,8 +209,7 @@ class Navigator:
         element = self.driver.find_element_by_id(payload.id("specifics", "roommate situation"))
         self.checkbox(element, payload.get_bool("specifics", "roommate situation"))
         
-        print("This requires thinking. FIXME.")
-        print("Move in date, range, etc.")
+        self.log.warning("The move in date hasn't been implemented. It needs to be filled manually.")
 
         #if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
         #    result = self.driver.find_element_by_id(payload.available_now_id)
@@ -215,8 +219,6 @@ class Navigator:
         #    result = self.driver.find_element_by_id(payload.available_range_id)
         #    result = self.driver.find_element_by_id(payload.available_date_id)
         #result.click()
-
-        print("ENDFIXME")
 
         renew = str(payload.get_value("specifics", "renew yes")).lower()
         if renew == "unknown":
@@ -232,7 +234,8 @@ class Navigator:
         link = self.driver.find_element_by_xpath(payload.xpath("amenities", "link"))
         link.click()
 
-        print("Look into this (Amenities/pets) (No/allowed/considered).")
+        self.log.warning("The pet dropdown hasn't been fully implemented. Check that the data is accurate.")
+        #FIXME
         dd = self.driver.find_element_by_id(payload.id("amenities", "pet policy"))
         pets = str(payload.get_value("amenities", "pet policy")).lower()
         if pets == "not allowed":
@@ -331,23 +334,19 @@ class Navigator:
 
         self.driver.find_element_by_id(payload.id("amenities", "wd in unit")).submit()
     def fill_contact_page(self, payload):
-        print("TODO!!!!")
-        print("Waiting for contact link to load.")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.contact_link)))
-        print("Loaded.")
+        self.log.warning("The contact page hasn't been implemented. Fill manually.")
+        #self.wait.until(EC.presence_of_element_located((By.XPATH, payload.contact_link)))
     
-        result = self.driver.find_element_by_xpath(payload.contacat_link)
-        result.click()
+        #result = self.driver.find_element_by_xpath(payload.contacat_link)
+        #result.click()
     
         return True
     def fill_photos_page(self, payload):
-        print("TODO!!!!")
-        print("Waiting for photos link to load.")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, payload.photos_link)))
-        print("Loaded.")
+        self.log.warning("The photos page hasn't been implemented. Fill manually.")
+        #self.wait.until(EC.presence_of_element_located((By.XPATH, payload.photos_link)))
     
-        result = self.driver.find_element_by_xpath(payload.photos_link)
-        result.click()
+        #result = self.driver.find_element_by_xpath(payload.photos_link)
+        #result.click()
 
         return True
     def close(self):

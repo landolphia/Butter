@@ -2,21 +2,20 @@ import logging
 import pprint
 import sys
 
-
 FP_START = 137 
 FP_LENGTH = 38
 
 class Payload:
     def __init__(self):
         self.log = logging.getLogger("root")
-        self.log.info("Initializing Payload.")
+        self.log.debug("Initializing Payload.")
     
         self.credentials = self.__get_credentials__("private.slr")
 
         self.__init__data__()
     def __get_credentials__(self, slr):
         result = {}
-        self.log.info("Getting credentials.")
+        self.log.debug("Getting credentials.")
     
         with open (slr, "r") as slurp:
             data = slurp.readlines()
@@ -29,20 +28,6 @@ class Payload:
         result["api_key"] = data[2].rstrip()
     
         return result
-    def disp(self):
-        pprint.pprint(self.data)
-    def xpath(self, page, name):
-        return self.data[page][name]["xpath"]
-    def id(self, page, name):
-        return self.data[page][name]["id"]
-    def offset(self, page, name):
-        return self.data[page][name]["offset"]
-    def get_value(self, page, name):
-        return self.data[page][name]["value"]
-    def get_bool(self, page, name):
-        return self.data[page][name]["value"] == "Y"
-    def set_value(self, page, name, value):
-        self.data[page][name]["value"] = value
     def __add__element__(self, page, name, css_id, css_xpath, cell_offset, value):
         if page not in self.data:
             self.data[page] = {}
@@ -55,14 +40,14 @@ class Payload:
                 "offset": cell_offset,
                 "value": value
             }
-        else:
-            self.log.error("Error parsing initial data.")
-            self.log.error("Page = " + str(page))
-            self.log.error("Name = " + str(name))
-            self.log.error("CSS ID = " + str(css_id))
-            self.log.error("CSS XPATH = " + str(css_xpath))
-            self.log.error("Cell offset = " + str(cell_offset))
-            self.log.error("Value = " + str(value))
+        else: # Duplicate key
+            self.log.error("Error scraping initial data. Exiting." +
+                    "\nPage = " + str(page) +
+                    "\nName = " + str(name) + 
+                    "\nCSS ID = " + str(css_id) +
+                    "\nCSS XPATH = " + str(css_xpath) +
+                    "\nCell offset = " + str(cell_offset) +
+                    "\nValue = " + str(value))
             sys.exit()
     def __init__data__(self):
         self.data = {}
@@ -73,6 +58,12 @@ class Payload:
         self.__add__element__("login", "password", "password", None, None, self.credentials["password"])
         self.__add__element__("hidden", "gmaps", None, None, None, self.credentials["api_key"])
         self.credentials = None
+    def xpath(self, page, name): return self.data[page][name]["xpath"]
+    def id(self, page, name): return self.data[page][name]["id"]
+    def offset(self, page, name): return self.data[page][name]["offset"]
+    def get_value(self, page, name): return self.data[page][name]["value"]
+    def get_bool(self, page, name): return self.data[page][name]["value"] == "Y"
+    def set_value(self, page, name, value): self.data[page][name]["value"] = value
     def init(self, ss):
         self.ss = ss
         self.__add__element__("login", "login link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
@@ -203,19 +194,21 @@ class Payload:
         self.__add__element__("amenities", "tinymce", "description_ifr", None, None, None)
         self.__add__element__("amenities", "description", "tinymce", None, 112, None)
 
+        i = 1
         if self.get_bool("rent", "floorplans no"):
+            i -= 1
             self.log.info("This listing contains multiple floorplans.")
-            i = 0
             self.__add__element__("floorplans", "link", None, "//a[@data-target=\"floorplans\"]", None, None)
             self.__add__element__("floorplans", "add link", None, "//button[@name=\"create-floorplan\"]", None, None)
             while(self.floorplan_found(i)):
                 self.init_floorplan(i)
                 i = i + 1
+
         self.log.info(str(i) + " floorplan" + ("s" if i > 1 else "") + " found.")
         self.__add__element__("floorplans", "total number",  None, None, None, i)
-
     def floorplan_found(self, n):
         offset = FP_START + ( n * FP_LENGTH)
+
         return self.ss.cell_exists(offset)
     def init_floorplan(self, n):
         offset = FP_START + ( n * FP_LENGTH)

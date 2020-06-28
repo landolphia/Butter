@@ -48,6 +48,7 @@ py main.py
 - move in date
 - ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
+- consider webDriver wait delay, might improve speed
 </details>
 
 ## History

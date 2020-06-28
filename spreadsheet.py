@@ -7,7 +7,7 @@ import re
 import sys 
 
 
-TEMP_LISTING = "listing_to_post.xlsx"
+TEMP_LISTING = "listing.xlsx"
 SHEET_NAME = 0
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
@@ -18,7 +18,7 @@ re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
 class Spreadsheet:
     def __init__(self, creds):
         self.log = logging.getLogger("root")
-        self.log.info("Initializing scraper.")
+        self.log.debug("Initializing scraper.")
         if not (os.path.exists(TEMP_LISTING)):
             self.log.error("Couldn't find the listing to post.\nThe file should be called '" + TEMP_LISTING + "' and be placed in the running directory.")
             sys.exit()
@@ -26,13 +26,8 @@ class Spreadsheet:
         # This replaces empty cells with None (instead of nan)
         self.data = self.data.where(pd.notnull(self.data), None)
         self.geo = geohelper.GeoHelper(creds)
-    def disp(self):
-        pprint.pprint(vars(self))
-    def cell_exists(self, depth):
-        records = self.data.shape[0]
-        return records > depth 
-    def get_key(self, key):
-        return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
+    def cell_exists(self, depth): return self.data.shape[0] > depth 
+    def get_key(self, key): return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
     def parse_address(self, address):
         old = address
         address = address.strip()

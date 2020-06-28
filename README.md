@@ -34,6 +34,9 @@ py main.py
 ```
 
 ## To-do
+<details>
+	<summary> Click to expand </summary>
+
 - documentation and website
 - finish multiple floorplan flow
 - remove lxml
@@ -45,14 +48,16 @@ py main.py
 - move in date
 - ad posting spreadsheet template
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
+</details>
 
 ## History
 
 Current version: 0.1.8.3
+
 Tweaks for first release
 
 <details>
-  <summary>Click to expand!</summary>
+  <summary> Older versions </summary>
   
 v0.1.8.2
 Scrapes multiple floorplans from the spreadsheet

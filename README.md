@@ -1,34 +1,45 @@
-#Butter
-#v0.1.x
+# Butter
 
-##What is this?
+## What is this?
 
-This script goes through the HTML of the listings page and generates a spreadsheet with the information needed.
-Or, the script gets listing data from an Excel spreadsheet and creates a listing online.
+The script gets listing data from an Excel spreadsheet following the template shown on http://www.landolphia.com/butter and creates a listing online on the specified ad posting platform.
 
-##Usage
+## Requirements
 
-You need Python installed to run/compile this.
-You also need Selenium's Chromedriver in the directory you're running Butter from, depending on what you're trying to do.
-You also-also need the login info in a file called private.slr, username/password on two consecutive lines.
-Guess what, more needs... Google API key, third entry in the private.slr file. This is used for Geocoding API access.
-This will only work if you download and save the "Showing sheet" page as showing.html in the same directory as this.
+- Python installed
+- Chromedriver executable in the running directory
+- the login info and Google API key must be specified in a a file called private.slr, in the running directory
+```
+First line: username
+Second line: password
+Third line: Google API key
+```
 Uses the following modules.
 
-```Shell
- pip install phonenumbers
- pip install lxml
- pip install xlswriter
+```shell
  pip install pandas
+ pip install phonenumbers
  pip install selenium
- pip install googlemaps
- py main.py
 ```
 
-##To-do
+## Usage
+
+1. Download the listing spreadsheet to the running directory
+2. Open your terminal
+3. Navigate to the directory containing the script and spreadsheet
+4. Run the script with "py main.py"
+
+```shell
+py main.py
+```
+
+## To-do
+- documentation and website
+- finish multiple floorplan flow
 - remove lxml
 - GUI and/or command line options
-- be careful with value formatting
+- offer instructions on what's left to do when the script is done running
+- be careful with value formatting validation
 - photos
 - contact
 - move in date
@@ -36,8 +47,10 @@ Uses the following modules.
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 
 ##History
+v0.1.8.3
+Tweaks for first release
 v0.1.8.2
-Floorplans implemented
+Scrapes multiple floorplans from the spreadsheet
 v0.1.8.1
 Filling description/tinyMCE
 v0.1.8

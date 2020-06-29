@@ -13,7 +13,6 @@ class Navigator:
         self.login()
         self.add_listing()
         self.fill_address()
-        input("Done done")
         self.fill_rent()
         self.fill_specifics()
         self.fill_amenities()
@@ -58,35 +57,29 @@ class Navigator:
 
         self.elements.fill_input_not_null("location", "property name", "[TEST]")
         self.elements.press_enter("location", "property name")
-        input("UHUH")
-        sys.exit()
     def fill_rent(self):
-        self.wait_for_xpath(self.payload.xpath("rent", "rent link"))
-        link = self.driver.find_element_by_xpath(self.payload.xpath("rent", "rent link"))
-        link.click()
+        self.elements.wait("rent", "rent link")
+        self.elements.click("rent", "rent link")
 
-        self.dropdown_by_id("rent", "building type")
+        self.elements.dropdown("rent", "building type")
 
         if self.payload.get_bool("rent", "floorplans yes"):
-            radio = self.driver.find_element_by_id(self.payload.id("rent", "floorplans yes"))
+            self.elements.radio("rent", "floorplans yes")
         else:
-            radio = self.driver.find_element_by_id(self.payload.id("rent", "floorplans no"))
-        radio.click()
+            self.elements.radio("rent", "floorplans no")
 
-        self.checkbox_by_id("rent", "broker")
-        self.checkbox_by_id("rent", "first")
-        self.checkbox_by_id("rent", "last")
-        self.checkbox_by_id("rent", "upfront")
-        self.checkbox_by_id("rent", "references")
-        self.checkbox_by_id("rent", "security")
+        self.elements.checkbox("rent", "broker")
+        self.elements.checkbox("rent", "first")
+        self.elements.checkbox("rent", "last")
+        self.elements.checkbox("rent", "upfront")
+        self.elements.checkbox("rent", "references")
+        self.elements.checkbox("rent", "security")
 
-        result = self.driver.find_element_by_id(self.payload.id("rent", "specials"))
-        specials = self.payload.get_value("rent", "specials")
-        if specials == None:
-            specials = " "
-        result.send_keys(specials)
-        result.send_keys(Keys.ENTER)
+        self.elements.fill_input_not_null("rent", "specials", " ")
+        self.elements.press_enter("rent", "specials")
 
+        input("UHUH")
+        sys.exit()
         if self.payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
         else:

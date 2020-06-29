@@ -104,6 +104,7 @@ class Elements:
     def press_enter(self, page, name):
         element = self.__get_element__(page, name)
         element.send_keys(Keys.ENTER)
+    def radio(self, page, name): self.click(page, name)
 
 #NOT DONE below
     def send_keys_fp_by_id(self, page, name, fp_nb, fp_id):

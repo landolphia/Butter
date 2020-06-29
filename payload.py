@@ -10,6 +10,7 @@ class Payload:
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Payload.")
         self.log.debug("FIXME! It should be pretty easy to get the kind of identifier. Either by adding a kind and having only one field, or just having the two fields and testing.")
+        self.log.debug("FIXME! Add data type (string, number, etc)")
     
         self.credentials = self.__get_credentials__("private.slr")
 
@@ -105,7 +106,7 @@ class Payload:
         self.__add__element__("specifics", "is sublet", "sublet-display", None, 24, None)
         self.__add__element__("specifics", "roommate situation", "shared-display", None, 25, None)
         self.log.debug("FIX ME, requires thinking. Especially with the 2 row shift from the new format.")
-        self.__add__element__("specifics", "available now", "move-in-now", None, 26, None)
+        self.__add__element__("specifics", "available ongoing", "move-in-now", None, 26, None)
         self.__add__element__("specifics", "available date", "move-in-date", None, 26, None)
         self.__add__element__("specifics", "available date start", "start", None, 26, None)
         self.__add__element__("specifics", "available range", "move-in-range", None, 26, None)

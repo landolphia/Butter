@@ -78,88 +78,87 @@ class Navigator:
         self.elements.fill_input_not_null("rent", "specials", " ")
         self.elements.press_enter("rent", "specials")
 
-        input("UHUH")
-        sys.exit()
         if self.payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
         else:
             self.fill_floorplan()
     def fill_floorplan(self):
-        self.wait_for_id(self.payload.id("rent", "bedrooms"))
+        self.elements.wait("rent", "bedrooms")
         
-        self.dropdown_by_id("rent", "bedrooms")
-        self.dropdown_by_id("rent", "bathrooms")
-        element = self.driver.find_element_by_id(self.payload.id("rent", "square feet"))
-        element.send_keys(self.payload.get_value("rent", "square feet"))
-        element = self.driver.find_element_by_id(self.payload.id("rent", "monthly rent"))
-        element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(Keys.DELETE)
-        element.send_keys("$" + str(self.payload.get_value("rent", "monthly rent")))
-        self.dropdown_by_id("rent", "type")
+        self.elements.dropdown("rent", "bedrooms")
+        self.elements.dropdown("rent", "bathrooms")
 
-        element = self.driver.find_element_by_id(self.payload.id("rent", "specials"))
-        element.send_keys(Keys.ENTER)
+        self.elements.fill_input("rent", "square feet")
+        self.elements.fill_input_money("rent", "monthly rent")
+
+        self.elements.dropdown("rent", "type")
+
+        self.elements.press_enter("rent", "specials")
     def fill_floorplans(self):
         self.log.warning("Floorplans are still being implemented.")
 
-        self.wait_for_xpath(self.payload.xpath("floorplans", "link"))
-        link = self.driver.find_element_by_xpath(self.payload.xpath("floorplans", "link"))
-        link.click()
-
         i = 0
         fp_number = self.payload.get_value("floorplans", "total number")
+        self.log.warning("#" + str(fp_number) + " fps")
 
         while i < fp_number:
             # FIXME Should click edit instead of add for the first floorplan
             # I can probably find the element with some kind of sibling logic
-            xpath = self.wait_for_xpath(self.payload.xpath("floorplans", "add link"))
-            link = self.driver.find_element_by_xpath(self.payload.xpath("floorplans", "add link"))
-            link.click()
+            self.elements.wait("floorplans", "link")
+            self.elements.click("floorplans", "link")
+
+            self.elements.wait("floorplans", "add link")
+            self.elements.click("floorplans", "add link")
 
             url = str(self.elements.current_url())
             fp_id = url.rsplit('/', 1)[-1]
             self.log.debug("Filling floorplan #" + str(i) + " [ID=" + str(fp_id) + "]")
 
-            self.send_keys_fp_by_id("floorplans", "name", i, fp_id)
-            self.send_keys_fp_by_id("floorplans", "specials", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "name", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "specials", i, fp_id)
 
-            self.dropdown_fp_by_id("floorplans", "bedrooms", i, fp_id)
-            self.dropdown_fp_by_id("floorplans", "bathrooms", i, fp_id)
-            self.dropdown_fp_by_id("floorplans", "occupants", i, fp_id)
+            self.elements.dropdown_fp("floorplans", "bedrooms", i, fp_id)
+            self.elements.dropdown_fp("floorplans", "bathrooms", i, fp_id)
+            self.elements.dropdown_fp("floorplans", "occupants", i, fp_id)
 
-            self.send_keys_fp_by_id("floorplans", "square feet", i, fp_id)
-            self.send_keys_fp_by_id("floorplans", "monthly rent", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "square feet", i, fp_id)
+            self.elements.fill_input_money_fp("floorplans", "monthly rent", i, fp_id)
 
-            self.dropdown_fp_by_id("floorplans", "rental type", i, fp_id)
-            self.dropdown_fp_by_id("floorplans", "occupants", i, fp_id)
+            self.elements.dropdown_fp("floorplans", "rental type", i, fp_id)
+            self.elements.dropdown_fp("floorplans", "occupants", i, fp_id)
 
-            self.checkbox_fp_by_id("floorplans", "ac", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "carpet", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "dining room", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "disability access", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "dishwasher", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "fireplace", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "furnished", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "garbage disposal", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "hardwood", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "high-speed internet", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "living room", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "microwave", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "patio", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "private garden", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "shared garden", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "smoke free", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "additional storage", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "included storage", i, fp_id)
-            self.checkbox_fp_by_id("floorplans", "study", i, fp_id)
-            self.log.warning("The date hasn't been implemented for floorplans. This must be filled manually.")
+            self.elements.checkbox_fp("floorplans", "ac", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "carpet", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "dining room", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "disability access", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "dishwasher", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "fireplace", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "furnished", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "garbage disposal", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "hardwood", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "high-speed internet", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "living room", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "microwave", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "patio", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "private garden", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "shared garden", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "smoke free", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "additional storage", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "included storage", i, fp_id)
+            self.elements.checkbox_fp("floorplans", "study", i, fp_id)
+
             # Floorplans/Availability
+            self.log.warning("The date hasn't been implemented for floorplans. This must be filled manually.")
+            
+            self.elements.radio_fp("floorplans", "availability ongoing", i, fp_id)
+
             #self.send_keys_fp_by_id("floorplans", "availability not")
             #self.send_keys_fp_by_id("floorplans", "availability ongoing")
             #self.send_keys_fp_by_id("floorplans", "availability specific")
             #self.send_keys_fp_by_id("floorplans", "availability range")
             #self.send_keys_fp_by_id("floorplans", "start date")
             #self.send_keys_fp_by_id("floorplans", "end date")
+
             # Floorplans/Description++
             self.log.warning("The description/virtual tour/webpage/lease/image haven't been implemented for floorplans. They must be filled manually.")
             #self.send_keys_fp_by_id("floorplans", "description")
@@ -167,6 +166,12 @@ class Navigator:
             #self.send_keys_fp_by_id("floorplans", "webpage")
             #self.send_keys_fp_by_id("floorplans", "lease")
             #self.send_keys_fp_by_id("floorplans", "image")
+
+            self.elements.submit_fp("floorplans", "name", i, fp_id)
+
+            i = i + 1
+        input("UHUH")
+        sys.exit()
     def fill_amenities(self):
         self.wait_for_xpath(self.payload.xpath("amenities", "link"))
         link = self.driver.find_element_by_xpath(self.payload.xpath("amenities", "link"))

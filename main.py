@@ -36,7 +36,6 @@ def process_args(args):
     logLevel = logging.INFO
 
     i = 1
-
     for a in args:
         if a == "DEBUG":
             logLevel = logging.DEBUG
@@ -64,18 +63,9 @@ def main():
     data.init(ss)
 
     nav = navigation.Navigator(data)
-    nav.login()
-    nav.add_listing()
-    nav.fill_address()
-    nav.fill_rent()
-    input("Rent filled.")
-    nav.fill_specifics()
-    nav.fill_amenities()
+    nav.start()
     log.warning("The contact page will need to be filled manually.")
-    #nav.fill_contact()
     log.warning("The photos page will need to be filled manually.")
-    #nav.fill_photos()
-
     nav.quit()
 
     log.info("Finished in %s seconds." % (time.time() - start_time))

@@ -1,182 +1,65 @@
 import logging
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+import elements
 
 
 class Navigator:
     def __init__(self, payload):
             self.log = logging.getLogger("bLog")
             self.log.debug("Initializing Navigator.")
-            self.driver = webdriver.Chrome()
-            self.wait = WebDriverWait(self.driver, 100)
-            # TODO
-            #FluentWait<WebDriver>(driver)
-            #    .withTimeout(50, TimeUnit.SECONDS)
-            #    .pollingevery(3, TimeUnit.SECONDS)
-            #    .ignoring(NoSuchElementException.class)
-
-            if self.driver == None:
-                self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
-                sys.exit()
-
+            
             self.payload = payload
-    def send_keys_fp_by_id(self, page, name, fp_nb, fp_id):
-        self.log.debug("send_keys_fp_by_id")
-        self.log.debug("Name [" + name + "]")
-        name = name + str(fp_nb)
-        self.log.debug("=> " + name)
-
-        element_id = self.payload.id(page, name)
-        self.log.debug("Element [" + str(element_id) + "]")
-        element_id = element_id.replace("FP_ID", str(fp_id))
-        self.log.debug("=> " + element_id)
-
-        value = self.payload.get_value(page, name)
-        if value:
-            element = self.driver.find_element_by_id(element_id)
-            element.send_keys(value)
-    def checkbox_fp_by_id(self, page, name, fp_nb, fp_id):
-        self.log.debug("checkbox_fp_by_id")
-        self.log.debug("Name [" + name + "]")
-        name = name + str(fp_nb)
-        self.log.debug("=> " + name)
-
-        element_id = self.payload.id(page, name)
-        self.log.debug("Element [" + str(element_id) + "]")
-        element_id = element_id.replace("FP_ID", str(fp_id))
-        self.log.debug("=> " + element_id)
-
-        element = self.driver.find_element_by_id(element_id)
-        value = self.payload.get_value(page, name)
-        self.log.debug("Value = " + str(value))
-        #FIXME Add a type field to the payload data for each element
-        self.log.debug("FIX ME NOW! Add type to payload.")
-        if str(value).lower() == "y": value = True
-        if value == None: value = False 
-
-        self.log.debug("Page = " + str(page) + "\nName = " + str(name))
-        self.log.debug("Element = " + str(element) + "\nValue = " + str(value))
-        if value == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
-    def dropdown_fp_by_id(self, page, name, fp_nb, fp_id):
-        self.log.debug("dropdown_fp_by_id")
-        self.log.debug("Name [" + name + "]")
-        name = name + str(fp_nb)
-        self.log.debug("=> " + name)
-        
-
-        element_id = self.payload.id(page, name)
-        self.log.debug("Element [" + str(element_id) + "]")
-        element_id = element_id.replace("FP_ID", str(fp_id))
-        self.log.debug("=> " + element_id)
-
-        element = self.driver.find_element_by_id(element_id)
-        value = self.payload.get_value(page, name)
-        for option in element.find_elements_by_tag_name('option'):
-            if option.text.strip().lower() == str(value).lower():
-                option.click()
-    def dropdown_by_id(self, page, name):
-        element = self.driver.find_element_by_id(self.payload.id(page, name))
-        value = self.payload.get_value(page, name)
-        for option in element.find_elements_by_tag_name('option'):
-            if option.text.strip().lower() == str(value).lower():
-                option.click()
-    def checkbox_by_id(self, page, name):
-        element = self.driver.find_element_by_id(self.payload.id(page, name))
-        value = self.payload.get_value(page, name)
-        #FIXME Add a type field to the payload data for each element
-        self.log.debug("FIX ME NOW! Add type to payload.")
-        if str(value).lower() == "y": value = True
-        if value == None: value = False 
-
-        self.log.debug("Page = " + str(page) + "\nName = " + str(name))
-        self.log.debug("Element = " + str(element) + "\nValue = " + str(value))
-        if value == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
-    def wait_for_xpath_fp(self, element, fpid):
-        self.log.debug("The floorplan id is " + str(fpid)) 
-        self.log.debug("Need to parse element and inject fpid.")
-        self.log.info("The program has semi-expectedly stopped. Some features are still being developed.")
-        sys.exit()
-        self.log.debug("Waiting for element to load. [" + str(element) + "]")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
-        return xpath
-    def wait_for_xpath(self, element):
-        self.log.debug("Waiting for element to load. [" + str(element) + "]")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
-        self.log.debug("Element loaded.")
-    def wait_for_id(self, element):
-        self.log.debug("Waiting for element to load. [" + str(element) + "]")
-        self.wait.until(EC.presence_of_element_located((By.ID, element)))
-        self.log.debug("Element loaded.")
+            self.elements = elements.Elements(payload)
+    def start(self):
+        self.login()
+        self.add_listing()
+        self.fill_address()
+        input("Done done")
+        self.fill_rent()
+        self.fill_specifics()
+        self.fill_amenities()
+        self.fill_contact()
+        self.fill_photos()
     def login(self):
-        url = self.payload.get_value("login", "login url")
-        logging.info("Log in to %s", url)
-        login = self.driver.get(url)
+        self.elements.go("login", "login url")
 
-        link = self.payload.xpath("login", "login link")
-        self.wait_for_xpath(link)
-        link = self.driver.find_element_by_xpath(link)
-        link.click()
+        self.elements.wait("login", "link")
+        self.elements.click("login", "link")
 
-        username = self.payload.get_value("login", "username")
-        password = self.payload.get_value("login", "password")
-        user_input = self.payload.id("login", "username")
-        password_input = self.payload.id("login", "password")
-
-        self.wait_for_id(user_input)
+        self.elements.wait("login", "username")
         
-        self.driver.find_element_by_id(user_input).send_keys(username)
-        self.driver.find_element_by_id(password_input).send_keys(password)
+        self.elements.fill_input("login", "username")
+        self.elements.fill_input("login", "password")
 
-        submit = self.payload.xpath("login", "submit button")
-        self.driver.find_element(By.XPATH, submit).click()
+        self.elements.click("login", "submit button")
     def add_listing(self):
-        url = self.payload.get_value("login", "add listing url")
-        logging.debug("Loading new listing page.")
-        login = self.driver.get(url)
+        self.elements.go("login", "add listing url")
 
-        self.wait_for_id(self.payload.id("location", "full address"))
-    
-        result = self.driver.find_element_by_xpath(self.payload.xpath("location", "full address input"))
-        result.send_keys(self.payload.get_value("location", "address"))
-        result.send_keys(Keys.ENTER)
+        self.elements.wait("location", "full address")
+
+        self.elements.fill_input("location", "full address input")
+        self.elements.press_enter("location", "full address input")
     def fill_address(self):
-        self.wait_for_id(self.payload.id("location", "address"))
-   
+        self.elements.wait("location", "address")
+
         logging.debug("Filling in address details.")
-        result = self.driver.find_element_by_id(self.payload.id("location", "address"))
-        result.send_keys(self.payload.get_value("location", "address"))
-
-        result = self.driver.find_element_by_id(self.payload.id("location", "city"))
-        result.send_keys(self.payload.get_value("location", "city"))
-        result = self.driver.find_element_by_id(self.payload.id("location", "zip"))
-        result.send_keys(self.payload.get_value("location", "zip"))
+   
+        self.elements.fill_input("location", "address")
+        self.elements.fill_input("location", "city")
+        self.elements.fill_input("location", "zip")
     
-        self.dropdown_by_id("location", "state")
+        self.elements.dropdown("location", "state")
 
-        element = self.driver.find_element_by_id(self.payload.id("location", "exact flag"))
-        self.checkbox_by_id("location", "exact flag")
+        self.elements.checkbox("location", "exact flag")
 
-        form = self.driver.find_element_by_xpath(self.payload.xpath("location", "address form"))
-        form.submit()
 
-        self.wait_for_id(self.payload.id("location", "property name"))
-    
-        result = self.driver.find_element_by_id(self.payload.id("location", "property name"))
-        description = self.payload.get_value("location", "property name")
-        if description == None:
-            description = ("[Auto] ", self.payload.get_value("location", "full address"))
-        result.send_keys(description)
-        result.send_keys(Keys.ENTER)
+        self.elements.submit("location", "address form")
+
+        self.elements.wait("location", "property name")
+
+        self.elements.fill_input_not_null("location", "property name", "[TEST]")
+        self.elements.press_enter("location", "property name")
+        input("UHUH")
+        sys.exit()
     def fill_rent(self):
         self.wait_for_xpath(self.payload.xpath("rent", "rent link"))
         link = self.driver.find_element_by_xpath(self.payload.xpath("rent", "rent link"))
@@ -240,7 +123,7 @@ class Navigator:
             link = self.driver.find_element_by_xpath(self.payload.xpath("floorplans", "add link"))
             link.click()
 
-            url = str(self.driver.current_url)
+            url = str(self.elements.current_url())
             fp_id = url.rsplit('/', 1)[-1]
             self.log.debug("Filling floorplan #" + str(i) + " [ID=" + str(fp_id) + "]")
 
@@ -396,7 +279,7 @@ class Navigator:
         self.driver.switch_to.default_content()
 
         self.driver.find_element_by_id(self.payload.id("amenities", "wd in unit")).submit()
-    def fill_contact_page(self):
+    def fill_contact(self):
         self.log.warning("The contact page hasn't been implemented. Fill manually.")
         #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.contact_link)))
     
@@ -404,7 +287,7 @@ class Navigator:
         #result.click()
     
         return True
-    def fill_photos_page(self):
+    def fill_photos(self):
         self.log.warning("The photos page hasn't been implemented. Fill manually.")
         #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.photos_link)))
     

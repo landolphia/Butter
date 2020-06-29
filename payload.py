@@ -9,6 +9,7 @@ class Payload:
     def __init__(self):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Payload.")
+        self.log.debug("FIXME! It should be pretty easy to get the kind of identifier. Either by adding a kind and having only one field, or just having the two fields and testing.")
     
         self.credentials = self.__get_credentials__("private.slr")
 
@@ -54,6 +55,8 @@ class Payload:
         # Login page
         self.__add__element__("login", "login url", None, None, None, "https://offcampus.bu.edu/login/")
         self.__add__element__("login", "add listing url", None, None, None, "https://offcampus.bu.edu/user/add-listing/")
+        self.__add__element__("login", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
+        self.__add__element__("login", "submit button", None, "//input[@type=\"submit\"]", None, None)
         self.__add__element__("login", "username", "username", None, None, self.credentials["username"])
         self.__add__element__("login", "password", "password", None, None, self.credentials["password"])
         self.__add__element__("hidden", "gmaps", None, None, None, self.credentials["api_key"])
@@ -66,8 +69,6 @@ class Payload:
     def set_value(self, page, name, value): self.data[page][name]["value"] = value
     def init(self, ss):
         self.ss = ss
-        self.__add__element__("login", "login link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
-        self.__add__element__("login", "submit button", None, "//input[@type=\"submit\"]", None, None)
         # Location page
         self.__add__element__("location", "full address", "address-autocomplete-place", None, 0, None)
         self.__add__element__("location", "full address input", None, "//*[@id=\"address_autocomplete\"]", 1, None)

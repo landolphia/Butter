@@ -18,7 +18,7 @@ re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
 class Spreadsheet:
     def __init__(self, creds):
         self.log = logging.getLogger("root")
-        self.log.debug("Initializing scraper.")
+        self.log.debug("Initializing Scraper.")
         if not (os.path.exists(TEMP_LISTING)):
             self.log.error("Couldn't find the listing to post.\nThe file should be called '" + TEMP_LISTING + "' and be placed in the running directory.")
             sys.exit()

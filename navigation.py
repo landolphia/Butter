@@ -142,7 +142,8 @@ class Navigator:
         result.send_keys(Keys.ENTER)
 
         if payload.get_bool("rent", "floorplans yes"):
-            self.fill_floorplans(payload)
+            self.log.warning("This listing contains multiple floorplans. They will need to be filled manually.")
+            #self.fill_floorplans(payload)
         else:
             self.fill_floorplan(payload)
     def fill_floorplan(self, payload):
@@ -196,9 +197,10 @@ class Navigator:
         link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))
         link.click()
 
-        dd = payload.id("specifics", "max occupants")
-        value = payload.get_value("specifics", "max occupants")
-        self.dropdown(self.driver.find_element_by_id(dd), value)
+        if not payload.get_bool("rent", "floorplans yes"):
+            dd = payload.id("specifics", "max occupants")
+            value = payload.get_value("specifics", "max occupants")
+            self.dropdown(self.driver.find_element_by_id(dd), value)
         #if option.text.strip() != str(payload.listing.number_of_occupants):
         #    print("The number of occupants needs to be manually adjusted. [", payload.listing.number_of_occupants, "]")
 

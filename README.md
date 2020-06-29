@@ -38,16 +38,14 @@ py main.py
 	<summary> Click to expand </summary>
 
 - finish multiple floorplan flow
-- remove lxml
-- GUI and/or command line options
-- offer instructions on what's left to do when the script is done running
-- be careful with value formatting validation
-- photos
-- contact
+- photos page
+- contact page
 - move in date
-- ad posting spreadsheet template
+- double check pets
+- value formatting and validation
 - refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 - consider webDriver wait delay, might improve speed
+- remove lxml (see next item)
 - consolidate with HTML scraper
 </details>
 

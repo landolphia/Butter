@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class Navigator:
-    def __init__(self):
+    def __init__(self, payload):
             self.log = logging.getLogger("bLog")
             self.log.debug("Initializing Navigator.")
             self.driver = webdriver.Chrome()
@@ -20,13 +20,83 @@ class Navigator:
             #    .ignoring(NoSuchElementException.class)
 
             if self.driver == None:
-                self.log.error("ChromeDrivee not found. Exiting. [%s]" % self.driver)
+                self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
                 sys.exit()
-    def dropdown(self, element, value):
+
+            self.payload = payload
+    def send_keys_fp_by_id(self, page, name, fp_nb, fp_id):
+        self.log.debug("send_keys_fp_by_id")
+        self.log.debug("Name [" + name + "]")
+        name = name + str(fp_nb)
+        self.log.debug("=> " + name)
+
+        element_id = self.payload.id(page, name)
+        self.log.debug("Element [" + str(element_id) + "]")
+        element_id = element_id.replace("FP_ID", str(fp_id))
+        self.log.debug("=> " + element_id)
+
+        value = self.payload.get_value(page, name)
+        if value:
+            element = self.driver.find_element_by_id(element_id)
+            element.send_keys(value)
+    def checkbox_fp_by_id(self, page, name, fp_nb, fp_id):
+        self.log.debug("checkbox_fp_by_id")
+        self.log.debug("Name [" + name + "]")
+        name = name + str(fp_nb)
+        self.log.debug("=> " + name)
+
+        element_id = self.payload.id(page, name)
+        self.log.debug("Element [" + str(element_id) + "]")
+        element_id = element_id.replace("FP_ID", str(fp_id))
+        self.log.debug("=> " + element_id)
+
+        element = self.driver.find_element_by_id(element_id)
+        value = self.payload.get_value(page, name)
+        self.log.debug("Value = " + str(value))
+        #FIXME Add a type field to the payload data for each element
+        self.log.debug("FIX ME NOW! Add type to payload.")
+        if str(value).lower() == "y": value = True
+        if value == None: value = False 
+
+        self.log.debug("Page = " + str(page) + "\nName = " + str(name))
+        self.log.debug("Element = " + str(element) + "\nValue = " + str(value))
+        if value == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+    def dropdown_fp_by_id(self, page, name, fp_nb, fp_id):
+        self.log.debug("dropdown_fp_by_id")
+        self.log.debug("Name [" + name + "]")
+        name = name + str(fp_nb)
+        self.log.debug("=> " + name)
+        
+
+        element_id = self.payload.id(page, name)
+        self.log.debug("Element [" + str(element_id) + "]")
+        element_id = element_id.replace("FP_ID", str(fp_id))
+        self.log.debug("=> " + element_id)
+
+        element = self.driver.find_element_by_id(element_id)
+        value = self.payload.get_value(page, name)
         for option in element.find_elements_by_tag_name('option'):
             if option.text.strip().lower() == str(value).lower():
                 option.click()
-    def checkbox(self, element, value):
+    def dropdown_by_id(self, page, name):
+        element = self.driver.find_element_by_id(self.payload.id(page, name))
+        value = self.payload.get_value(page, name)
+        for option in element.find_elements_by_tag_name('option'):
+            if option.text.strip().lower() == str(value).lower():
+                option.click()
+    def checkbox_by_id(self, page, name):
+        element = self.driver.find_element_by_id(self.payload.id(page, name))
+        value = self.payload.get_value(page, name)
+        #FIXME Add a type field to the payload data for each element
+        self.log.debug("FIX ME NOW! Add type to payload.")
+        if str(value).lower() == "y": value = True
+        if value == None: value = False 
+
+        self.log.debug("Page = " + str(page) + "\nName = " + str(name))
+        self.log.debug("Element = " + str(element) + "\nValue = " + str(value))
         if value == True:
             self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
         else:
@@ -47,306 +117,298 @@ class Navigator:
         self.log.debug("Waiting for element to load. [" + str(element) + "]")
         self.wait.until(EC.presence_of_element_located((By.ID, element)))
         self.log.debug("Element loaded.")
-    def login(self, payload):
-        url = payload.get_value("login", "login url")
+    def login(self):
+        url = self.payload.get_value("login", "login url")
         logging.info("Log in to %s", url)
         login = self.driver.get(url)
 
-        link = payload.xpath("login", "login link")
+        link = self.payload.xpath("login", "login link")
         self.wait_for_xpath(link)
         link = self.driver.find_element_by_xpath(link)
         link.click()
 
-        username = payload.get_value("login", "username")
-        password = payload.get_value("login", "password")
-        user_input = payload.id("login", "username")
-        password_input = payload.id("login", "password")
+        username = self.payload.get_value("login", "username")
+        password = self.payload.get_value("login", "password")
+        user_input = self.payload.id("login", "username")
+        password_input = self.payload.id("login", "password")
 
         self.wait_for_id(user_input)
         
         self.driver.find_element_by_id(user_input).send_keys(username)
         self.driver.find_element_by_id(password_input).send_keys(password)
 
-        submit = payload.xpath("login", "submit button")
+        submit = self.payload.xpath("login", "submit button")
         self.driver.find_element(By.XPATH, submit).click()
-    def add_listing(self, payload):
-        url = payload.get_value("login", "add listing url")
+    def add_listing(self):
+        url = self.payload.get_value("login", "add listing url")
         logging.debug("Loading new listing page.")
         login = self.driver.get(url)
 
-        self.wait_for_id(payload.id("location", "full address"))
+        self.wait_for_id(self.payload.id("location", "full address"))
     
-        result = self.driver.find_element_by_xpath(payload.xpath("location", "full address input"))
-        result.send_keys(payload.get_value("location", "address"))
+        result = self.driver.find_element_by_xpath(self.payload.xpath("location", "full address input"))
+        result.send_keys(self.payload.get_value("location", "address"))
         result.send_keys(Keys.ENTER)
-    def fill_address(self, payload):
-        self.wait_for_id(payload.id("location", "address"))
+    def fill_address(self):
+        self.wait_for_id(self.payload.id("location", "address"))
    
         logging.debug("Filling in address details.")
-        result = self.driver.find_element_by_id(payload.id("location", "address"))
-        result.send_keys(payload.get_value("location", "address"))
+        result = self.driver.find_element_by_id(self.payload.id("location", "address"))
+        result.send_keys(self.payload.get_value("location", "address"))
 
-        result = self.driver.find_element_by_id(payload.id("location", "city"))
-        result.send_keys(payload.get_value("location", "city"))
-        result = self.driver.find_element_by_id(payload.id("location", "zip"))
-        result.send_keys(payload.get_value("location", "zip"))
+        result = self.driver.find_element_by_id(self.payload.id("location", "city"))
+        result.send_keys(self.payload.get_value("location", "city"))
+        result = self.driver.find_element_by_id(self.payload.id("location", "zip"))
+        result.send_keys(self.payload.get_value("location", "zip"))
     
-        self.dropdown(self.driver.find_element_by_id(payload.id("location", "state")), payload.get_value("location", "state"))
+        self.dropdown_by_id("location", "state")
 
-        element = self.driver.find_element_by_id(payload.id("location", "exact flag"))
-        self.checkbox(element , payload.get_bool("location", "exact flag"))
+        element = self.driver.find_element_by_id(self.payload.id("location", "exact flag"))
+        self.checkbox_by_id("location", "exact flag")
 
-        form = self.driver.find_element_by_xpath(payload.xpath("location", "address form"))
+        form = self.driver.find_element_by_xpath(self.payload.xpath("location", "address form"))
         form.submit()
 
-        self.wait_for_id(payload.id("location", "property name"))
+        self.wait_for_id(self.payload.id("location", "property name"))
     
-        result = self.driver.find_element_by_id(payload.id("location", "property name"))
-        description = payload.get_value("location", "property name")
+        result = self.driver.find_element_by_id(self.payload.id("location", "property name"))
+        description = self.payload.get_value("location", "property name")
         if description == None:
-            description = ("[JJ] ", payload.get_value("location", "full address"))
+            description = ("[Auto] ", self.payload.get_value("location", "full address"))
         result.send_keys(description)
         result.send_keys(Keys.ENTER)
-    def fill_rent(self, payload):
-        self.wait_for_xpath(payload.xpath("rent", "rent link"))
-        link = self.driver.find_element_by_xpath(payload.xpath("rent", "rent link"))
+    def fill_rent(self):
+        self.wait_for_xpath(self.payload.xpath("rent", "rent link"))
+        link = self.driver.find_element_by_xpath(self.payload.xpath("rent", "rent link"))
         link.click()
 
-        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "building type")), payload.get_value("rent", "building type"))
+        self.dropdown_by_id("rent", "building type")
 
-        if payload.get_bool("rent", "floorplans yes"):
-            radio = self.driver.find_element_by_id(payload.id("rent", "floorplans yes"))
+        if self.payload.get_bool("rent", "floorplans yes"):
+            radio = self.driver.find_element_by_id(self.payload.id("rent", "floorplans yes"))
         else:
-            radio = self.driver.find_element_by_id(payload.id("rent", "floorplans no"))
+            radio = self.driver.find_element_by_id(self.payload.id("rent", "floorplans no"))
         radio.click()
 
-        element = self.driver.find_element_by_id(payload.id("rent", "broker"))
-        self.checkbox(element, payload.get_bool("rent", "broker"))
-        element = self.driver.find_element_by_id(payload.id("rent", "first"))
-        self.checkbox(element, payload.get_bool("rent", "first"))
-        element = self.driver.find_element_by_id(payload.id("rent", "last"))
-        self.checkbox(element, payload.get_bool("rent", "last"))
-        element = self.driver.find_element_by_id(payload.id("rent", "upfront"))
-        self.checkbox(element, payload.get_bool("rent", "upfront"))
-        element = self.driver.find_element_by_id(payload.id("rent", "references"))
-        self.checkbox(element, payload.get_bool("rent", "references"))
-        element = self.driver.find_element_by_id(payload.id("rent", "security"))
-        self.checkbox(element, payload.get_bool("rent", "security"))
+        self.checkbox_by_id("rent", "broker")
+        self.checkbox_by_id("rent", "first")
+        self.checkbox_by_id("rent", "last")
+        self.checkbox_by_id("rent", "upfront")
+        self.checkbox_by_id("rent", "references")
+        self.checkbox_by_id("rent", "security")
 
-        result = self.driver.find_element_by_id(payload.id("rent", "specials"))
-        specials = payload.get_value("rent", "specials")
+        result = self.driver.find_element_by_id(self.payload.id("rent", "specials"))
+        specials = self.payload.get_value("rent", "specials")
         if specials == None:
             specials = " "
         result.send_keys(specials)
         result.send_keys(Keys.ENTER)
 
-        if payload.get_bool("rent", "floorplans yes"):
-            self.log.warning("This listing contains multiple floorplans. They will need to be filled manually.")
-            #self.fill_floorplans(payload)
+        if self.payload.get_bool("rent", "floorplans yes"):
+            self.fill_floorplans()
         else:
-            self.fill_floorplan(payload)
-    def fill_floorplan(self, payload):
-        self.wait_for_id(payload.id("rent", "bedrooms"))
+            self.fill_floorplan()
+    def fill_floorplan(self):
+        self.wait_for_id(self.payload.id("rent", "bedrooms"))
         
-        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "bedrooms")), payload.get_value("rent", "bedrooms"))
-        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "bathrooms")), payload.get_value("rent", "bathrooms"))
-        result = self.driver.find_element_by_id(payload.id("rent", "square feet"))
-        result.send_keys(payload.get_value("rent", "square feet"))
-        result = self.driver.find_element_by_id(payload.id("rent", "monthly rent"))
-        result.send_keys(Keys.CONTROL + "a")
-        result.send_keys(Keys.DELETE)
-        result.send_keys("$" + str(payload.get_value("rent", "monthly rent")))
-        self.dropdown(self.driver.find_element_by_id(payload.id("rent", "type")), payload.get_value("rent", "type"))
+        self.dropdown_by_id("rent", "bedrooms")
+        self.dropdown_by_id("rent", "bathrooms")
+        element = self.driver.find_element_by_id(self.payload.id("rent", "square feet"))
+        element.send_keys(self.payload.get_value("rent", "square feet"))
+        element = self.driver.find_element_by_id(self.payload.id("rent", "monthly rent"))
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys("$" + str(self.payload.get_value("rent", "monthly rent")))
+        self.dropdown_by_id("rent", "type")
 
-        result = self.driver.find_element_by_id(payload.id("rent", "specials"))
-        result.send_keys(Keys.ENTER)
-    def fill_floorplans(self, payload):
+        element = self.driver.find_element_by_id(self.payload.id("rent", "specials"))
+        element.send_keys(Keys.ENTER)
+    def fill_floorplans(self):
         self.log.warning("Floorplans are still being implemented.")
-        # TODO Figure out how to replace fp id in the css id
-        # TODO Figure out how to generate fp member names to include fp number
 
-        self.wait_for_xpath(payload.xpath("floorplans", "link"))
-        link = self.driver.find_element_by_xpath(payload.xpath("floorplans", "link"))
+        self.wait_for_xpath(self.payload.xpath("floorplans", "link"))
+        link = self.driver.find_element_by_xpath(self.payload.xpath("floorplans", "link"))
         link.click()
 
         i = 0
-        fp_number = payload.get_value("floorplans", "total number")
+        fp_number = self.payload.get_value("floorplans", "total number")
 
         while i < fp_number:
+            # FIXME Should click edit instead of add for the first floorplan
+            # I can probably find the element with some kind of sibling logic
+            xpath = self.wait_for_xpath(self.payload.xpath("floorplans", "add link"))
+            link = self.driver.find_element_by_xpath(self.payload.xpath("floorplans", "add link"))
+            link.click()
+
             url = str(self.driver.current_url)
             fp_id = url.rsplit('/', 1)[-1]
+            self.log.debug("Filling floorplan #" + str(i) + " [ID=" + str(fp_id) + "]")
 
-            #FIXME Should click edit instead of add for the first floorplan
-            xpath = self.wait_for_xpath(payload.xpath("floorplans", "add link"))
-            link = self.driver.find_element_by_xpath(payload.xpath("floorplans", "add link"))
-            link.click()
-            self.log.warning("Some features are still being implemented. Exiting program.")
-            sys.exit()
+            self.send_keys_fp_by_id("floorplans", "name", i, fp_id)
+            self.send_keys_fp_by_id("floorplans", "specials", i, fp_id)
 
-            xpath = self.wait_for_xpath_fp(payload.xpath("floorplans", "add link", fpid))
+            self.dropdown_fp_by_id("floorplans", "bedrooms", i, fp_id)
+            self.dropdown_fp_by_id("floorplans", "bathrooms", i, fp_id)
+            self.dropdown_fp_by_id("floorplans", "occupants", i, fp_id)
 
-            result = self.driver.find_element_by_xpath(payload.xpath("floorplans", "name"))
-            result.send_keys(payload.get_value("location", "address"))
-            result.send_keys(Keys.ENTER)
+            self.send_keys_fp_by_id("floorplans", "square feet", i, fp_id)
+            self.send_keys_fp_by_id("floorplans", "monthly rent", i, fp_id)
 
-            i = i+1
-        sys.exit()
-    def fill_specifics(self, payload):
-        self.wait_for_xpath(payload.xpath("specifics", "link"))
-        link = self.driver.find_element_by_xpath(payload.xpath("specifics", "link"))
-        link.click()
+            self.dropdown_fp_by_id("floorplans", "rental type", i, fp_id)
+            self.dropdown_fp_by_id("floorplans", "occupants", i, fp_id)
 
-        if not payload.get_bool("rent", "floorplans yes"):
-            dd = payload.id("specifics", "max occupants")
-            value = payload.get_value("specifics", "max occupants")
-            self.dropdown(self.driver.find_element_by_id(dd), value)
-        #if option.text.strip() != str(payload.listing.number_of_occupants):
-        #    print("The number of occupants needs to be manually adjusted. [", payload.listing.number_of_occupants, "]")
-
-        element = self.driver.find_element_by_id(payload.id("specifics", "allow sublet"))
-        self.checkbox(element, payload.get_bool("specifics", "allow sublet"))
-        element = self.driver.find_element_by_id(payload.id("specifics", "is sublet"))
-        self.checkbox(element, payload.get_bool("specifics", "is sublet"))
-        element = self.driver.find_element_by_id(payload.id("specifics", "roommate situation"))
-        self.checkbox(element, payload.get_bool("specifics", "roommate situation"))
-        
-        self.log.warning("The move in date hasn't been implemented. It needs to be filled manually.")
-
-        #if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
-        #    result = self.driver.find_element_by_id(payload.available_now_id)
-        #else: #FIXME check if date or range and enter range
-        #    print("Fix me!!! range and date")
-        #    print("With start and end input id's and spreadsheet cell parsing.")
-        #    result = self.driver.find_element_by_id(payload.available_range_id)
-        #    result = self.driver.find_element_by_id(payload.available_date_id)
-        #result.click()
-
-        renew = str(payload.get_value("specifics", "renew yes")).lower()
-        if renew == "unknown":
-            radio = self.driver.find_element_by_id(payload.id("specifics", "renew unknown"))
-        elif renew == "y":
-            radio = self.driver.find_element_by_id(payload.id("specifics", "renew yes"))
-        else:
-            radio = self.driver.find_element_by_id(payload.id("specifics", "renew no"))
-        radio.click()
-        radio.submit()
-    def fill_amenities(self, payload):
-        self.wait_for_xpath(payload.xpath("amenities", "link"))
-        link = self.driver.find_element_by_xpath(payload.xpath("amenities", "link"))
+            self.checkbox_fp_by_id("floorplans", "ac", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "carpet", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "dining room", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "disability access", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "dishwasher", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "fireplace", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "furnished", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "garbage disposal", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "hardwood", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "high-speed internet", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "living room", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "microwave", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "patio", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "private garden", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "shared garden", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "smoke free", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "additional storage", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "included storage", i, fp_id)
+            self.checkbox_fp_by_id("floorplans", "study", i, fp_id)
+            self.log.warning("The date hasn't been implemented for floorplans. This must be filled manually.")
+            # Floorplans/Availability
+            #self.send_keys_fp_by_id("floorplans", "availability not")
+            #self.send_keys_fp_by_id("floorplans", "availability ongoing")
+            #self.send_keys_fp_by_id("floorplans", "availability specific")
+            #self.send_keys_fp_by_id("floorplans", "availability range")
+            #self.send_keys_fp_by_id("floorplans", "start date")
+            #self.send_keys_fp_by_id("floorplans", "end date")
+            # Floorplans/Description++
+            self.log.warning("The description/virtual tour/webpage/lease/image haven't been implemented for floorplans. They must be filled manually.")
+            #self.send_keys_fp_by_id("floorplans", "description")
+            #self.send_keys_fp_by_id("floorplans", "virtual tour")
+            #self.send_keys_fp_by_id("floorplans", "webpage")
+            #self.send_keys_fp_by_id("floorplans", "lease")
+            #self.send_keys_fp_by_id("floorplans", "image")
+    def fill_amenities(self):
+        self.wait_for_xpath(self.payload.xpath("amenities", "link"))
+        link = self.driver.find_element_by_xpath(self.payload.xpath("amenities", "link"))
         link.click()
 
         self.log.warning("The pet dropdown hasn't been fully implemented. Check that the data is accurate.")
+        self.log.debug("FIX the pets!")
         #FIXME
-        dd = self.driver.find_element_by_id(payload.id("amenities", "pet policy"))
-        pets = str(payload.get_value("amenities", "pet policy")).lower()
-        if pets == "not allowed":
-            self.dropdown(dd, "pets not allowed")
-        elif "considered" in pets:
-            self.dropdown(dd, "pets considered")
-        else:
-            self.dropdown(dd, "pets allowed")
+        #dd = self.driver.find_element_by_id(self.payload.id("amenities", "pet policy"))
+        #pets = str(self.payload.get_value("amenities", "pet policy")).lower()
+        #if pets == "not allowed":
+        #    self.dropdown_by_id(dd, "pets not allowed")
+        #elif "considered" in pets:
+        #    self.dropdown_by_id(dd, "pets considered")
+        #else:
+        #    self.dropdown_by_id(dd, "pets allowed")
 
-        if "cat" in pets:
-            element = self.driver.find_element_by_id(payload.id("amenities", "cats"))
-            self.checkbox(element, True)
-        if "dog" in pets:
-            element = self.driver.find_element_by_id(payload.id("amenities", "dogs"))
-            self.checkbox(element, True)
+        #if "cat" in pets:
+        #    element = self.driver.find_element_by_id(self.payload.id("amenities", "cats"))
+        #    self.checkbox_by_id(element, True)
+        #if "dog" in pets:
+        #    element = self.driver.find_element_by_id(self.payload.id("amenities", "dogs"))
+        #    self.checkbox_by_id(element, True)
 
-        self.dropdown(self.driver.find_element_by_id(payload.id("amenities", "lead paint")), payload.get_value("amenities", "lead paint"))
+        self.dropdown_by_id("amenities", "lead paint")
     
         # Features
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "ac")), payload.get_value("amenities", "ac"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "carpet")), payload.get_value("amenities", "carpet"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "dining room")), payload.get_value("amenities", "dining room"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "disability access")), payload.get_value("amenities", "disability access"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "dishwasher")), payload.get_value("amenities", "dishwasher"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "fireplace")), payload.get_value("amenities", "fireplace"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "furnished")), payload.get_value("amenities", "furnished"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "garbage disposal")), payload.get_value("amenities", "garbage disposal"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "hardwood")), payload.get_value("amenities", "hardwood"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "internet")), payload.get_value("amenities", "internet"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "living room")), payload.get_value("amenities", "living room"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "microwave")), payload.get_value("amenities", "microwave"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "patio")), payload.get_value("amenities", "patio"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "private garden")), payload.get_value("amenities", "private garden"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "shared garden")), payload.get_value("amenities", "shared garden"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "smoke free")), payload.get_value("amenities", "smoke free"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "additional storage")), payload.get_value("amenities", "additional storage"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "included storage")), payload.get_value("amenities", "included storage"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "study")), payload.get_value("amenities", "study"))
+        self.checkbox_by_id("amenities", "ac")
+        self.checkbox_by_id("amenities", "carpet")
+        self.checkbox_by_id("amenities", "dining room")
+        self.checkbox_by_id("amenities", "disability access")
+        self.checkbox_by_id("amenities", "dishwasher")
+        self.checkbox_by_id("amenities", "fireplace")
+        self.checkbox_by_id("amenities", "furnished")
+        self.checkbox_by_id("amenities", "garbage disposal")
+        self.checkbox_by_id("amenities", "hardwood")
+        self.checkbox_by_id("amenities", "internet")
+        self.checkbox_by_id("amenities", "living room")
+        self.checkbox_by_id("amenities", "microwave")
+        self.checkbox_by_id("amenities", "patio")
+        self.checkbox_by_id("amenities", "private garden")
+        self.checkbox_by_id("amenities", "shared garden")
+        self.checkbox_by_id("amenities", "smoke free")
+        self.checkbox_by_id("amenities", "additional storage")
+        self.checkbox_by_id("amenities", "included storage")
+        self.checkbox_by_id("amenities", "study")
         #Agency
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "agent fee")), payload.get_value("amenities", "agent fee"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "no fee")), payload.get_value("amenities", "no fee"))
+        self.checkbox_by_id("amenities", "agent fee")
+        self.checkbox_by_id("amenities", "no fee")
         # Community
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "fitness room")), payload.get_value("amenities", "fitness room"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "individual leases")), payload.get_value("amenities", "individual leases"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "near bus")), payload.get_value("amenities", "near bus"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "near T")), payload.get_value("amenities", "near T"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "pool")), payload.get_value("amenities", "pool"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "roommate matching")), payload.get_value("amenities", "roommate matching"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "tennis court")), payload.get_value("amenities", "tennis court"))
+        self.checkbox_by_id("amenities", "fitness room")
+        self.checkbox_by_id("amenities", "individual leases")
+        self.checkbox_by_id("amenities", "near bus")
+        self.checkbox_by_id("amenities", "near T")
+        self.checkbox_by_id("amenities", "pool")
+        self.checkbox_by_id("amenities", "roommate matching")
+        self.checkbox_by_id("amenities", "tennis court")
         # Lease
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "12 months")), payload.get_value("amenities", "12 months"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "9 months")), payload.get_value("amenities", "9 months"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "fall sublet")), payload.get_value("amenities", "fall sublet"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "flexible lease")), payload.get_value("amenities", "flexible lease"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "month to month")), payload.get_value("amenities", "month to month"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "short term lease")), payload.get_value("amenities", "short term lease"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "spring sublet")), payload.get_value("amenities", "spring sublet"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "summer sublet")), payload.get_value("amenities", "summer sublet"))
+        self.checkbox_by_id("amenities", "12 months")
+        self.checkbox_by_id("amenities", "9 months")
+        self.checkbox_by_id("amenities", "fall sublet")
+        self.checkbox_by_id("amenities", "flexible lease")
+        self.checkbox_by_id("amenities", "month to month")
+        self.checkbox_by_id("amenities", "short term lease")
+        self.checkbox_by_id("amenities", "spring sublet")
+        self.checkbox_by_id("amenities", "summer sublet")
         # Security
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "courtesy officer")), payload.get_value("amenities", "courtesy officer"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "dead bolt")), payload.get_value("amenities", "dead bolt"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "exterior light")), payload.get_value("amenities", "exterior light"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "intercom")), payload.get_value("amenities", "intercom"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "security guard")), payload.get_value("amenities", "security guard"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "security system")), payload.get_value("amenities", "security system"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "video surveillance")), payload.get_value("amenities", "video surveillance"))
+        self.checkbox_by_id("amenities", "courtesy officer")
+        self.checkbox_by_id("amenities", "dead bolt")
+        self.checkbox_by_id("amenities", "exterior light")
+        self.checkbox_by_id("amenities", "intercom")
+        self.checkbox_by_id("amenities", "security guard")
+        self.checkbox_by_id("amenities", "security system")
+        self.checkbox_by_id("amenities", "video surveillance")
         # Utilities
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "cable")), payload.get_value("amenities", "cable"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "electricity")), payload.get_value("amenities", "electricity"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "gas")), payload.get_value("amenities", "gas"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "heat")), payload.get_value("amenities", "heat"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "high-speed internet")), payload.get_value("amenities", "high-speed internet"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "hot water")), payload.get_value("amenities", "hot water"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "local phone")), payload.get_value("amenities", "local phone"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "recycling")), payload.get_value("amenities", "recycling"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "trash")), payload.get_value("amenities", "trash"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "water")), payload.get_value("amenities", "water"))
+        self.checkbox_by_id("amenities", "cable")
+        self.checkbox_by_id("amenities", "electricity")
+        self.checkbox_by_id("amenities", "gas")
+        self.checkbox_by_id("amenities", "heat")
+        self.checkbox_by_id("amenities", "high-speed internet")
+        self.checkbox_by_id("amenities", "hot water")
+        self.checkbox_by_id("amenities", "local phone")
+        self.checkbox_by_id("amenities", "recycling")
+        self.checkbox_by_id("amenities", "trash")
+        self.checkbox_by_id("amenities", "water")
         # Parking
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "garage")), payload.get_value("amenities", "garage"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "no parking")), payload.get_value("amenities", "no parking"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "off street parking")), payload.get_value("amenities", "off street parking"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "on street parking")), payload.get_value("amenities", "on street parking"))
+        self.checkbox_by_id("amenities", "garage")
+        self.checkbox_by_id("amenities", "no parking")
+        self.checkbox_by_id("amenities", "off street parking")
+        self.checkbox_by_id("amenities", "on street parking")
         # Laundry
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "laundry room")), payload.get_value("amenities", "laundry room"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "no laundry")), payload.get_value("amenities", "no laundry"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "wd hookups")), payload.get_value("amenities", "wd hookups"))
-        self.checkbox(self.driver.find_element_by_id(payload.id("amenities", "wd in unit")), payload.get_value("amenities", "wd in unit"))
+        self.checkbox_by_id("amenities", "laundry room")
+        self.checkbox_by_id("amenities", "no laundry")
+        self.checkbox_by_id("amenities", "wd hookups")
+        self.checkbox_by_id("amenities", "wd in unit")
         # Description
-        description = payload.get_value("amenities", "description")
-        iframe = self.driver.find_element_by_id(payload.id("amenities", "tinymce"))
+        description = self.payload.get_value("amenities", "description")
+        iframe = self.driver.find_element_by_id(self.payload.id("amenities", "tinymce"))
         self.driver.switch_to.frame(iframe)
-        tinymce = self.driver.find_element_by_id(payload.id("amenities", "description"))
+        tinymce = self.driver.find_element_by_id(self.payload.id("amenities", "description"))
         tinymce.click()
         tinymce.send_keys(description)
         self.driver.switch_to.default_content()
 
-        self.driver.find_element_by_id(payload.id("amenities", "wd in unit")).submit()
-    def fill_contact_page(self, payload):
+        self.driver.find_element_by_id(self.payload.id("amenities", "wd in unit")).submit()
+    def fill_contact_page(self):
         self.log.warning("The contact page hasn't been implemented. Fill manually.")
-        #self.wait.until(EC.presence_of_element_located((By.XPATH, payload.contact_link)))
+        #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.contact_link)))
     
-        #result = self.driver.find_element_by_xpath(payload.contacat_link)
+        #result = self.driver.find_element_by_xpath(self.payload.contacat_link)
         #result.click()
     
         return True
-    def fill_photos_page(self, payload):
+    def fill_photos_page(self):
         self.log.warning("The photos page hasn't been implemented. Fill manually.")
-        #self.wait.until(EC.presence_of_element_located((By.XPATH, payload.photos_link)))
+        #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.photos_link)))
     
-        #result = self.driver.find_element_by_xpath(payload.photos_link)
+        #result = self.driver.find_element_by_xpath(self.payload.photos_link)
         #result.click()
 
         return True

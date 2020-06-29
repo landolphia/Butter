@@ -7,6 +7,8 @@ import navigation
 import payload
 import spreadsheet
 
+VERSION = "0.1.8.5"
+
 def init_log(logLevel):
     log = logging.getLogger("bLog")
     log.setLevel(logging.DEBUG)
@@ -52,7 +54,8 @@ def process_args(args):
 def main():
     logLevel = process_args(sys.argv)
     log = init_log(logLevel)
-    log.info("Starting...")
+    log.info("Butter v" + str(VERSION) + " is starting...")
+    log.debug("Todo:\n-finish refactoring\n-add data type to payload\n-finish multiple floorplans\n")
 
     start_time = time.time()
     
@@ -60,20 +63,24 @@ def main():
     ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
     data.init(ss)
 
-    nav = navigation.Navigator()
-    nav.login(data)
-    nav.add_listing(data)
-    nav.fill_address(data)
-    nav.fill_rent(data)
-    nav.fill_specifics(data)
-    nav.fill_amenities(data)
+    nav = navigation.Navigator(data)
+    nav.login()
+    nav.add_listing()
+    nav.fill_address()
+    nav.fill_rent()
+    input("Rent filled.")
+    nav.fill_specifics()
+    nav.fill_amenities()
     log.warning("The contact page will need to be filled manually.")
-    #nav.fill_contact(data)
+    #nav.fill_contact()
     log.warning("The photos page will need to be filled manually.")
-    #nav.fill_photos(data)
+    #nav.fill_photos()
 
     nav.quit()
 
     log.info("Finished in %s seconds." % (time.time() - start_time))
+
+    log.warning("Please check the messages above to see if some elements still need to be filled manually.")
+    log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
 
 main()

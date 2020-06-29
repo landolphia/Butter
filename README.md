@@ -51,11 +51,12 @@ py main.py
 
 ## History
 
-Current version: 0.1.8.4
+Current version: 0.1.8.4\
 Better logging:
 - rotates log files
 - console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)
 - documentation and website
+- [HOTFIX] fixed duplicate logging and re-enabled implemented functionalities 
 
 <details>
   <summary> Older versions </summary>

@@ -8,8 +8,12 @@ import payload
 import spreadsheet
 
 def init_log(logLevel):
-    log = logging.getLogger("root")
+    log = logging.getLogger("bLog")
     log.setLevel(logging.DEBUG)
+    log.propagate = False
+
+    if (log.hasHandlers()):
+        log.gerhandlers.clear()
     
     fileFormatter = logging.Formatter("%(asctime)s [%(levelname)s] from (%(module)s:%(lineno)s): %(message)s")
     fileHandler = logging.handlers.RotatingFileHandler("debug.log", mode='a', maxBytes=1*1024*1024, backupCount=2, encoding=None, delay=0)
@@ -36,6 +40,8 @@ def process_args(args):
             logLevel = logging.DEBUG
         elif a == "WARNING":
             logLevel = logging.WARNING
+        elif a == "INFO":
+            logLevel = logging.INFO
         else:
             if i != 1:
                 print("Argument #" + str(i) + " ignored. [" + str(a) + "]")

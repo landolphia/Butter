@@ -9,9 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class Navigator:
     def __init__(self):
-            self.log = logging.getLogger("root")
+            self.log = logging.getLogger("bLog")
             self.log.debug("Initializing Navigator.")
-
             self.driver = webdriver.Chrome()
             self.wait = WebDriverWait(self.driver, 100)
             # TODO
@@ -37,15 +36,15 @@ class Navigator:
         self.log.debug("Need to parse element and inject fpid.")
         self.log.info("The program has semi-expectedly stopped. Some features are still being developed.")
         sys.exit()
-        self.log.info("Waiting for element to load. [%s]" % element)
+        self.log.debug("Waiting for element to load. [" + str(element) + "]")
         self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
         return xpath
     def wait_for_xpath(self, element):
-        self.log.debug("Waiting for element to load. [%s]" % element)
+        self.log.debug("Waiting for element to load. [" + str(element) + "]")
         self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
         self.log.debug("Element loaded.")
     def wait_for_id(self, element):
-        self.log.debug("Waiting for element to load. [%s]" % element)
+        self.log.debug("Waiting for element to load. [" + str(element) + "]")
         self.wait.until(EC.presence_of_element_located((By.ID, element)))
         self.log.debug("Element loaded.")
     def login(self, payload):

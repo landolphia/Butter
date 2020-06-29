@@ -7,7 +7,7 @@ FP_LENGTH = 38
 
 class Payload:
     def __init__(self):
-        self.log = logging.getLogger("root")
+        self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Payload.")
     
         self.credentials = self.__get_credentials__("private.slr")
@@ -103,13 +103,13 @@ class Payload:
         self.__add__element__("specifics", "allow sublet", "allow_sublets-display", None, 23, None)
         self.__add__element__("specifics", "is sublet", "sublet-display", None, 24, None)
         self.__add__element__("specifics", "roommate situation", "shared-display", None, 25, None)
-        print("FIX ME, requires thinking. Especially with the 2 row shift from the new format.")
+        self.log.debug("FIX ME, requires thinking. Especially with the 2 row shift from the new format.")
         self.__add__element__("specifics", "available now", "move-in-now", None, 26, None)
         self.__add__element__("specifics", "available date", "move-in-date", None, 26, None)
         self.__add__element__("specifics", "available date start", "start", None, 26, None)
         self.__add__element__("specifics", "available range", "move-in-range", None, 26, None)
         self.__add__element__("specifics", "available date end", "end", None, 26, None)
-        print("This be fixed.")
+        self.log.debug("This be fixed.")
         self.__add__element__("specifics", "renew unknown", "renew-option-unknown", None, 27, None)
         self.__add__element__("specifics", "renew yes", "renew-option-yes", None, 27, None)
         self.__add__element__("specifics", "renew no", "renew-option-no", None, 27, None)
@@ -117,7 +117,7 @@ class Payload:
         # Features
         self.__add__element__("amenities", "link", None, "//a[@data-target=\"amenities\"]", None, None)
         self.__add__element__("amenities", "pet policy", "pet_policy", None, 31, None)
-        print("Should I get the values for pets here instead of in the navigator?")
+        self.log.debug("Should I get the values for pets here instead of in the navigator?")
         self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
         self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
         self.__add__element__("amenities", "lead paint", "lead_paint", None, 32, None)

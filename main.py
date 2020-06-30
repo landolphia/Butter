@@ -1,5 +1,4 @@
 import logging
-from logging import handlers
 import sys
 import time
 
@@ -7,7 +6,9 @@ import navigation
 import payload
 import spreadsheet
 
-VERSION = "0.1.8.5"
+from logging import handlers
+
+VERSION = "0.2"
 
 def init_log(logLevel):
     log = logging.getLogger("bLog")
@@ -54,7 +55,6 @@ def main():
     logLevel = process_args(sys.argv)
     log = init_log(logLevel)
     log.info("Butter v" + str(VERSION) + " is starting...")
-    log.debug("Todo:\n-finish refactoring\n-add data type to payload\n-finish multiple floorplans\n")
 
     start_time = time.time()
     
@@ -64,7 +64,6 @@ def main():
 
     nav = navigation.Navigator(data)
     nav.start()
-    nav.stop()
 
     log.info("Finished in %s seconds." % (time.time() - start_time))
 

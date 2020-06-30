@@ -37,17 +37,18 @@ class Elements:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
 
         return element
-    def __get_element__fp__(self, page, name, fp_nb, fp_id):
+    def __get_element_fp__(self, page, name, fp_nb, fp_id):
         name = name + str(fp_nb)
         identifier = self.payload.xpath(page, name)
+
         if identifier:
             identifier = identifier.replace("FP_ID", str(fp_id))
             element = self.driver.find_element_by_xpath(identifier)
         else:
             identifier = self.payload.id(page, name)
-            if identifier :
+            if identifier:
                 identifier = identifier.replace("FP_ID", str(fp_id))
-                element = self.driver.find_element_by_id(identifier)
+            element = self.driver.find_element_by_id(identifier)
         if not element:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
 
@@ -57,7 +58,7 @@ class Elements:
         value = self.payload.get_value(page, name)
 
         #FIXME Add a type field to the payload data for each element
-        self.log.debug("FIX ME NOW! Add type to payload.")
+        #self.log.debug("FIX ME NOW! Add type to payload.")
         # Temp fix for bools
         if str(value).lower() == "y": value = True
         if value == None: value = False 
@@ -67,11 +68,11 @@ class Elements:
         else:
             self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def checkbox_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
 
         #FIXME Add a type field to the payload data for each element
-        self.log.debug("FIX ME NOW! Add type to payload.")
+        #self.log.debug("FIX ME NOW! Add type to payload.")
         if str(value).lower() == "y": value = True
         if value == None: value = False 
 
@@ -79,8 +80,9 @@ class Elements:
             self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
         else:
             self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+    def clear(self, page, name): self.__get_element__(page, name).clear()
     def click(self, page, name): self.__get_element__(page, name).click()
-    def click_fp(self, page, name, fp_nb, fp_id): self.__get_element__fp__(page, name, fp_nb, fp_id).click()
+    def click_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).click()
     def current_url(self):
         return self.driver.current_url
     def dropdown(self, page, name):
@@ -91,7 +93,7 @@ class Elements:
             if option.text.strip().lower() == str(value).lower():
                 option.click()
     def dropdown_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
 
         for option in element.find_elements_by_tag_name('option'):
@@ -101,14 +103,36 @@ class Elements:
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)
         if not value:
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
 
         element.send_keys(value)
-    def fill_input_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
+    def fill_input_date(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+        if not value:
+            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
+            sys.exit()
+
+        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
+    def fill_input_date_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
-        if value:
-            element.send_keys(value)
+        if not value:
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
+            sys.exit()
+
+        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
+        self.log.debug("Check date.")
+    def fill_input_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+        if not value:
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            value = "[DEFAULT_VALUE]"
+
+        element.send_keys(value)
     def fill_input_money(self, page, name):
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)
@@ -117,7 +141,7 @@ class Elements:
         element.send_keys(Keys.DELETE)
         element.send_keys("$" + str(value))
     def fill_input_money_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
 
         element.send_keys(Keys.CONTROL + "a")
@@ -139,11 +163,24 @@ class Elements:
         element = self.__get_element__(page, name)
         element.send_keys(Keys.ENTER)
     def quit(self): self.driver.quit()
-    def radio(self, page, name): self.click(page, name)
-    def radio_fp(self, page, name, fp_nb, fp_id): self.click_fp(page, name, fp_nb, fp_id)
+    def radio(self, page, name):
+        value = self.payload.get_value(page, name)
+        if value != None:
+            self.click(page, name)
+
+        return value
+    def radio_fp(self, page, name, fp_nb, fp_id):
+        value = self.payload.get_value(page, name + str(fp_nb))
+        if value != None:
+            self.click_fp(page, name, fp_nb, fp_id)
+
+        return value
     def submit(self, page, name): self.__get_element__(page, name).submit()
-    def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element__fp__(page, name, fp_nb, fp_id).submit()
+    def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).submit()
     def tinyMCE(self, page, name, iframe_page, iframe_name):
+        #TODO maybe I could speed this up by setting the value instead of sending keys
+        #TODO (only display warning if len>X
+        self.log.warning("Filling in the description. This might take a while if it's long.")
         description = self.payload.get_value(page, name)
 
         iframe = self.__get_element__(iframe_page, iframe_name)
@@ -165,7 +202,6 @@ class Elements:
             return
         else:
             identifier = self.payload.id(page, name)
-        self.log.debug("id = " + identifier)
 
         if identifier:
             self.hold.until(EC.presence_of_element_located((By.ID, identifier)))

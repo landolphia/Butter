@@ -22,7 +22,7 @@ class Payload:
         with open (slr, "r") as slurp:
             data = slurp.readlines()
         if  len(data) != 3:
-            logging.error("Could not find credentials in 'private.slr'.")
+            self.log.error("Could not find credentials in 'private.slr'.")
             sys.exit()
     
         result["username"] = data[0].rstrip()
@@ -34,7 +34,7 @@ class Payload:
         if page not in self.data:
             self.data[page] = {}
         if name not in self.data[page]:
-            if cell_offset != None:
+            if not value and cell_offset != None:
                 value = self.ss.get_key(cell_offset) 
             self.data[page][name] = {
                 "id": css_id,
@@ -105,23 +105,54 @@ class Payload:
         self.__add__element__("specifics", "allow sublet", "allow_sublets-display", None, 23, None)
         self.__add__element__("specifics", "is sublet", "sublet-display", None, 24, None)
         self.__add__element__("specifics", "roommate situation", "shared-display", None, 25, None)
-        self.log.debug("FIX ME, requires thinking. Especially with the 2 row shift from the new format.")
-        self.__add__element__("specifics", "available ongoing", "move-in-now", None, 26, None)
-        self.__add__element__("specifics", "available date", "move-in-date", None, 26, None)
-        self.__add__element__("specifics", "available date start", "start", None, 26, None)
-        self.__add__element__("specifics", "available range", "move-in-range", None, 26, None)
-        self.__add__element__("specifics", "available date end", "end", None, 26, None)
-        self.log.debug("FIXME This be fixed.")
-        self.__add__element__("specifics", "renew unknown", "renew-option-unknown", None, 27, None)
-        self.__add__element__("specifics", "renew yes", "renew-option-yes", None, 27, None)
-        self.__add__element__("specifics", "renew no", "renew-option-no", None, 27, None)
+
+        availability = str(self.ss.get_key(26)).lower()
+        value = ("Y" if availability == "on a specific date" else None)
+        self.__add__element__("specifics", "available date", "move-in-date", None, None, value)
+        value = ("Y" if availability == "between two dates" else None)
+        self.__add__element__("specifics", "available range", "move-in-range", None, None, value)
+        value = ("Y" if availability == "ongoing" else None)
+        self.__add__element__("specifics", "available ongoing", "move-in-now", None, None, value)
+        
+        date = None
+        if self.get_value("specifics", "available date") != None:
+            date = self.ss.parse_date(self.ss.get_key(27))
+            self.__add__element__("specifics", "start date", "start", None, 27, date)
+            self.__add__element__("specifics", "end date", "end", None, 28, date)
+        if self.get_value("specifics", "available range") != None:
+            date = self.ss.parse_date(self.ss.get_key(27))
+            self.__add__element__("specifics", "start date", "start", None, 27, date)
+            date = self.ss.parse_date(self.ss.get_key(28))
+            self.__add__element__("specifics", "end date", "end", None, 28, date)
+        else:
+            self.__add__element__("specifics", "start date", "start", None, 27, date)
+            self.__add__element__("specifics", "end date", "end", None, 28, date)
+
+        self.__add__element__("specifics", "renew unknown", "renew-option-unknown", None, 29, None)
+        self.__add__element__("specifics", "renew yes", "renew-option-yes", None, 29, None)
+        self.__add__element__("specifics", "renew no", "renew-option-no", None, 29, None)
         # Amenities page
         # Features
         self.__add__element__("amenities", "link", None, "//a[@data-target=\"amenities\"]", None, None)
-        self.__add__element__("amenities", "pet policy", "pet_policy", None, 31, None)
-        self.log.debug("FIXME Should I get the values for pets here instead of in the navigator?")
-        self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
-        self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
+        
+        policy = str(ss.get_key(31)).lower()
+        if "not allowed" in policy:
+            self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Not Allowed")
+        elif "considered" in policy:
+            self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Considered")
+        else: # Assumed to be allowed
+            self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Allowed")
+
+        if "cat" in policy:
+            self.__add__element__("amenities", "cats", "pet_types-27", None, None, "Y")
+        else:
+            self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
+
+        if "dog" in policy:
+            self.__add__element__("amenities", "dogs", "pet_types-28", None, None, "Y")
+        else:
+            self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
+
         self.__add__element__("amenities", "lead paint", "lead_paint", None, 32, None)
         self.__add__element__("amenities", "ac", "amenity[1]-1", None, 34, None)
         self.__add__element__("amenities", "carpet", "amenity[1]-20", None, 35, None)
@@ -244,12 +275,30 @@ class Payload:
         self.__add__element__("floorplans", "included storage" + str(n), "floorplan-FP_ID-amenity[1]-208", None, offset + 26, None)
         self.__add__element__("floorplans", "study" + str(n), "floorplan-FP_ID-amenity[1]-203", None, offset + 27, None)
         # Floorplans/Availability
-        self.__add__element__("floorplans", "availability not" + str(n), "floorplan-FP_ID-move-in-not", None, offset + 28, None)
-        self.__add__element__("floorplans", "availability ongoing" + str(n), "floorplan-FP_ID-move-in-now", None, offset + 28, None)
-        self.__add__element__("floorplans", "availability specific" + str(n), "floorplan-FP_ID-move-in-date", None, offset + 28, None)
-        self.__add__element__("floorplans", "availability range" + str(n), "floorplan-FP_ID-move-in-range", None, offset + 28, None)
-        self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, None)
-        self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, None)
+        availability = str(self.ss.get_key(offset+28)).lower()
+        value = ("Y" if availability == "not available" else None)
+        self.__add__element__("floorplans", "availability not" + str(n), "floorplan-FP_ID-move-in-not", None, None, value)
+        value = ("Y" if availability == "a specific date" else None)
+        self.__add__element__("floorplans", "availability specific" + str(n), "floorplan-FP_ID-move-in-date", None, None, value)
+        value = ("Y" if availability == "between two dates" else None)
+        self.__add__element__("floorplans", "availability range" + str(n), "floorplan-FP_ID-move-in-range", None, None, value)
+        value = ("Y" if availability == "ongoing" else None)
+        self.__add__element__("floorplans", "availability ongoing" + str(n), "floorplan-FP_ID-move-in-now", None, None, value)
+
+        date = None
+        if self.get_value("floorplans", "availability specific" + str(n)) != None:
+            date = self.ss.parse_date(self.ss.get_key(offset+29))
+            self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
+            self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+        elif self.get_value("floorplans", "availability range" + str(n)) != None:
+            date = self.ss.parse_date(self.ss.get_key(offset+29))
+            self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
+            date = self.ss.parse_date(self.ss.get_key(offset+30))
+            self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+        else:
+            self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
+            self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+
         # Floorplans/Description++
         self.__add__element__("floorplans", "description" + str(n), "floorplan-FP_ID-description", None, offset + 31, None)
         self.__add__element__("floorplans", "virtual tour" + str(n), "floorplan-FP_ID-virtual-tour", None, offset + 33, None)

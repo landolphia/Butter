@@ -21,6 +21,7 @@ Uses the following modules.
  pip install pandas
  pip install phonenumbers
  pip install selenium
+ pip install xlrd
 ```
 
 ## Usage
@@ -38,13 +39,12 @@ py main.py
 <details>
 	<summary> Click to expand </summary>
 
-Roadmap to 0.2:
-- move in date
 - double check pets
 Other:
 - photos page
 - contact page
 - value formatting and validation
+- value type in payload
 - consider webDriver wait delay, might improve speed
 - remove lxml (see next item)
 - consolidate with HTML scraper
@@ -52,13 +52,17 @@ Other:
 
 ## History
 
-Current version: 0.1.8.5\
-- refactor, split navigator and element manipulation.
-- assumes identifier type
-- multiple floorplans loop
+Current version: 0.2\
+- date and pets
+- multiple floorplans
 
 <details>
   <summary> Older versions </summary>
+
+ 0.1.8.5
+- refactor, split navigator and element manipulation.
+- assumes identifier type
+- location, rent, floorplans, specifics, amenities
 v0.1.8.5
 - rotates log files
 - console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)

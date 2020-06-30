@@ -4,19 +4,21 @@ import elements
 
 class Navigator:
     def __init__(self, payload):
-            self.log = logging.getLogger("bLog")
-            self.log.debug("Initializing Navigator.")
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing Navigator.")
             
-            self.payload = payload
-            self.elements = elements.Elements(payload)
+        self.payload = payload
+        self.elements = elements.Elements(payload)
     def start(self):
         self.login()
         self.add_listing()
         self.fill_address()
-        self.fill_rent()
+        #self.fill_rent()
         self.fill_amenities()
+        input("Check pets")
         self.fill_contact()
         self.fill_photos()
+        self.elements.quit()
     def login(self):
         self.elements.go("login", "login url")
 
@@ -79,6 +81,8 @@ class Navigator:
 
         if self.payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
+            self.log.warning("Specifics page doesn't get filled automatically for multiple floorplans. This has to be done manually.")
+            self.log.debug("TODO fill specifics when there are multiple floorplans?")
         else:
             self.fill_floorplan()
     def fill_floorplan(self):
@@ -95,11 +99,8 @@ class Navigator:
         self.elements.press_enter("rent", "specials")
         self.fill_specifics()
     def fill_floorplans(self):
-        self.log.warning("Floorplans are still being implemented.")
-
         i = 0
         fp_number = self.payload.get_value("floorplans", "total number")
-        self.log.warning("#" + str(fp_number) + " fps")
 
         while i < fp_number:
             # FIXME Should click edit instead of add for the first floorplan
@@ -148,16 +149,15 @@ class Navigator:
             self.elements.checkbox_fp("floorplans", "study", i, fp_id)
 
             # Floorplans/Availability
-            self.log.warning("The date hasn't been implemented for floorplans. This must be filled manually for each floorplan.")
-            
+            self.elements.radio_fp("floorplans", "availability not", i, fp_id)
             self.elements.radio_fp("floorplans", "availability ongoing", i, fp_id)
 
-            #self.send_keys_fp_by_id("floorplans", "availability not")
-            #self.send_keys_fp_by_id("floorplans", "availability ongoing")
-            #self.send_keys_fp_by_id("floorplans", "availability specific")
-            #self.send_keys_fp_by_id("floorplans", "availability range")
-            #self.send_keys_fp_by_id("floorplans", "start date")
-            #self.send_keys_fp_by_id("floorplans", "end date")
+            if self.elements.radio_fp("floorplans", "availability specific", i, fp_id):
+                self.elements.fill_input_date_fp("floorplans", "start date", i, fp_id)
+
+            if self.elements.radio_fp("floorplans", "availability range", i, fp_id):
+                self.elements.fill_input_date_fp("floorplans", "start date", i, fp_id)
+                self.elements.fill_input_date_fp("floorplans", "end date", i, fp_id)
 
             # Floorplans/Description++
             self.log.warning("The description/virtual tour/webpage/lease/image haven't been implemented for floorplans. They must be filled manually.")
@@ -180,39 +180,24 @@ class Navigator:
         self.elements.checkbox("specifics", "is sublet")
         self.elements.checkbox("specifics", "roommate situation")
 
-        self.log.warning("The move in date hasn't been implemented. It needs to be filled manually in the specifics page.")
-            #if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
-            #    result = self.driver.find_element_by_id(payload.available_now_id)
-            #else: #FIXME check if date or range and enter range
-            #    print("Fix me!!! range and date")
-            #    print("With start and end input id's and spreadsheet cell parsing.")
-            #    result = self.driver.find_element_by_id(payload.available_range_id)
-            #    result = self.driver.find_element_by_id(payload.available_date_id)
-            #result.click()
+        self.elements.radio("specifics", "available ongoing")
+
+        if self.elements.radio("specifics", "available date") != None:
+            self.elements.fill_input_date("specifics", "start date")
+
+        if self.elements.radio("specifics", "available range") != None:
+            self.elements.fill_input_date("specifics", "start date")
+            self.elements.fill_input_date("specifics", "end date")
+
         self.elements.radio("specifics", "renew yes")
         self.elements.submit("specifics", "renew yes")
     def fill_amenities(self):
         self.elements.wait("amenities", "link")
         self.elements.click("amenities", "link")
 
-        self.log.warning("The pet dropdown hasn't been implemented. The data must be entered manually in the amenities page.")
-        self.log.debug("FIX the pets!")
-        #FIXME
-        #dd = self.driver.find_element_by_id(self.payload.id("amenities", "pet policy"))
-        #pets = str(self.payload.get_value("amenities", "pet policy")).lower()
-        #if pets == "not allowed":
-        #    self.dropdown_by_id(dd, "pets not allowed")
-        #elif "considered" in pets:
-        #    self.dropdown_by_id(dd, "pets considered")
-        #else:
-        #    self.dropdown_by_id(dd, "pets allowed")
-
-        #if "cat" in pets:
-        #    element = self.driver.find_element_by_id(self.payload.id("amenities", "cats"))
-        #    self.checkbox_by_id(element, True)
-        #if "dog" in pets:
-        #    element = self.driver.find_element_by_id(self.payload.id("amenities", "dogs"))
-        #    self.checkbox_by_id(element, True)
+        self.elements.dropdown("amenities", "pet policy")
+        self.elements.checkbox("amenities", "cats")
+        self.elements.checkbox("amenities", "dogs")
 
         self.elements.dropdown("amenities", "lead paint")
     
@@ -305,5 +290,3 @@ class Navigator:
         #result.click()
 
         return True
-    def stop(self):
-        self.elements.quit()

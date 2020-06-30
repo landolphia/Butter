@@ -62,12 +62,12 @@ class Payload:
         self.__add__element__("login", "password", "password", None, None, self.credentials["password"])
         self.__add__element__("hidden", "gmaps", None, None, None, self.credentials["api_key"])
         self.credentials = None
-    def xpath(self, page, name): return self.data[page][name]["xpath"]
+    def get_bool(self, page, name): return self.data[page][name]["value"] == "Y"
+    def get_value(self, page, name): return self.data[page][name]["value"]
     def id(self, page, name): return self.data[page][name]["id"]
     def offset(self, page, name): return self.data[page][name]["offset"]
-    def get_value(self, page, name): return self.data[page][name]["value"]
-    def get_bool(self, page, name): return self.data[page][name]["value"] == "Y"
     def set_value(self, page, name, value): self.data[page][name]["value"] = value
+    def xpath(self, page, name): return self.data[page][name]["xpath"]
     def init(self, ss):
         self.ss = ss
         # Location page
@@ -111,7 +111,7 @@ class Payload:
         self.__add__element__("specifics", "available date start", "start", None, 26, None)
         self.__add__element__("specifics", "available range", "move-in-range", None, 26, None)
         self.__add__element__("specifics", "available date end", "end", None, 26, None)
-        self.log.debug("This be fixed.")
+        self.log.debug("FIXME This be fixed.")
         self.__add__element__("specifics", "renew unknown", "renew-option-unknown", None, 27, None)
         self.__add__element__("specifics", "renew yes", "renew-option-yes", None, 27, None)
         self.__add__element__("specifics", "renew no", "renew-option-no", None, 27, None)
@@ -119,7 +119,7 @@ class Payload:
         # Features
         self.__add__element__("amenities", "link", None, "//a[@data-target=\"amenities\"]", None, None)
         self.__add__element__("amenities", "pet policy", "pet_policy", None, 31, None)
-        self.log.debug("Should I get the values for pets here instead of in the navigator?")
+        self.log.debug("FIXME Should I get the values for pets here instead of in the navigator?")
         self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
         self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
         self.__add__element__("amenities", "lead paint", "lead_paint", None, 32, None)

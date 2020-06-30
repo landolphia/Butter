@@ -64,9 +64,7 @@ def main():
 
     nav = navigation.Navigator(data)
     nav.start()
-    log.warning("The contact page will need to be filled manually.")
-    log.warning("The photos page will need to be filled manually.")
-    nav.quit()
+    nav.stop()
 
     log.info("Finished in %s seconds." % (time.time() - start_time))
 

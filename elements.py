@@ -26,6 +26,17 @@ class Elements:
                 sys.exit()
 
             self.payload = payload
+    def __get_element__(self, page, name):
+        identifier = self.payload.xpath(page, name)
+        if identifier:
+            element = self.driver.find_element_by_xpath(identifier)
+        else:
+            identifier = self.payload.id(page, name)
+            element = self.driver.find_element_by_id(identifier)
+        if not element:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+
+        return element
     def __get_element__fp__(self, page, name, fp_nb, fp_id):
         name = name + str(fp_nb)
         identifier = self.payload.xpath(page, name)
@@ -37,17 +48,6 @@ class Elements:
             if identifier :
                 identifier = identifier.replace("FP_ID", str(fp_id))
                 element = self.driver.find_element_by_id(identifier)
-        if not element:
-            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
-
-        return element
-    def __get_element__(self, page, name):
-        identifier = self.payload.xpath(page, name)
-        if identifier:
-            element = self.driver.find_element_by_xpath(identifier)
-        else:
-            identifier = self.payload.id(page, name)
-            element = self.driver.find_element_by_id(identifier)
         if not element:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
 
@@ -97,12 +97,62 @@ class Elements:
         for option in element.find_elements_by_tag_name('option'):
             if option.text.strip().lower() == str(value).lower():
                 option.click()
+    def fill_input(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+        if not value:
+            value = "[DEFAULT_VALUE]"
+
+        element.send_keys(value)
+    def fill_input_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+        if value:
+            element.send_keys(value)
+    def fill_input_money(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys("$" + str(value))
+    def fill_input_money_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys("$" + str(value))
+    def fill_input_not_null(self, page, name, default):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+
+        if not value:
+            value = default
+
+        element.send_keys(value)
     def go(self, page, name):
         url = self.payload.get_value(page, name) 
         self.log.debug("Navigating to \"" + str(url) + "\"")
         self.driver.get(url)
+    def press_enter(self, page, name):
+        element = self.__get_element__(page, name)
+        element.send_keys(Keys.ENTER)
+    def quit(self): self.driver.quit()
+    def radio(self, page, name): self.click(page, name)
+    def radio_fp(self, page, name, fp_nb, fp_id): self.click_fp(page, name, fp_nb, fp_id)
     def submit(self, page, name): self.__get_element__(page, name).submit()
     def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element__fp__(page, name, fp_nb, fp_id).submit()
+    def tinyMCE(self, page, name, iframe_page, iframe_name):
+        description = self.payload.get_value(page, name)
+
+        iframe = self.__get_element__(iframe_page, iframe_name)
+        self.driver.switch_to.frame(iframe)
+
+        tinymce = self.__get_element__(page, name)
+        tinymce.click()
+        tinymce.send_keys(description)
+        self.driver.switch_to.default_content()
     def wait(self, page, name):
         self.log.debug("Waiting for element to load. [" + page + "/" + name + "]")
 
@@ -123,52 +173,3 @@ class Elements:
         else:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
             sys.exit()
-    def fill_input_money(self, page, name):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-
-        element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(Keys.DELETE)
-        element.send_keys("$" + str(value))
-    def fill_input_not_null(self, page, name, default):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-
-        if not value:
-            value = default
-
-        element.send_keys(value)
-    def fill_input(self, page, name):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-        if not value:
-            value = "[DEFAULT_VALUE]"
-
-        element.send_keys(value)
-    def fill_input_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-        if value:
-            element.send_keys(value)
-    def fill_input_money_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element__fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-
-        element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(Keys.DELETE)
-        element.send_keys("$" + str(value))
-    def press_enter(self, page, name):
-        element = self.__get_element__(page, name)
-        element.send_keys(Keys.ENTER)
-    def radio(self, page, name): self.click(page, name)
-    def radio_fp(self, page, name, fp_nb, fp_id): self.click_fp(page, name, fp_nb, fp_id)
-
-#NOT DONE below
-    def wait_for_xpath_fp(self, element, fpid):
-        self.log.debug("The floorplan id is " + str(fpid)) 
-        self.log.debug("Need to parse element and inject fpid.")
-        self.log.info("The program has semi-expectedly stopped. Some features are still being developed.")
-        sys.exit()
-        self.log.debug("Waiting for element to load. [" + str(element) + "]")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, element)))
-        return xpath

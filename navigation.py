@@ -14,7 +14,6 @@ class Navigator:
         self.add_listing()
         self.fill_address()
         self.fill_rent()
-        self.fill_specifics()
         self.fill_amenities()
         self.fill_contact()
         self.fill_photos()
@@ -55,7 +54,7 @@ class Navigator:
 
         self.elements.wait("location", "property name")
 
-        self.elements.fill_input_not_null("location", "property name", "[TEST]")
+        self.elements.fill_input_not_null("location", "property name", "[TEST]") #FIXME Fix this before release
         self.elements.press_enter("location", "property name")
     def fill_rent(self):
         self.elements.wait("rent", "rent link")
@@ -94,6 +93,7 @@ class Navigator:
         self.elements.dropdown("rent", "type")
 
         self.elements.press_enter("rent", "specials")
+        self.fill_specifics()
     def fill_floorplans(self):
         self.log.warning("Floorplans are still being implemented.")
 
@@ -148,7 +148,7 @@ class Navigator:
             self.elements.checkbox_fp("floorplans", "study", i, fp_id)
 
             # Floorplans/Availability
-            self.log.warning("The date hasn't been implemented for floorplans. This must be filled manually.")
+            self.log.warning("The date hasn't been implemented for floorplans. This must be filled manually for each floorplan.")
             
             self.elements.radio_fp("floorplans", "availability ongoing", i, fp_id)
 
@@ -170,14 +170,32 @@ class Navigator:
             self.elements.submit_fp("floorplans", "name", i, fp_id)
 
             i = i + 1
-        input("UHUH")
-        sys.exit()
-    def fill_amenities(self):
-        self.wait_for_xpath(self.payload.xpath("amenities", "link"))
-        link = self.driver.find_element_by_xpath(self.payload.xpath("amenities", "link"))
-        link.click()
+    def fill_specifics(self):
+        self.elements.wait("specifics", "link")
+        self.elements.click("specifics", "link")
 
-        self.log.warning("The pet dropdown hasn't been fully implemented. Check that the data is accurate.")
+        self.elements.dropdown("specifics", "max occupants")
+
+        self.elements.checkbox("specifics", "allow sublet")
+        self.elements.checkbox("specifics", "is sublet")
+        self.elements.checkbox("specifics", "roommate situation")
+
+        self.log.warning("The move in date hasn't been implemented. It needs to be filled manually in the specifics page.")
+            #if str(payload.listing.availability_date).lower() == "now": #FIXME Now, date, between
+            #    result = self.driver.find_element_by_id(payload.available_now_id)
+            #else: #FIXME check if date or range and enter range
+            #    print("Fix me!!! range and date")
+            #    print("With start and end input id's and spreadsheet cell parsing.")
+            #    result = self.driver.find_element_by_id(payload.available_range_id)
+            #    result = self.driver.find_element_by_id(payload.available_date_id)
+            #result.click()
+        self.elements.radio("specifics", "renew yes")
+        self.elements.submit("specifics", "renew yes")
+    def fill_amenities(self):
+        self.elements.wait("amenities", "link")
+        self.elements.click("amenities", "link")
+
+        self.log.warning("The pet dropdown hasn't been implemented. The data must be entered manually in the amenities page.")
         self.log.debug("FIX the pets!")
         #FIXME
         #dd = self.driver.find_element_by_id(self.payload.id("amenities", "pet policy"))
@@ -196,87 +214,81 @@ class Navigator:
         #    element = self.driver.find_element_by_id(self.payload.id("amenities", "dogs"))
         #    self.checkbox_by_id(element, True)
 
-        self.dropdown_by_id("amenities", "lead paint")
+        self.elements.dropdown("amenities", "lead paint")
     
         # Features
-        self.checkbox_by_id("amenities", "ac")
-        self.checkbox_by_id("amenities", "carpet")
-        self.checkbox_by_id("amenities", "dining room")
-        self.checkbox_by_id("amenities", "disability access")
-        self.checkbox_by_id("amenities", "dishwasher")
-        self.checkbox_by_id("amenities", "fireplace")
-        self.checkbox_by_id("amenities", "furnished")
-        self.checkbox_by_id("amenities", "garbage disposal")
-        self.checkbox_by_id("amenities", "hardwood")
-        self.checkbox_by_id("amenities", "internet")
-        self.checkbox_by_id("amenities", "living room")
-        self.checkbox_by_id("amenities", "microwave")
-        self.checkbox_by_id("amenities", "patio")
-        self.checkbox_by_id("amenities", "private garden")
-        self.checkbox_by_id("amenities", "shared garden")
-        self.checkbox_by_id("amenities", "smoke free")
-        self.checkbox_by_id("amenities", "additional storage")
-        self.checkbox_by_id("amenities", "included storage")
-        self.checkbox_by_id("amenities", "study")
+        self.elements.checkbox("amenities", "ac")
+        self.elements.checkbox("amenities", "carpet")
+        self.elements.checkbox("amenities", "dining room")
+        self.elements.checkbox("amenities", "disability access")
+        self.elements.checkbox("amenities", "dishwasher")
+        self.elements.checkbox("amenities", "fireplace")
+        self.elements.checkbox("amenities", "furnished")
+        self.elements.checkbox("amenities", "garbage disposal")
+        self.elements.checkbox("amenities", "hardwood")
+        self.elements.checkbox("amenities", "internet")
+        self.elements.checkbox("amenities", "living room")
+        self.elements.checkbox("amenities", "microwave")
+        self.elements.checkbox("amenities", "patio")
+        self.elements.checkbox("amenities", "private garden")
+        self.elements.checkbox("amenities", "shared garden")
+        self.elements.checkbox("amenities", "smoke free")
+        self.elements.checkbox("amenities", "additional storage")
+        self.elements.checkbox("amenities", "included storage")
+        self.elements.checkbox("amenities", "study")
         #Agency
-        self.checkbox_by_id("amenities", "agent fee")
-        self.checkbox_by_id("amenities", "no fee")
+        self.elements.checkbox("amenities", "agent fee")
+        self.elements.checkbox("amenities", "no fee")
         # Community
-        self.checkbox_by_id("amenities", "fitness room")
-        self.checkbox_by_id("amenities", "individual leases")
-        self.checkbox_by_id("amenities", "near bus")
-        self.checkbox_by_id("amenities", "near T")
-        self.checkbox_by_id("amenities", "pool")
-        self.checkbox_by_id("amenities", "roommate matching")
-        self.checkbox_by_id("amenities", "tennis court")
+        self.elements.checkbox("amenities", "fitness room")
+        self.elements.checkbox("amenities", "individual leases")
+        self.elements.checkbox("amenities", "near bus")
+        self.elements.checkbox("amenities", "near T")
+        self.elements.checkbox("amenities", "pool")
+        self.elements.checkbox("amenities", "roommate matching")
+        self.elements.checkbox("amenities", "tennis court")
         # Lease
-        self.checkbox_by_id("amenities", "12 months")
-        self.checkbox_by_id("amenities", "9 months")
-        self.checkbox_by_id("amenities", "fall sublet")
-        self.checkbox_by_id("amenities", "flexible lease")
-        self.checkbox_by_id("amenities", "month to month")
-        self.checkbox_by_id("amenities", "short term lease")
-        self.checkbox_by_id("amenities", "spring sublet")
-        self.checkbox_by_id("amenities", "summer sublet")
+        self.elements.checkbox("amenities", "12 months")
+        self.elements.checkbox("amenities", "9 months")
+        self.elements.checkbox("amenities", "fall sublet")
+        self.elements.checkbox("amenities", "flexible lease")
+        self.elements.checkbox("amenities", "month to month")
+        self.elements.checkbox("amenities", "short term lease")
+        self.elements.checkbox("amenities", "spring sublet")
+        self.elements.checkbox("amenities", "summer sublet")
         # Security
-        self.checkbox_by_id("amenities", "courtesy officer")
-        self.checkbox_by_id("amenities", "dead bolt")
-        self.checkbox_by_id("amenities", "exterior light")
-        self.checkbox_by_id("amenities", "intercom")
-        self.checkbox_by_id("amenities", "security guard")
-        self.checkbox_by_id("amenities", "security system")
-        self.checkbox_by_id("amenities", "video surveillance")
+        self.elements.checkbox("amenities", "courtesy officer")
+        self.elements.checkbox("amenities", "dead bolt")
+        self.elements.checkbox("amenities", "exterior light")
+        self.elements.checkbox("amenities", "intercom")
+        self.elements.checkbox("amenities", "security guard")
+        self.elements.checkbox("amenities", "security system")
+        self.elements.checkbox("amenities", "video surveillance")
         # Utilities
-        self.checkbox_by_id("amenities", "cable")
-        self.checkbox_by_id("amenities", "electricity")
-        self.checkbox_by_id("amenities", "gas")
-        self.checkbox_by_id("amenities", "heat")
-        self.checkbox_by_id("amenities", "high-speed internet")
-        self.checkbox_by_id("amenities", "hot water")
-        self.checkbox_by_id("amenities", "local phone")
-        self.checkbox_by_id("amenities", "recycling")
-        self.checkbox_by_id("amenities", "trash")
-        self.checkbox_by_id("amenities", "water")
+        self.elements.checkbox("amenities", "cable")
+        self.elements.checkbox("amenities", "electricity")
+        self.elements.checkbox("amenities", "gas")
+        self.elements.checkbox("amenities", "heat")
+        self.elements.checkbox("amenities", "high-speed internet")
+        self.elements.checkbox("amenities", "hot water")
+        self.elements.checkbox("amenities", "local phone")
+        self.elements.checkbox("amenities", "recycling")
+        self.elements.checkbox("amenities", "trash")
+        self.elements.checkbox("amenities", "water")
         # Parking
-        self.checkbox_by_id("amenities", "garage")
-        self.checkbox_by_id("amenities", "no parking")
-        self.checkbox_by_id("amenities", "off street parking")
-        self.checkbox_by_id("amenities", "on street parking")
+        self.elements.checkbox("amenities", "garage")
+        self.elements.checkbox("amenities", "no parking")
+        self.elements.checkbox("amenities", "off street parking")
+        self.elements.checkbox("amenities", "on street parking")
         # Laundry
-        self.checkbox_by_id("amenities", "laundry room")
-        self.checkbox_by_id("amenities", "no laundry")
-        self.checkbox_by_id("amenities", "wd hookups")
-        self.checkbox_by_id("amenities", "wd in unit")
+        self.elements.checkbox("amenities", "laundry room")
+        self.elements.checkbox("amenities", "no laundry")
+        self.elements.checkbox("amenities", "wd hookups")
+        self.elements.checkbox("amenities", "wd in unit")
         # Description
-        description = self.payload.get_value("amenities", "description")
-        iframe = self.driver.find_element_by_id(self.payload.id("amenities", "tinymce"))
-        self.driver.switch_to.frame(iframe)
-        tinymce = self.driver.find_element_by_id(self.payload.id("amenities", "description"))
-        tinymce.click()
-        tinymce.send_keys(description)
-        self.driver.switch_to.default_content()
+        self.elements.tinyMCE("amenities", "description", "amenities", "tinymce")
 
-        self.driver.find_element_by_id(self.payload.id("amenities", "wd in unit")).submit()
+        self.elements.submit("amenities", "wd in unit")
     def fill_contact(self):
         self.log.warning("The contact page hasn't been implemented. Fill manually.")
         #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.contact_link)))
@@ -293,7 +305,5 @@ class Navigator:
         #result.click()
 
         return True
-    def close(self):
-        self.driver.close()
-    def quit(self):
-        self.driver.quit()
+    def stop(self):
+        self.elements.quit()

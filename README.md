@@ -37,13 +37,13 @@ py main.py
 <details>
 	<summary> Click to expand </summary>
 
-- finish multiple floorplan flow
-- photos page
-- contact page
+Roadmap to 0.2:
 - move in date
 - double check pets
+Other:
+- photos page
+- contact page
 - value formatting and validation
-- refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
 - consider webDriver wait delay, might improve speed
 - remove lxml (see next item)
 - consolidate with HTML scraper
@@ -51,15 +51,18 @@ py main.py
 
 ## History
 
-Current version: 0.1.8.4\
-Better logging:
+Current version: 0.1.8.5\
+- refactor, split navigator and element manipulation.
+- assumes identifier type
+- multiple floorplans loop
+
+<details>
+  <summary> Older versions </summary>
+v0.1.8.5
 - rotates log files
 - console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)
 - documentation and website
 - [HOTFIX] fixed duplicate logging and re-enabled implemented functionalities 
-
-<details>
-  <summary> Older versions </summary>
 v0.1.8.3
 Tweaks for first release
 v0.1.8.2

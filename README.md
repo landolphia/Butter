@@ -17,6 +17,7 @@ Third line: Google API key
 Uses the following modules.
 
 ```shell
+ pip install googlemaps 
  pip install pandas
  pip install phonenumbers
  pip install selenium

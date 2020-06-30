@@ -17,10 +17,11 @@ Third line: Google API key
 Uses the following modules.
 
 ```shell
- pip install googlemaps
+ pip install googlemaps 
  pip install pandas
  pip install phonenumbers
  pip install selenium
+ pip install xlrd
 ```
 
 ## Usage
@@ -38,13 +39,12 @@ py main.py
 <details>
 	<summary> Click to expand </summary>
 
-- finish multiple floorplan flow
+- double check pets
+Other:
 - photos page
 - contact page
-- move in date
-- double check pets
 - value formatting and validation
-- refactor checkbox/dropdown/click/etc checkbox("page", "element") for readability
+- value type in payload
 - consider webDriver wait delay, might improve speed
 - remove lxml (see next item)
 - consolidate with HTML scraper
@@ -52,14 +52,22 @@ py main.py
 
 ## History
 
-Current version: 0.1.8.4
-Better logging:
-- rotates log files
-- console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)
-- documentation and website
+Current version: 0.2\
+- date and pets
+- multiple floorplans
 
 <details>
   <summary> Older versions </summary>
+
+ 0.1.8.5
+- refactor, split navigator and element manipulation.
+- assumes identifier type
+- location, rent, floorplans, specifics, amenities
+v0.1.8.5
+- rotates log files
+- console log level can be customized by passing an argument to the script (DEBUG, WARNING, INFO)
+- documentation and website
+- [HOTFIX] fixed duplicate logging and re-enabled implemented functionalities 
 v0.1.8.3
 Tweaks for first release
 v0.1.8.2

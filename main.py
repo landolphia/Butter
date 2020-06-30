@@ -1,11 +1,14 @@
 import logging
-from logging import handlers
 import sys
 import time
 
 import navigation
 import payload
 import spreadsheet
+
+from logging import handlers
+
+VERSION = "0.2"
 
 def init_log(logLevel):
     log = logging.getLogger("bLog")
@@ -34,7 +37,6 @@ def process_args(args):
     logLevel = logging.INFO
 
     i = 1
-
     for a in args:
         if a == "DEBUG":
             logLevel = logging.DEBUG
@@ -52,7 +54,7 @@ def process_args(args):
 def main():
     logLevel = process_args(sys.argv)
     log = init_log(logLevel)
-    log.info("Starting...")
+    log.info("Butter v" + str(VERSION) + " is starting...")
 
     start_time = time.time()
     
@@ -60,20 +62,12 @@ def main():
     ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
     data.init(ss)
 
-    nav = navigation.Navigator()
-    nav.login(data)
-    nav.add_listing(data)
-    nav.fill_address(data)
-    nav.fill_rent(data)
-    nav.fill_specifics(data)
-    nav.fill_amenities(data)
-    log.warning("The contact page will need to be filled manually.")
-    #nav.fill_contact(data)
-    log.warning("The photos page will need to be filled manually.")
-    #nav.fill_photos(data)
-
-    nav.quit()
+    nav = navigation.Navigator(data)
+    nav.start()
 
     log.info("Finished in %s seconds." % (time.time() - start_time))
+
+    log.warning("Please check the messages above to see if some elements still need to be filled manually.")
+    log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
 
 main()

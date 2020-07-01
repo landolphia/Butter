@@ -1,0 +1,36 @@
+{
+	"payload" : [
+		{
+			"page"	: "login",
+			"name"	: "login url",
+			"id"  	: false,
+			"xpath"	: false,
+			"offset": false,
+			"value"	: "https://app.yougotlistings.com/login"
+		},
+		{
+			"page"	: "login",
+			"name"	: "username",
+			"id"  	: false,
+			"xpath"	: "//i[@class='user icon']/following-sibling::input",
+			"offset": false,
+			"value"	: "[CALL.GET_USERNAME]"
+		},
+		{
+			"page"	: "login",
+			"name"	: "password",
+			"id"  	: false,
+			"xpath"	: "//input[@type='password']",
+			"offset": false,
+			"value"	: "[CALL.GET_PASSWORD]"
+		},
+		{
+			"page"	: "login",
+			"name"	: "submit button",
+			"id"  	: false,
+			"xpath"	: "//button[@role='button']",
+			"offset": false,
+			"value"	: false
+		}
+	]
+}

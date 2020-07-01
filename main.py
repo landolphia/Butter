@@ -2,8 +2,11 @@ import logging
 import sys
 import time
 
+import credentials
 import navigation
 import payload
+import payload2
+import scraper
 import spreadsheet
 
 from logging import handlers
@@ -80,7 +83,8 @@ def main():
         log.warning("Please check the messages above to see if some elements still need to be filled manually.")
         log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
     elif arguments["mode"] == "SCRAPE":
-        log.debug("NADA")
+        data = payload2.Payload2()
+        scr = scraper.Scraper(data)
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
 

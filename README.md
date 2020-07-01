@@ -9,14 +9,11 @@ The script gets listing data from an Excel spreadsheet following the template sh
 - Python installed
 - Chromedriver executable in the running directory
 - the login info and Google API key must be specified in a a file called private.slr, in the running directory
-```
-First line: username
-Second line: password
-Third line: Google API key
-```
+
 Uses the following modules.
 
 ```shell
+ pip install base64
  pip install googlemaps 
  pip install pandas
  pip install phonenumbers
@@ -57,14 +54,16 @@ Other:
 
 ## History
 
-Current version: 0.2\
-- date and pets
-- multiple floorplans
+Current version: 0.2.1\
+- credentials obfuscated
 
 <details>
   <summary> Older versions </summary>
 
- 0.1.8.5
+v0.2
+- date and pets
+- multiple floorplans
+v0.1.8.5
 - refactor, split navigator and element manipulation.
 - assumes identifier type
 - location, rent, floorplans, specifics, amenities

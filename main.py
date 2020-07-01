@@ -10,6 +10,9 @@ from logging import handlers
 
 VERSION = "0.x+1 Bump up version when done"
 
+#TODO Investergate this
+#def install(package):
+#    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 def init_log(logLevel):
     log = logging.getLogger("bLog")
     log.setLevel(logging.DEBUG)

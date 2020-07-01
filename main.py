@@ -2,16 +2,15 @@ import logging
 import sys
 import time
 
-import credentials
 import navigation
 import payload
 import spreadsheet
 
 from logging import handlers
 
-VERSION = "0.2"
+VERSION = "0.2.1"
 
-#TODO INvestergate this
+#TODO Investergate this
 #def install(package):
 #    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 def init_log(logLevel):

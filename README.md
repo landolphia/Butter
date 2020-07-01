@@ -17,6 +17,7 @@ Third line: Google API key
 Uses the following modules.
 
 ```shell
+ pip install base64
  pip install googlemaps 
  pip install pandas
  pip install phonenumbers
@@ -36,6 +37,7 @@ py main.py
 ```
 
 ## To-do
+This branch is dedicated to obfuscating the credentials, storing a key in a private file and hashing the credentials.
 <details>
 	<summary> Click to expand </summary>
 

@@ -2,6 +2,7 @@ import logging
 import sys
 import time
 
+import credentials
 import navigation
 import payload
 import spreadsheet
@@ -10,6 +11,9 @@ from logging import handlers
 
 VERSION = "0.2"
 
+#TODO INvestergate this
+#def install(package):
+#    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 def init_log(logLevel):
     log = logging.getLogger("bLog")
     log.setLevel(logging.DEBUG)
@@ -57,7 +61,7 @@ def main():
     log.info("Butter v" + str(VERSION) + " is starting...")
 
     start_time = time.time()
-    
+
     data = payload.Payload()
     ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
     data.init(ss)

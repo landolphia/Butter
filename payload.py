@@ -1,3 +1,4 @@
+import credentials
 import logging
 import pprint
 import sys
@@ -12,24 +13,9 @@ class Payload:
         self.log.debug("FIXME! It should be pretty easy to get the kind of identifier. Either by adding a kind and having only one field, or just having the two fields and testing.")
         self.log.debug("FIXME! Add data type (string, number, etc)")
     
-        self.credentials = self.__get_credentials__("private.slr")
+        self.credentials = credentials.Credentials().get_credentials("private.slr")
 
         self.__init__data__()
-    def __get_credentials__(self, slr):
-        result = {}
-        self.log.debug("Getting credentials.")
-    
-        with open (slr, "r") as slurp:
-            data = slurp.readlines()
-        if  len(data) != 3:
-            self.log.error("Could not find credentials in 'private.slr'.")
-            sys.exit()
-    
-        result["username"] = data[0].rstrip()
-        result["password"] = data[1].rstrip()
-        result["api_key"] = data[2].rstrip()
-    
-        return result
     def __add__element__(self, page, name, css_id, css_xpath, cell_offset, value):
         if page not in self.data:
             self.data[page] = {}
@@ -58,8 +44,8 @@ class Payload:
         self.__add__element__("login", "add listing url", None, None, None, "https://offcampus.bu.edu/user/add-listing/")
         self.__add__element__("login", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
         self.__add__element__("login", "submit button", None, "//input[@type=\"submit\"]", None, None)
-        self.__add__element__("login", "username", "username", None, None, self.credentials["username"])
-        self.__add__element__("login", "password", "password", None, None, self.credentials["password"])
+        self.__add__element__("login", "username", "username", None, None, self.credentials["username1"])
+        self.__add__element__("login", "password", "password", None, None, self.credentials["password1"])
         self.__add__element__("hidden", "gmaps", None, None, None, self.credentials["api_key"])
         self.credentials = None
     def get_bool(self, page, name): return self.data[page][name]["value"] == "Y"

@@ -36,6 +36,11 @@ py main.py
 ```
 
 ## To-do
+
+ This branch will enable the user to either scrape online listings or post an ad based on a spreadsheet's data.
+- put as much as possible in config files (websites, credentials, elements, field properties (type/etc)
+- for now the work is based on getting listings online and processing them
+
 <details>
 	<summary> Click to expand </summary>
 

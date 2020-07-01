@@ -8,7 +8,7 @@ import spreadsheet
 
 from logging import handlers
 
-VERSION = "0.2"
+VERSION = "0.x+1 Bump up version when done"
 
 def init_log(logLevel):
     log = logging.getLogger("bLog")
@@ -35,39 +35,52 @@ def init_log(logLevel):
 
 def process_args(args):
     logLevel = logging.INFO
+    app_mode = None
 
     i = 1
     for a in args:
+        # Logging level
         if a == "DEBUG":
             logLevel = logging.DEBUG
         elif a == "WARNING":
             logLevel = logging.WARNING
         elif a == "INFO":
             logLevel = logging.INFO
+        # Which mode to run as
+        elif a == "POST":
+            app_mode = "POST"
+        elif a == "SCRAPE":
+            app_mode = "SCRAPE"
         else:
             if i != 1:
                 print("Argument #" + str(i) + " ignored. [" + str(a) + "]")
         i += 1
 
-    return logLevel
+    return { "log level": logLevel, "mode": app_mode}
 
 def main():
-    logLevel = process_args(sys.argv)
-    log = init_log(logLevel)
+    arguments = process_args(sys.argv)
+    log = init_log(arguments["log level"])
     log.info("Butter v" + str(VERSION) + " is starting...")
+    log.debug("Command line arguments: " + str(arguments))
 
     start_time = time.time()
     
-    data = payload.Payload()
-    ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
-    data.init(ss)
+    if arguments["mode"] == "POST":
+        data = payload.Payload()
+        ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
+        data.init(ss)
 
-    nav = navigation.Navigator(data)
-    nav.start()
+        nav = navigation.Navigator(data)
+        nav.start()
+
+        log.warning("Please check the messages above to see if some elements still need to be filled manually.")
+        log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
+    elif arguments["mode"] == "SCRAPE":
+        log.debug("NADA")
+    else:
+        log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
 
     log.info("Finished in %s seconds." % (time.time() - start_time))
-
-    log.warning("Please check the messages above to see if some elements still need to be filled manually.")
-    log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
 
 main()

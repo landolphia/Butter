@@ -1,8 +1,9 @@
-*.swp
-*.log*
 *~
-*.xlsx
 *.html
+*.log*
 *.pyc
+*.swp
+*.xlsx
+images/*
 chromedriver.exe
 private.slr

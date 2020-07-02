@@ -1,3 +1,7 @@
+import os
+import pyautogui
+import time
+
 import logging
 import elements
 
@@ -13,8 +17,8 @@ class Navigator:
         self.login()
         self.add_listing()
         self.fill_address()
-        self.fill_rent()
-        self.fill_amenities()
+        #self.fill_rent()
+        #self.fill_amenities()
         #self.fill_contact()
         self.fill_photos()
         self.elements.quit()
@@ -296,10 +300,22 @@ class Navigator:
         #self.elements.fill_input("contact", "lease link")
         #self.elements.fill_input("contact", "lease button")
     def fill_photos(self):
-        self.log.warning("The photos page hasn't been implemented. Fill manually.")
-        #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.photos_link)))
-    
-        #result = self.driver.find_element_by_xpath(self.payload.photos_link)
-        #result.click()
+        #TODO dropdown image type
+        #TODO input description
+        self.log.warning("The photos page hasn't been fully implemented."
+        self.log.warning("Descriptions and photo types need to be entered manually."
+        self.log.warning("THIS IS ONLY A PROOF OF CONCEPT IN THIS VERSION.")
 
-        return True
+        self.elements.wait("photos", "link")
+        self.elements.click("photos", "link")
+        self.elements.click("photos", "uploader")
+
+        for i in range(5)
+            path = os.path.abspath(".images/" str(i + 1) + ".jpg")
+            if os.path.isfile(path):
+                time.sleep(1)
+                pyautogui.write(path, interval=0.075)
+                pyautogui.press('enter')
+            else:
+                self.log.error("The file [" + path + "] doesn't exist.")
+                sys.exit()

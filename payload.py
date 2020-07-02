@@ -241,6 +241,12 @@ class Payload:
         self.__add__element__("contact", "website", "website", None, 122, None)
         self.__add__element__("contact", "lease link", "lease_link", None, 123, None)
         self.__add__element__("contact", "lease button", "lease_upload", None, 124, None)
+
+        # Photos page
+        self.__add__element__("photos", "link", None, "//a[@data-target=\"images\"]", None, None)
+        self.__add__element__("photos", "uploader", None, "//input[@id=\"image_uploads\"]/../..", 126, None)
+        self.__add__element__("photos", "virtual tour", None, "//a[@data-target=\"images\"]", 134, None)
+        self.__add__element__("photos", "promotional video", None, "//a[@data-target=\"images\"]", 127, None)
     def floorplan_found(self, n):
         offset = FP_START + ( n * FP_LENGTH)
 
@@ -307,7 +313,3 @@ class Payload:
         self.__add__element__("floorplans", "webpage" + str(n), "floorplan-FP_ID-website", None, offset + 34, None)
         self.__add__element__("floorplans", "lease" + str(n), "floorplan-FP_ID-lease", None, offset + 35, None)
         self.__add__element__("floorplans", "image" + str(n), "floorplan-FP_ID-image", None, offset + 36, None)
-        #TODO
-        # Photos page
-        #self.photos_link =  "//a[@data-target=\"images\"]"
-        #END TODO!!!

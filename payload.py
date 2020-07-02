@@ -105,7 +105,7 @@ class Payload:
             date = self.ss.parse_date(self.ss.get_key(27))
             self.__add__element__("specifics", "start date", "start", None, 27, date)
             self.__add__element__("specifics", "end date", "end", None, 28, date)
-        if self.get_value("specifics", "available range") != None:
+        elif self.get_value("specifics", "available range") != None:
             date = self.ss.parse_date(self.ss.get_key(27))
             self.__add__element__("specifics", "start date", "start", None, 27, date)
             date = self.ss.parse_date(self.ss.get_key(28))

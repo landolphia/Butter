@@ -50,8 +50,9 @@ Other:
 
 ## History
 
-Current version: 0.2.1\
+Current version: 0.2.2[HOTFIX]\
 - credentials obfuscated
+- fixed type in payload, leading to duplicate page/name entry
 
 <details>
   <summary> Older versions </summary>

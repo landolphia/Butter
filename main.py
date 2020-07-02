@@ -8,7 +8,7 @@ import spreadsheet
 
 from logging import handlers
 
-VERSION = "0.2.1"
+VERSION = "0.2.2[HOTFIX]"
 
 #TODO Investergate this
 #def install(package):

@@ -4,5 +4,6 @@
 *.xlsx
 *.html
 *.pyc
+/images/*
 chromedriver.exe
 private.slr

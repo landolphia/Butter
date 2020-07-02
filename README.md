@@ -50,7 +50,8 @@ Other:
 
 ## History
 
-Current version: 0.2.2[HOTFIX]\
+Current version: 0.2.2\
+- waits for user to press enter after running the script to close the browser window
 - credentials obfuscated
 - fixed type in payload, leading to duplicate page/name entry
 

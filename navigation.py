@@ -17,6 +17,7 @@ class Navigator:
         self.fill_amenities()
         #self.fill_contact()
         self.fill_photos()
+    def close(self):
         self.elements.quit()
     def login(self):
         self.elements.go("login", "login url")

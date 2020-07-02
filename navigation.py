@@ -1,6 +1,7 @@
 import os
 import pyautogui
 import time
+import sys
 
 import logging
 import elements
@@ -17,9 +18,9 @@ class Navigator:
         self.login()
         self.add_listing()
         self.fill_address()
-        #self.fill_rent()
-        #self.fill_amenities()
-        #self.fill_contact()
+        self.fill_rent()
+        self.fill_amenities()
+        self.fill_contact()
         self.fill_photos()
         self.elements.quit()
     def login(self):
@@ -302,20 +303,26 @@ class Navigator:
     def fill_photos(self):
         #TODO dropdown image type
         #TODO input description
-        self.log.warning("The photos page hasn't been fully implemented."
-        self.log.warning("Descriptions and photo types need to be entered manually."
+        self.log.warning("The photos page hasn't been fully implemented.")
+        self.log.warning("Descriptions and photo types need to be entered manually.")
         self.log.warning("THIS IS ONLY A PROOF OF CONCEPT IN THIS VERSION.")
 
         self.elements.wait("photos", "link")
         self.elements.click("photos", "link")
         self.elements.click("photos", "uploader")
 
-        for i in range(5)
-            path = os.path.abspath(".images/" str(i + 1) + ".jpg")
+        for i in range(4):
+            path = os.path.abspath("./images/" + str(i + 1) + ".jpg")
+            self.log.warning("Uploading: " + path)
             if os.path.isfile(path):
                 time.sleep(1)
                 pyautogui.write(path, interval=0.075)
                 pyautogui.press('enter')
+                #TODO
+                self.log.warning("Waiting for 5 seconds.")
+                self.log.warning("If the file hasn't been uploaded in this time the next file will be skipped.")
+                self.log.debug("Check list size of [@id=listing-images] to see if image has been uploaded.")
+                time.sleep(5)
             else:
                 self.log.error("The file [" + path + "] doesn't exist.")
                 sys.exit()

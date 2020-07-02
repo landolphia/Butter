@@ -17,6 +17,7 @@ Uses the following modules.
  pip install googlemaps 
  pip install pandas
  pip install phonenumbers
+ pip install pyautogui
  pip install selenium
  pip install xlrd
 ```
@@ -50,13 +51,14 @@ Other:
 
 ## History
 
-Current version: 0.2.2[HOTFIX]\
-- credentials obfuscated
-- fixed type in payload, leading to duplicate page/name entry
+Current version: 0.2.3\
+- basic loop through photos
 
 <details>
   <summary> Older versions </summary>
-
+v0.2.2[HOTFIX]
+- credentials obfuscated
+- fixed type in payload, leading to duplicate page/name entr
 v0.2
 - date and pets
 - multiple floorplans

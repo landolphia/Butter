@@ -213,6 +213,7 @@ class Payload:
         self.__add__element__("amenities", "tinymce", "description_ifr", None, None, None)
         self.__add__element__("amenities", "description", "tinymce", None, 112, None)
 
+        # Floorplans
         i = 1
         if self.get_bool("rent", "floorplans yes"):
             i -= 1
@@ -225,6 +226,21 @@ class Payload:
 
         self.log.info(str(i) + " floorplan" + ("s" if i > 1 else "") + " found.")
         self.__add__element__("floorplans", "total number",  None, None, None, i)
+
+        # Contact page
+        self.__add__element__("contact", "link", None, "//a[@data-target=\"contact\"]", None, None)
+        self.__add__element__("contact", "name", "contact_name", None, 114, None)
+        self.__add__element__("contact", "phone", "contact_phone", None, 115, None)
+        self.__add__element__("contact", "text", "sms", None, 116, None)
+        self.__add__element__("contact", "email", None, "//input[@class=\"select2-search__field\"]", 117, None)
+        self.__add__element__("contact", "email arrow", "select2-email-container", None, None, None)
+        self.__add__element__("contact", "office hours", "contact_time", None, 118, None)
+        self.__add__element__("contact", "twitter", "twitter", None, 119, None)
+        self.__add__element__("contact", "facebook", "facebook", None, 120, None)
+        self.__add__element__("contact", "instagram", "instagram", None, 121, None)
+        self.__add__element__("contact", "website", "website", None, 122, None)
+        self.__add__element__("contact", "lease link", "lease_link", None, 123, None)
+        self.__add__element__("contact", "lease button", "lease_upload", None, 124, None)
     def floorplan_found(self, n):
         offset = FP_START + ( n * FP_LENGTH)
 
@@ -292,8 +308,6 @@ class Payload:
         self.__add__element__("floorplans", "lease" + str(n), "floorplan-FP_ID-lease", None, offset + 35, None)
         self.__add__element__("floorplans", "image" + str(n), "floorplan-FP_ID-image", None, offset + 36, None)
         #TODO
-        # Contact page
-        #self.contact_link =  "//a[@data-target=\"contact\"]"
         # Photos page
         #self.photos_link =  "//a[@data-target=\"images\"]"
         #END TODO!!!

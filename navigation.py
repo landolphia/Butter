@@ -15,7 +15,7 @@ class Navigator:
         self.fill_address()
         self.fill_rent()
         self.fill_amenities()
-        self.fill_contact()
+        #self.fill_contact()
         self.fill_photos()
         self.elements.quit()
     def login(self):
@@ -40,7 +40,7 @@ class Navigator:
     def fill_address(self):
         self.elements.wait("location", "address")
 
-        logging.debug("Filling in address details.")
+        self.log.debug("Filling in address details for [" + self.payload.get_value("location", "full address") + "].")
    
         self.elements.fill_input("location", "address")
         self.elements.fill_input("location", "city")
@@ -274,13 +274,27 @@ class Navigator:
 
         self.elements.submit("amenities", "wd in unit")
     def fill_contact(self):
-        self.log.warning("The contact page hasn't been implemented. Fill manually.")
-        #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.contact_link)))
-    
-        #result = self.driver.find_element_by_xpath(self.payload.contacat_link)
-        #result.click()
-    
-        return True
+        self.log.warning("The contact page hasn't been implemented. It needs to be filled manually.")
+        #self.elements.wait("contact", "link")
+        #self.elements.click("contact", "link")
+
+        #self.elements.wait("contact", "name")
+        #self.elements.fill_input("contact", "name")
+        #self.elements.fill_input("contact", "phone")
+        #self.elements.fill_input("contact", "text")
+
+        #self.elements.click("contact", "email arrow")
+        #self.elements.fill_input("contact", "email")
+
+        #self.elements.fill_input("contact", "office hours")
+        #self.elements.fill_input("contact", "twitter")
+        #self.elements.fill_input("contact", "facebook")
+        #self.elements.fill_input("contact", "instagram")
+        #self.elements.fill_input("contact", "website")
+
+        #TODO
+        #self.elements.fill_input("contact", "lease link")
+        #self.elements.fill_input("contact", "lease button")
     def fill_photos(self):
         self.log.warning("The photos page hasn't been implemented. Fill manually.")
         #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.photos_link)))

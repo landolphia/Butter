@@ -8,6 +8,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
+class List_has_new_element(object):
+    def __init__(self, xpath, old_count):
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing List_has_new_element. [" + str(xpath) + " / " + str(old_count) + "]")
+
+        self.xpath = xpath 
+        self.old_count = old_count 
+    def __call__(self, driver):
+        elements = driver.find_elements_by_xpath(self.xpath)
+        if len(elements) > self.old_count:
+            self.log.debug("Found a new element, " + str(len(elements)) + " total.")
+            return True 
+        else:
+            return False
+
 class Elements:
     def __init__(self, payload):
             self.log = logging.getLogger("bLog")
@@ -15,11 +30,6 @@ class Elements:
             
             self.driver = webdriver.Chrome()
             self.hold = WebDriverWait(self.driver, 100)
-            # TODO
-            #FluentWait<WebDriver>(driver)
-            #    .withTimeout(50, TimeUnit.SECONDS)
-            #    .pollingevery(3, TimeUnit.SECONDS)
-            #    .ignoring(NoSuchElementException.class)
 
             if self.driver == None:
                 self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
@@ -206,6 +216,26 @@ class Elements:
         if identifier:
             self.hold.until(EC.presence_of_element_located((By.ID, identifier)))
             self.log.debug("Element loaded.")
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            sys.exit()
+    def wait_for_new_list_element(self, page, name, old_count):
+        self.log.debug("Waiting for new element to be added to list. [" + str(page) + "/" + str(name) + "]")
+
+        identifier = self.payload.xpath(page, name)
+
+        if identifier:
+            condition = List_has_new_element(identifier, old_count)
+            self.hold.until(condition)
+            self.log.debug("New element added.")
+
+            return
+        else:
+            identifier = self.payload.id(page, name)
+
+        if identifier:
+            self.log.error("Waiting for new list elements by id hasn't been implemented.")
+            sys.exit()
         else:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
             sys.exit()

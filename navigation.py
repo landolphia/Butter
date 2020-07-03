@@ -303,26 +303,33 @@ class Navigator:
     def fill_photos(self):
         #TODO dropdown image type
         #TODO input description
-        self.log.warning("The photos page hasn't been fully implemented.")
-        self.log.warning("Descriptions and photo types need to be entered manually.")
-        self.log.warning("THIS IS ONLY A PROOF OF CONCEPT IN THIS VERSION.")
+        self.log.warning("The photos' description and type need to be entered manually.")
+
+        photos = []
+        for root, dirs, files in os.walk("./images/"):
+            for f in files:
+                if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".gif") or f.endswith(".png"):
+                    path = os.path.join(root, f)
+                    self.log.debug("Photo found. [" + path + "]")
+                    photos.append(path)
 
         self.elements.wait("photos", "link")
         self.elements.click("photos", "link")
-        self.elements.click("photos", "uploader")
 
-        for i in range(4):
-            path = os.path.abspath("./images/" + str(i + 1) + ".jpg")
-            self.log.warning("Uploading: " + path)
-            if os.path.isfile(path):
+        uploads = 0
+        for i in range(len(photos)):
+            path = os.path.abspath(photos[i])
+            self.log.debug("Uploading file #" + str(i) + " [" + photos[i] + "] [" + path + "]")
+
+            self.elements.wait("photos", "uploader")
+            self.elements.click("photos", "uploader")
+
+            if os.path.isfile(photos[i]):
                 time.sleep(1)
                 pyautogui.write(path, interval=0.075)
                 pyautogui.press('enter')
-                #TODO
-                self.log.warning("Waiting for 5 seconds.")
-                self.log.warning("If the file hasn't been uploaded in this time the next file will be skipped.")
-                self.log.debug("Check list size of [@id=listing-images] to see if image has been uploaded.")
-                time.sleep(5)
+                self.elements.wait_for_new_list_element("photos", "li", uploads)
+                uploads = uploads + 1
             else:
                 self.log.error("The file [" + path + "] doesn't exist.")
                 sys.exit()

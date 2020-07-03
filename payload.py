@@ -247,6 +247,7 @@ class Payload:
         self.__add__element__("photos", "uploader", None, "//input[@id=\"image_uploads\"]/../..", 126, None)
         self.__add__element__("photos", "virtual tour", None, "//a[@data-target=\"images\"]", 134, None)
         self.__add__element__("photos", "promotional video", None, "//a[@data-target=\"images\"]", 127, None)
+        self.__add__element__("photos", "li", None, "//li[@class=\"clearfix uploaded-image\"]", None, None)
     def floorplan_found(self, n):
         offset = FP_START + ( n * FP_LENGTH)
 

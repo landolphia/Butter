@@ -164,11 +164,12 @@ class Navigator:
                 self.elements.fill_input_date_fp("floorplans", "end date", i, fp_id)
 
             # Floorplans/Description++
-            self.log.warning("The description/virtual tour/webpage/lease/image haven't been implemented for floorplans. They must be filled manually.")
-            #self.send_keys_fp_by_id("floorplans", "description")
-            #self.send_keys_fp_by_id("floorplans", "virtual tour")
-            #self.send_keys_fp_by_id("floorplans", "webpage")
-            #self.send_keys_fp_by_id("floorplans", "lease")
+
+            self.elements.fill_input_fp("floorplans", "description", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "virtual tour", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "webpage", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "lease", i, fp_id)
+            self.log.warning("If you'd like to ad an image for this specific floorplan [" + str(fp_id) + "] you will have to do it manually.")
             #self.send_keys_fp_by_id("floorplans", "image")
 
             self.elements.submit_fp("floorplans", "name", i, fp_id)

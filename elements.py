@@ -129,7 +129,7 @@ class Elements:
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
             sys.exit()
 
@@ -139,7 +139,7 @@ class Elements:
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
 
         element.send_keys(value)

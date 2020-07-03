@@ -57,8 +57,8 @@ def process_args(args):
 def main():
     logLevel = process_args(sys.argv)
     log = init_log(logLevel)
-    log.info("Butter v" + str(VERSION) + " is starting...")
-    log.warning("TODO:\n-alert at the end of script\n-faster description filling.")
+    log.debug("Butter v" + str(VERSION) + " is starting...")
+    log.debug("TODO:\n-alert at the end of script\n-faster description filling\n-ask kyle about contact page.")
 
     start_time = time.time()
 
@@ -69,7 +69,7 @@ def main():
     nav = navigation.Navigator(data)
     nav.start()
 
-    log.info("Finished in %s seconds." % (time.time() - start_time))
+    log.debug("Finished in %s seconds." % (time.time() - start_time))
 
     log.warning("Please check the messages above to see if some elements still need to be filled manually.")
 

@@ -14,6 +14,11 @@ class Navigator:
             
         self.payload = payload
         self.elements = elements.Elements(payload)
+
+        self.tasks = []
+    def add_task(self, task):
+        self.log.debug(task)
+        self.tasks.append(task)
     def start(self):
         self.login()
         self.add_listing()
@@ -169,7 +174,8 @@ class Navigator:
             self.elements.fill_input_fp("floorplans", "virtual tour", i, fp_id)
             self.elements.fill_input_fp("floorplans", "webpage", i, fp_id)
             self.elements.fill_input_fp("floorplans", "lease", i, fp_id)
-            self.log.warning("If you'd like to ad an image for this specific floorplan [" + str(fp_id) + "] you will have to do it manually.")
+
+            self.add_task("If the specific floorplan [" + str(fp_id) + "] has a photo you need to add it manually.")
             #self.send_keys_fp_by_id("floorplans", "image")
 
             self.elements.submit_fp("floorplans", "name", i, fp_id)
@@ -280,7 +286,7 @@ class Navigator:
         self.elements.tinyMCE("amenities", "description", "amenities", "tinymce")
         self.elements.submit("amenities", "wd in unit")
     def fill_contact(self):
-        self.log.warning("The contact page hasn't been implemented. It needs to be filled manually.")
+        self.add_task("The contact page needs to be filled manually.")
         #self.elements.wait("contact", "link")
         #self.elements.click("contact", "link")
 
@@ -304,7 +310,7 @@ class Navigator:
     def fill_photos(self):
         #TODO dropdown image type
         #TODO input description
-        self.log.warning("The photos' description and type need to be entered manually.")
+        self.add_task("The photos' descriptions and types need to be entered manually.")
 
         photos = []
         for root, dirs, files in os.walk("./images/"):
@@ -334,3 +340,5 @@ class Navigator:
             else:
                 self.log.error("The file [" + path + "] doesn't exist.")
                 sys.exit()
+    def task_list(self):
+        self.elements.task_list(self.tasks)

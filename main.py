@@ -9,7 +9,7 @@ import spreadsheet
 from logging import handlers
 
 
-VERSION = "0.2.4"
+VERSION = "0.2.5"
 
 #TODO Investergate this
 #def install(package):
@@ -58,8 +58,8 @@ def process_args(args):
 def main():
     logLevel = process_args(sys.argv)
     log = init_log(logLevel)
+
     log.debug("Butter v" + str(VERSION) + " is starting...")
-    log.debug("TODO:\n-alert at the end of script\n-faster description filling\n-ask kyle about contact page.")
 
     start_time = time.time()
 
@@ -69,6 +69,7 @@ def main():
 
     nav = navigation.Navigator(data)
     nav.start()
+    nav.task_list()
 
     log.debug("Finished in %s seconds." % (time.time() - start_time))
 

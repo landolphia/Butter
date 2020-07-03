@@ -40,8 +40,9 @@ py main.py
 <details>
 	<summary> Click to expand </summary>
 
-Scrape listings from website.
+- scrape listings from website.
 Other:
+- contact page
 - value formatting and validation
 - value type in payload
 - remove lxml (see next item)
@@ -50,12 +51,14 @@ Other:
 
 ## History
 
-Current version: 0.2.4\
-- faster (instant) description filling for tinyMCE
+Current version: 0.2.5\
+- remaining taks list is more user friendly
 
 <details>
   <summary> Older versions </summary>
 
+v0.2.4\
+- faster (instant) description filling for tinyMCE
 v0.2.3
 - loops through photos in ./images/ and uploads them
 v0.2.2[HOTFIX]

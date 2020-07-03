@@ -238,8 +238,6 @@ class Elements:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
             sys.exit()
     def task_list(self, tasks):
-        url = "https://www.google.com"
-        self.driver.get(url)
         self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
         self.driver.execute_script("window.open('', 'todo', 'height=400,width=400,top=0, left=0, toolbar=no,menubar=no,scrollbars=yes,location=no,status=no');")
         self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))

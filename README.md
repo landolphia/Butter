@@ -50,11 +50,14 @@ Other:
 
 ## History
 
-Current version: 0.2.3\
-- loops through photos in ./images/ and uploads them.
+Current version: 0.2.4\
+- faster (instant) description filling for tinyMCE
 
 <details>
   <summary> Older versions </summary>
+
+v0.2.3
+- loops through photos in ./images/ and uploads them
 v0.2.2[HOTFIX]
 - waits for user to press enter after running the script to close the browser window
 - credentials obfuscated

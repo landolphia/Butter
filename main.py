@@ -8,7 +8,8 @@ import spreadsheet
 
 from logging import handlers
 
-VERSION = "0.2.2"
+
+VERSION = "0.2.4"
 
 #TODO Investergate this
 #def install(package):

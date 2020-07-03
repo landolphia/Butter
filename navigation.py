@@ -278,7 +278,6 @@ class Navigator:
         self.elements.checkbox("amenities", "wd in unit")
         # Description
         self.elements.tinyMCE("amenities", "description", "amenities", "tinymce")
-
         self.elements.submit("amenities", "wd in unit")
     def fill_contact(self):
         self.log.warning("The contact page hasn't been implemented. It needs to be filled manually.")

@@ -188,17 +188,15 @@ class Elements:
     def submit(self, page, name): self.__get_element__(page, name).submit()
     def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).submit()
     def tinyMCE(self, page, name, iframe_page, iframe_name):
-        #TODO maybe I could speed this up by setting the value instead of sending keys
-        #TODO (only display warning if len>X
-        self.log.warning("Filling in the description. This might take a while if it's long.")
         description = self.payload.get_value(page, name)
 
         iframe = self.__get_element__(iframe_page, iframe_name)
         self.driver.switch_to.frame(iframe)
 
         tinymce = self.__get_element__(page, name)
-        tinymce.click()
-        tinymce.send_keys(description)
+        
+        javascript = "arguments[0].innerHTML = arguments[1];"
+        self.driver.execute_script( javascript, tinymce, description.replace('\n', '<br>'))
         self.driver.switch_to.default_content()
     def wait(self, page, name):
         self.log.debug("Waiting for element to load. [" + page + "/" + name + "]")

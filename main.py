@@ -8,7 +8,7 @@ import spreadsheet
 
 from logging import handlers
 
-VERSION = "0.2.2[HOTFIX]"
+VERSION = "0.2.2"
 
 #TODO Investergate this
 #def install(package):
@@ -72,5 +72,8 @@ def main():
 
     log.warning("Please check the messages above to see if some elements still need to be filled manually.")
     log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
+
+    input("\nPress enter when you're done filling in missing details in the ad.")
+    nav.close()
 
 main()

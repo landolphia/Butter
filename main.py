@@ -58,6 +58,7 @@ def main():
     logLevel = process_args(sys.argv)
     log = init_log(logLevel)
     log.info("Butter v" + str(VERSION) + " is starting...")
+    log.warning("TODO:\n-alert at the end of script\n-faster description filling.")
 
     start_time = time.time()
 
@@ -71,7 +72,6 @@ def main():
     log.info("Finished in %s seconds." % (time.time() - start_time))
 
     log.warning("Please check the messages above to see if some elements still need to be filled manually.")
-    log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
 
     input("\nPress enter when you're done filling in missing details in the ad.")
     nav.close()

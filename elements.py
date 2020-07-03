@@ -113,7 +113,7 @@ class Elements:
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
 
         element.send_keys(value)

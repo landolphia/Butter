@@ -86,10 +86,10 @@ class Navigator:
 
         if self.payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
-            self.log.warning("Specifics page doesn't get filled automatically for multiple floorplans. This has to be done manually.")
-            self.log.debug("TODO fill specifics when there are multiple floorplans?")
+            self.fill_specifics(True)
         else:
             self.fill_floorplan()
+            self.fill_specifics(False)
     def fill_floorplan(self):
         self.elements.wait("rent", "bedrooms")
         
@@ -102,7 +102,6 @@ class Navigator:
         self.elements.dropdown("rent", "type")
 
         self.elements.press_enter("rent", "specials")
-        self.fill_specifics()
     def fill_floorplans(self):
         i = 0
         fp_number = self.payload.get_value("floorplans", "total number")
@@ -175,11 +174,12 @@ class Navigator:
             self.elements.submit_fp("floorplans", "name", i, fp_id)
 
             i = i + 1
-    def fill_specifics(self):
+    def fill_specifics(self, fp):
         self.elements.wait("specifics", "link")
         self.elements.click("specifics", "link")
 
-        self.elements.dropdown("specifics", "max occupants")
+        if not fp:
+            self.elements.dropdown("specifics", "max occupants")
 
         self.elements.checkbox("specifics", "allow sublet")
         self.elements.checkbox("specifics", "is sublet")

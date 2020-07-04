@@ -91,8 +91,6 @@ def main():
     elif arguments["mode"] == "SCRAPE":
         data = payload2.Payload2()
         scr = scraper.Scraper(data)
-
-        input("Done.")
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
 

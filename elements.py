@@ -23,6 +23,25 @@ class List_has_new_element(object):
         else:
             return False
 
+class Element_is_not_(object):
+    def __init__(self, xpath, default_value):
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing Element_is_not_. [" + str(xpath) + " / " + str(default_value) + "]")
+
+        self.default_value = default_value
+        self.xpath = xpath 
+    def __call__(self, driver):
+        element = driver.find_element_by_xpath(self.xpath)
+        if element:
+            self.log.debug("Element is loaded.")
+            content = element.get_attribute("innerText")
+            self.log.debug("Content = " + content)
+            self.log.debug("Default = " + self.default_value)
+            self.log.debug("is = " + str(not (self.default_value in content)))
+            return not (self.default_value in content)
+        else:
+            return False
+
 class Elements:
     def __init__(self, payload):
             self.log = logging.getLogger("bLog")
@@ -169,11 +188,6 @@ class Elements:
         url = self.payload.get_value(page, name) 
         self.log.debug("Navigating to \"" + str(url) + "\"")
         self.driver.get(url)
-    def go_id(self, page, name, identifier):
-        url = self.payload.get_value(page, name) 
-        url = url + str(identifier)
-        self.log.debug("Navigating to \"" + str(url) + "\"")
-        self.driver.get(url)
     def press_enter(self, page, name):
         element = self.__get_element__(page, name)
         element.send_keys(Keys.ENTER)
@@ -272,3 +286,37 @@ class Elements:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
             
         return elements
+    def get_value(self, page, name):
+        element = self.__get_element__(page, name)
+
+        return element.get_attribute("innerText")
+    def go_list(self, page, name, identifier):
+        url = self.payload.get_value(page, name) 
+        url = url + str(identifier)
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
+    def go_rental(self, page, name, identifier):
+        url = self.payload.get_value(page, name) 
+        url = url + str(identifier)
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
+    def wait_for_content_to_load(self, page, name):
+        self.log.debug("Waiting for element to be load. [" + str(page) + "/" + str(name) + "]")
+
+        identifier = self.payload.xpath(page, name)
+
+        if identifier:
+            condition = Element_is_not_(identifier, "-")
+            self.hold.until(condition)
+            self.log.debug("Element loaded.")
+
+            return
+        else:
+            identifier = self.payload.id(page, name)
+
+        if identifier:
+            self.log.error("Waiting for elements to load by id hasn't been implemented.")
+            sys.exit()
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            sys.exit()

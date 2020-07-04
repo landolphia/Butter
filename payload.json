@@ -57,12 +57,20 @@
 			"value"	: false
 		},
 		{
-			"page"	: "list",
-			"name"	: "listing url",
+			"page"	: "rental",
+			"name"	: "url",
 			"id"	: false,
 			"xpath"	: false,
 			"offset": false,
 			"value"	: "https://app.yougotlistings.com/leads/rental/" 
+		},
+		{
+			"page"	: "rental",
+			"name"	: "rent",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Rent']/..",
+			"offset": false,
+			"value"	: false
 		}
 	]
 }

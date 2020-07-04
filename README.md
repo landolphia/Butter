@@ -41,6 +41,8 @@ py main.py
 - put as much as possible in config files (websites, credentials, elements, field properties (type/etc)
 - for now the work is based on getting listings online and processing them
 
+- get data from json for elements, payload, and navigator (flow of input)
+
 <details>
 	<summary> Click to expand </summary>
 

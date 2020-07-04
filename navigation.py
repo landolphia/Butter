@@ -1,3 +1,8 @@
+import os
+import pyautogui
+import time
+import sys
+
 import logging
 import elements
 
@@ -9,6 +14,11 @@ class Navigator:
             
         self.payload = payload
         self.elements = elements.Elements(payload)
+
+        self.tasks = []
+    def add_task(self, task):
+        self.log.debug(task)
+        self.tasks.append(task)
     def start(self):
         self.login()
         self.add_listing()
@@ -17,6 +27,7 @@ class Navigator:
         self.fill_amenities()
         self.fill_contact()
         self.fill_photos()
+    def close(self):
         self.elements.quit()
     def login(self):
         self.elements.go("login", "login url")
@@ -40,7 +51,7 @@ class Navigator:
     def fill_address(self):
         self.elements.wait("location", "address")
 
-        logging.debug("Filling in address details.")
+        self.log.debug("Filling in address details for [" + self.payload.get_value("location", "full address") + "].")
    
         self.elements.fill_input("location", "address")
         self.elements.fill_input("location", "city")
@@ -80,10 +91,10 @@ class Navigator:
 
         if self.payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
-            self.log.warning("Specifics page doesn't get filled automatically for multiple floorplans. This has to be done manually.")
-            self.log.debug("TODO fill specifics when there are multiple floorplans?")
+            self.fill_specifics(True)
         else:
             self.fill_floorplan()
+            self.fill_specifics(False)
     def fill_floorplan(self):
         self.elements.wait("rent", "bedrooms")
         
@@ -96,7 +107,6 @@ class Navigator:
         self.elements.dropdown("rent", "type")
 
         self.elements.press_enter("rent", "specials")
-        self.fill_specifics()
     def fill_floorplans(self):
         i = 0
         fp_number = self.payload.get_value("floorplans", "total number")
@@ -159,21 +169,24 @@ class Navigator:
                 self.elements.fill_input_date_fp("floorplans", "end date", i, fp_id)
 
             # Floorplans/Description++
-            self.log.warning("The description/virtual tour/webpage/lease/image haven't been implemented for floorplans. They must be filled manually.")
-            #self.send_keys_fp_by_id("floorplans", "description")
-            #self.send_keys_fp_by_id("floorplans", "virtual tour")
-            #self.send_keys_fp_by_id("floorplans", "webpage")
-            #self.send_keys_fp_by_id("floorplans", "lease")
+
+            self.elements.fill_input_fp("floorplans", "description", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "virtual tour", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "webpage", i, fp_id)
+            self.elements.fill_input_fp("floorplans", "lease", i, fp_id)
+
+            self.add_task("If the specific floorplan [" + str(fp_id) + "] has a photo you need to add it manually.")
             #self.send_keys_fp_by_id("floorplans", "image")
 
             self.elements.submit_fp("floorplans", "name", i, fp_id)
 
             i = i + 1
-    def fill_specifics(self):
+    def fill_specifics(self, fp):
         self.elements.wait("specifics", "link")
         self.elements.click("specifics", "link")
 
-        self.elements.dropdown("specifics", "max occupants")
+        if not fp:
+            self.elements.dropdown("specifics", "max occupants")
 
         self.elements.checkbox("specifics", "allow sublet")
         self.elements.checkbox("specifics", "is sublet")
@@ -271,21 +284,61 @@ class Navigator:
         self.elements.checkbox("amenities", "wd in unit")
         # Description
         self.elements.tinyMCE("amenities", "description", "amenities", "tinymce")
-
         self.elements.submit("amenities", "wd in unit")
     def fill_contact(self):
-        self.log.warning("The contact page hasn't been implemented. Fill manually.")
-        #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.contact_link)))
-    
-        #result = self.driver.find_element_by_xpath(self.payload.contacat_link)
-        #result.click()
-    
-        return True
-    def fill_photos(self):
-        self.log.warning("The photos page hasn't been implemented. Fill manually.")
-        #self.wait.until(EC.presence_of_element_located((By.XPATH, self.payload.photos_link)))
-    
-        #result = self.driver.find_element_by_xpath(self.payload.photos_link)
-        #result.click()
+        self.add_task("The contact page needs to be filled manually.")
+        #self.elements.wait("contact", "link")
+        #self.elements.click("contact", "link")
 
-        return True
+        #self.elements.wait("contact", "name")
+        #self.elements.fill_input("contact", "name")
+        #self.elements.fill_input("contact", "phone")
+        #self.elements.fill_input("contact", "text")
+
+        #self.elements.click("contact", "email arrow")
+        #self.elements.fill_input("contact", "email")
+
+        #self.elements.fill_input("contact", "office hours")
+        #self.elements.fill_input("contact", "twitter")
+        #self.elements.fill_input("contact", "facebook")
+        #self.elements.fill_input("contact", "instagram")
+        #self.elements.fill_input("contact", "website")
+
+        #TODO
+        #self.elements.fill_input("contact", "lease link")
+        #self.elements.fill_input("contact", "lease button")
+    def fill_photos(self):
+        #TODO dropdown image type
+        #TODO input description
+        self.add_task("The photos' descriptions and types need to be entered manually.")
+
+        photos = []
+        for root, dirs, files in os.walk("./images/"):
+            for f in files:
+                if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".gif") or f.endswith(".png"):
+                    path = os.path.join(root, f)
+                    self.log.debug("Photo found. [" + path + "]")
+                    photos.append(path)
+
+        self.elements.wait("photos", "link")
+        self.elements.click("photos", "link")
+
+        uploads = 0
+        for i in range(len(photos)):
+            path = os.path.abspath(photos[i])
+            self.log.debug("Uploading file #" + str(i) + " [" + photos[i] + "] [" + path + "]")
+
+            self.elements.wait("photos", "uploader")
+            self.elements.click("photos", "uploader")
+
+            if os.path.isfile(photos[i]):
+                time.sleep(1)
+                pyautogui.write(path, interval=0.075)
+                pyautogui.press('enter')
+                self.elements.wait_for_new_list_element("photos", "li", uploads)
+                uploads = uploads + 1
+            else:
+                self.log.error("The file [" + path + "] doesn't exist.")
+                sys.exit()
+    def task_list(self):
+        self.elements.task_list(self.tasks)

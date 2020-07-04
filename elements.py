@@ -8,6 +8,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
+class List_has_new_element(object):
+    def __init__(self, xpath, old_count):
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing List_has_new_element. [" + str(xpath) + " / " + str(old_count) + "]")
+
+        self.xpath = xpath 
+        self.old_count = old_count 
+    def __call__(self, driver):
+        elements = driver.find_elements_by_xpath(self.xpath)
+        if len(elements) > self.old_count:
+            self.log.debug("Found a new element, " + str(len(elements)) + " total.")
+            return True 
+        else:
+            return False
+
 class Elements:
     def __init__(self, payload):
             self.log = logging.getLogger("bLog")
@@ -15,11 +30,6 @@ class Elements:
             
             self.driver = webdriver.Chrome()
             self.hold = WebDriverWait(self.driver, 100)
-            # TODO
-            #FluentWait<WebDriver>(driver)
-            #    .withTimeout(50, TimeUnit.SECONDS)
-            #    .pollingevery(3, TimeUnit.SECONDS)
-            #    .ignoring(NoSuchElementException.class)
 
             if self.driver == None:
                 self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
@@ -103,7 +113,7 @@ class Elements:
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
 
         element.send_keys(value)
@@ -119,7 +129,7 @@ class Elements:
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
             sys.exit()
 
@@ -129,7 +139,7 @@ class Elements:
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing.\nIt will be replaced with [DEFAULT_VALUE].")
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
 
         element.send_keys(value)
@@ -178,17 +188,15 @@ class Elements:
     def submit(self, page, name): self.__get_element__(page, name).submit()
     def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).submit()
     def tinyMCE(self, page, name, iframe_page, iframe_name):
-        #TODO maybe I could speed this up by setting the value instead of sending keys
-        #TODO (only display warning if len>X
-        self.log.warning("Filling in the description. This might take a while if it's long.")
         description = self.payload.get_value(page, name)
 
         iframe = self.__get_element__(iframe_page, iframe_name)
         self.driver.switch_to.frame(iframe)
 
         tinymce = self.__get_element__(page, name)
-        tinymce.click()
-        tinymce.send_keys(description)
+        
+        javascript = "arguments[0].innerHTML = arguments[1];"
+        self.driver.execute_script( javascript, tinymce, description.replace('\n', '<br>'))
         self.driver.switch_to.default_content()
     def wait(self, page, name):
         self.log.debug("Waiting for element to load. [" + page + "/" + name + "]")
@@ -209,3 +217,39 @@ class Elements:
         else:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
             sys.exit()
+    def wait_for_new_list_element(self, page, name, old_count):
+        self.log.debug("Waiting for new element to be added to list. [" + str(page) + "/" + str(name) + "]")
+
+        identifier = self.payload.xpath(page, name)
+
+        if identifier:
+            condition = List_has_new_element(identifier, old_count)
+            self.hold.until(condition)
+            self.log.debug("New element added.")
+
+            return
+        else:
+            identifier = self.payload.id(page, name)
+
+        if identifier:
+            self.log.error("Waiting for new list elements by id hasn't been implemented.")
+            sys.exit()
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            sys.exit()
+    def task_list(self, tasks):
+        self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
+        self.driver.execute_script("window.open('', 'todo', 'height=400,width=400,top=0, left=0, toolbar=no,menubar=no,scrollbars=yes,location=no,status=no');")
+        self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
+        self.driver.switch_to_window("todo")
+
+        javascript = "l = document.createElement('ul'); l.id ='list'; document.body.appendChild(l);"
+        self.driver.execute_script(javascript)
+
+        for t in tasks:
+            javascript = "l = document.getElementById('list');"
+            javascript = javascript + str("i = document.createElement('li');")
+            javascript = javascript + str("text = document.createTextNode(arguments[0]);")
+            javascript = javascript + str("i.appendChild(text);")
+            javascript = javascript + str("l.appendChild(i);")
+            self.driver.execute_script(javascript, t)

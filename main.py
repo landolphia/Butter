@@ -11,7 +11,8 @@ import spreadsheet
 
 from logging import handlers
 
-VERSION = "0.x+1 Bump up version when done"
+
+VERSION = "0.2.5" #Bump up to 0.3 when done
 
 #TODO Investergate this
 #def install(package):
@@ -77,17 +78,20 @@ def main():
         ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
         data.init(ss)
 
+        input("Wait")
         nav = navigation.Navigator(data)
         nav.start()
+        nav.task_list()
 
         log.warning("Please check the messages above to see if some elements still need to be filled manually.")
-        log.warning("This script is still under *heavy* development. It would be wise to manually check that the data is accurately filled.")
+        log.debug("Finished in %s seconds." % (time.time() - start_time))
+
+        input("\nPress enter when you're done filling in missing details in the ad.")
+        nav.close()
     elif arguments["mode"] == "SCRAPE":
         data = payload2.Payload2()
         scr = scraper.Scraper(data)
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
-
-    log.info("Finished in %s seconds." % (time.time() - start_time))
 
 main()

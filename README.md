@@ -17,6 +17,7 @@ Uses the following modules.
  pip install googlemaps 
  pip install pandas
  pip install phonenumbers
+ pip install pyautogui
  pip install selenium
  pip install xlrd
 ```
@@ -24,10 +25,12 @@ Uses the following modules.
 ## Usage
 
 1. Download the listing spreadsheet to the running directory
-2. Open your terminal
-3. Navigate to the directory containing the script and spreadsheet
-4. Run the script with "py main.py"
-
+2. Download private.slr to the running directory
+3. Add any images to post in a directory called "images" in the running directory, naming them sequentially from 1 to X(number of photos.)\
+The files need to be either .jpg, .jpeg, .gif or .png.
+4. Open your terminal
+5. Navigate to the directory containing the script and spreadsheet
+6. Run the script with:
 ```shell
 py main.py
 ```
@@ -41,25 +44,31 @@ py main.py
 <details>
 	<summary> Click to expand </summary>
 
-- double check pets
+- scrape listings from website.
 Other:
-- photos page
 - contact page
 - value formatting and validation
 - value type in payload
-- consider webDriver wait delay, might improve speed
 - remove lxml (see next item)
 - consolidate with HTML scraper
 </details>
 
 ## History
 
-Current version: 0.2.1\
-- credentials obfuscated
+Current version: 0.2.5\
+- remaining taks list is more user friendly
 
 <details>
   <summary> Older versions </summary>
 
+v0.2.4\
+- faster (instant) description filling for tinyMCE
+v0.2.3
+- loops through photos in ./images/ and uploads them
+v0.2.2[HOTFIX]
+- waits for user to press enter after running the script to close the browser window
+- credentials obfuscated
+- fixed type in payload, leading to duplicate page/name entr
 v0.2
 - date and pets
 - multiple floorplans

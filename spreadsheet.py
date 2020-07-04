@@ -1,5 +1,6 @@
-import logging
 import geohelper
+
+import logging
 import os.path
 import pprint 
 import pandas as pd

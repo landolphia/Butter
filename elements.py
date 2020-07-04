@@ -169,6 +169,11 @@ class Elements:
         url = self.payload.get_value(page, name) 
         self.log.debug("Navigating to \"" + str(url) + "\"")
         self.driver.get(url)
+    def go_id(self, page, name, identifier):
+        url = self.payload.get_value(page, name) 
+        url = url + str(identifier)
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
     def press_enter(self, page, name):
         element = self.__get_element__(page, name)
         element.send_keys(Keys.ENTER)
@@ -253,3 +258,17 @@ class Elements:
             javascript = javascript + str("i.appendChild(text);")
             javascript = javascript + str("l.appendChild(i);")
             self.driver.execute_script(javascript, t)
+
+
+    def get_elements(self, page, name):
+        self.log.warning("This function shouldn't be used. You're using a test version of the script.")
+        identifier = self.payload.xpath(page, name)
+        if identifier:
+            elements = self.driver.find_elements_by_xpath(identifier)
+        else:
+            identifier = self.payload.id(page, name)
+            elements = self.driver.find_elements_by_id(identifier)
+        if not elements:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            
+        return elements

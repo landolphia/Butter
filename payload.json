@@ -31,6 +31,38 @@
 			"xpath"	: "//button[@role='button']",
 			"offset": false,
 			"value"	: false
+		},
+		{
+			"page"	: "list",
+			"name"	: "url",
+			"id"	: false,
+			"xpath"	: false,
+			"offset": false,
+			"value"	: "https://app.yougotlistings.com/leads/" 
+		},
+		{
+			"page"	: "list",
+			"name"	: "news",
+			"id"	: "whatsnew",
+			"xpath"	: false,
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "list",
+			"name"	: "listings",
+			"id"	: false,
+			"xpath"	: "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "list",
+			"name"	: "listing url",
+			"id"	: false,
+			"xpath"	: false,
+			"offset": false,
+			"value"	: "https://app.yougotlistings.com/leads/rental/" 
 		}
 	]
 }

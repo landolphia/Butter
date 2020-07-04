@@ -16,6 +16,8 @@ class Scraper:
         self.start()
     def start(self):
         self.login()
+        #TODO Get listing id from... somewhere?
+        self.process_list("4067267")
     def login(self):
         self.elements.go("login", "login url")
         self.elements.wait("login", "submit button")
@@ -24,3 +26,13 @@ class Scraper:
         self.elements.fill_input("login", "password")
 
         self.elements.click("login", "submit button")
+    def process_list(self, identifier):
+        self.elements.wait("list", "news")
+        self.elements.go_id("list", "url", identifier)
+
+        self.elements.wait("list", "listings")
+
+        listings = self.elements.get_elements("list", "listings")
+
+        for l in listings:
+            self.log.debug("Listing: " + str(l))

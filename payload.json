@@ -65,10 +65,234 @@
 			"value"	: "https://app.yougotlistings.com/leads/rental/" 
 		},
 		{
-			"page"	: "rental",
+			"page"	: "unit",
+			"name"	: "address",
+			"id"	: false,
+			"xpath"	: "//i[@title ='Map Listing']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
 			"name"	: "rent",
 			"id"	: false,
 			"xpath"	: "//strong[text()='Rent']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "available date",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Avail Date']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "beds",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Beds']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "baths",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Baths']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "fee paid by owner",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Fee Paid By Owner']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "rent includes",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Rent Includes']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "square footage",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Square Footage']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "laundry",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Laundry']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "building type",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Building Type']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "heat source",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Heat Source']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "unit level",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Unit Level']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "student",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Student']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "pets",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Pet']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "parking",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Parking']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "key info",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Key / Entry Info']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "tenant info",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Showing & Tenant Info']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "first month",
+			"id"	: false,
+			"xpath"	: "//strong[text()='First Month']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "last month",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Last Month']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "security",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Security']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "application fee",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Application Fee']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "move in fee",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Move In Fee']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "pet deposit",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Pet Deposit']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "key deposit",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Key Deposit']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord name",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Name']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord phone",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Phone']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord email",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Email']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord contact",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Contact']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
+			"name"	: "notes",
+			"id"	: false,
+			"xpath"	: "//strong[text()='Internal Notes']/..",
 			"offset": false,
 			"value"	: false
 		}

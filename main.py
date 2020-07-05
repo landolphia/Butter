@@ -7,6 +7,7 @@ import navigation
 import payload
 import payload2
 import scraper
+import scrapings
 import spreadsheet
 
 from logging import handlers
@@ -84,14 +85,24 @@ def main():
         nav.task_list()
 
         log.warning("Please check the messages above to see if some elements still need to be filled manually.")
-        log.debug("Finished in %s seconds." % (time.time() - start_time))
 
         input("\nPress enter when you're done filling in missing details in the ad.")
         nav.close()
     elif arguments["mode"] == "SCRAPE":
-        data = payload2.Payload2()
-        scr = scraper.Scraper(data)
+        #TODO check id field becaus if it's loaded everything *should* be loaded.
+        log.debug("TODO figure out how to make difference between not loaded and empty field. Just wait for 5 secs?")
+        log.debug("TODO USE LOADING SIGN presence to check loading state.")
+        
+        log.debug("TODO figure out what to do with optional elements (key/entry info isn't always there.)")
+        payload = payload2.Payload2()
+        scr  = scraper.Scraper(payload)
+        scr.close()
+        units = scr.get_units()
+        log.debug("Scraped " + str(len(units)) + "unit" + ("s" if len(units) > 1 else "") + ".")
+        scrapings.Scrapings().create(units)
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
+
+    log.debug("Finished in %s seconds." % (time.time() - start_time))
 
 main()

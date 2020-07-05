@@ -1,7 +1,9 @@
 import credentials
+
 import json
 import logging
 import sys
+
 
 class Payload2:
     def __init__(self):
@@ -45,6 +47,11 @@ class Payload2:
         for i in data["payload"]:
             self.__add__element__(i["page"], i["name"], i["id"], i["xpath"], i["offset"], i["value"])
         self.credentials = None
+
+    def set_value2(self, page, name, value, number):
+        self.log.debug("Setting value for [" + str(page) + "/" + str(name) + "] (" + str(value) + ")")
+        self.__add__element__(page, name, None, None, number, value)
+
     def get_bool(self, page, name): return self.data[page][name]["value"] == "Y"
     def get_value(self, page, name): return self.data[page][name]["value"]
     def id(self, page, name): return self.data[page][name]["id"]

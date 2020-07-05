@@ -13,12 +13,16 @@ class Scraper:
         self.elements = elements.Elements(payload)
         self.payload = payload 
         
-        self.start()
+        self.units = self.start()
+    def close(self):
         self.elements.quit()
+    def get_units(self):
+        return self.units
     def start(self):
         self.login()
         #TODO Get listing id from... somewhere?
-        self.get_rentals_list("4067267")
+
+        return self.get_rentals_list("4067267")
     def login(self):
         self.elements.go("login", "login url")
         self.elements.wait("login", "submit button")
@@ -36,20 +40,24 @@ class Scraper:
         listings = self.elements.get_elements("list", "listings")
 
         ids = []
+        #FIXME Can listings get stale?
         for l in listings:
-            self.log.debug("Listing: " + str(l))
-            ids.append(l.get_attribute("data-rental-id"))
+            rental_id = l.get_attribute("data-rental-id")
+            ids.append(rental_id)
 
+        units = []
         for i in ids:
-            self.log.debug("Processing #" + str(i))
-            self.process_rental(i)
+            unit = self.process_rental(i)
+            units.append(unit)
+
+        return units
     def process_rental(self, identifier):
         self.elements.go_rental("rental", "url", identifier)
-        self.elements.wait("rental", "rent")
-        self.log.debug("Waited once.")
-        self.elements.wait_for_content_to_load("rental", "rent")
-        self.log.debug("This is super hacky, waiting twice seems to remove stale element issue.")
-        self.elements.wait_for_content_to_load("rental", "rent")
-        rent = self.elements.get_value("rental", "rent")
-        self.log.debug("Rent for rental #" + str(identifier) + " = " + str(rent))
-        self.log.info("Rent for rental #" + str(identifier) + " = " + str(rent))
+        #self.elements.wait("rental", "rent")
+        #FIXME figure out how to precisely wait for all the data to load, not just elements
+        self.elements.wait_for_content_to_load("unit", "rent")
+        self.elements.wait_for_content_to_load("unit", "address")
+
+        unit = self.elements.scrape_unit(identifier)
+
+        return unit

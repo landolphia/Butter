@@ -4,6 +4,8 @@ import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -26,7 +28,7 @@ class List_has_new_element(object):
 class Element_is_not_(object):
     def __init__(self, xpath, default_value):
         self.log = logging.getLogger("bLog")
-        self.log.debug("Initializing Element_is_not_. [" + str(xpath) + " / " + str(default_value) + "]")
+        self.log.debug("Initializing Element_is_not_. [" + str(xpath) + "] [" + str(default_value) + "]")
 
         self.default_value = default_value
         self.xpath = xpath 
@@ -34,10 +36,19 @@ class Element_is_not_(object):
         element = driver.find_element_by_xpath(self.xpath)
         if element:
             self.log.debug("Element is loaded.")
-            content = element.get_attribute("innerText")
+            
+            content = None
+            while content == None:
+                try:
+                    content = element.get_attribute("innerText")
+                except StaleElementReferenceException:
+                    self.log.warning("Element stale. Trying again.")
+                    element = driver.find_element_by_xpath(self.xpath)
+
             self.log.debug("Content = " + content)
             self.log.debug("Default = " + self.default_value)
             self.log.debug("is = " + str(not (self.default_value in content)))
+
             return not (self.default_value in content)
         else:
             return False
@@ -290,6 +301,11 @@ class Elements:
         element = self.__get_element__(page, name)
 
         return element.get_attribute("innerText")
+    def get_value_money(self, page, name):
+        element = self.__get_element__(page, name)
+        value = element.get_attribute("innerText")
+
+        return int(value.replace("Rent\n$", "").replace(",","").strip())
     def go_list(self, page, name, identifier):
         url = self.payload.get_value(page, name) 
         url = url + str(identifier)
@@ -300,6 +316,21 @@ class Elements:
         url = url + str(identifier)
         self.log.debug("Navigating to \"" + str(url) + "\"")
         self.driver.get(url)
+    def scrape_unit(self, identifier):
+        data = self.payload.data["unit"]
+
+        unit = {}
+        for l in data:
+            self.log.debug("Before: " + str(data[l]["value"]))
+            try:
+                element = self.driver.find_element_by_xpath(data[l]["xpath"])
+                content = element.get_attribute("innerText")
+                unit[l] = {"value" : str(content)}
+                self.log.debug("After: " + str(data[l]["value"]))
+            except NoSuchElementException:
+                self.log.warning("Element was not found. [" + str(l) + "]")
+         
+        return unit
     def wait_for_content_to_load(self, page, name):
         self.log.debug("Waiting for element to be load. [" + str(page) + "/" + str(name) + "]")
 
@@ -308,7 +339,7 @@ class Elements:
         if identifier:
             condition = Element_is_not_(identifier, "-")
             self.hold.until(condition)
-            self.log.debug("Element loaded.")
+            self.log.debug("Content loaded.")
 
             return
         else:

@@ -93,14 +93,13 @@ def main():
         nav.close()
     elif arguments["mode"] == "SCRAPE":
         #TODO check id field becaus if it's loaded everything *should* be loaded.
-        log.debug("TODO figure out how to make difference between not loaded and empty field. Just wait for 5 secs?")
-        log.debug("TODO USE LOADING SIGN presence to check loading state.")
         log.debug("TODO figure out what to do with optional elements (key/entry info isn't always there.)")
+        log.debug("TODO max height, prettify values ( remove unused text), add keywords")
 
         payload = payload2.Payload2()
         scr  = scraper.Scraper(payload, arguments["offline"])
         units = scr.get_units()
-        log.info("Scraped " + str(len(units)) + "unit" + ("s" if len(units) > 1 else "") + ".")
+        log.info("Scraped " + str(len(units)) + " unit" + ("s" if len(units) > 1 else "") + ".")
         scrapings.Scrapings().create(units)
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")

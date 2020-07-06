@@ -48,7 +48,10 @@ class Scrapings:
             col = 0
             for key in unit:
                 worksheet.write(row, col, unit[key])
+                worksheet.set_row(row, 16)
                 col = col + 1
             row = row + 1
 
         workbook.close()
+
+        self.log.info(str(LISTING) + " created.")

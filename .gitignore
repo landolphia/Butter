@@ -6,4 +6,5 @@
 *.xlsx
 images/*
 chromedriver.exe
+offline_data.json
 private.slr

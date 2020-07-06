@@ -15,6 +15,7 @@ Uses the following modules.
 ```shell
  pip install base64
  pip install googlemaps 
+ pip install jinja2
  pip install pandas
  pip install phonenumbers
  pip install pyautogui

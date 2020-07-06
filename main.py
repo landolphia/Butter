@@ -44,6 +44,7 @@ def init_log(logLevel):
 def process_args(args):
     logLevel = logging.INFO
     app_mode = None
+    offline = False
 
     i = 1
     for a in args:
@@ -59,12 +60,14 @@ def process_args(args):
             app_mode = "POST"
         elif a == "SCRAPE":
             app_mode = "SCRAPE"
+        elif a == "OFFLINE":
+            offline = True
         else:
             if i != 1:
                 print("Argument #" + str(i) + " ignored. [" + str(a) + "]")
         i += 1
 
-    return { "log level": logLevel, "mode": app_mode}
+    return { "log level": logLevel, "mode": app_mode, "offline": offline}
 
 def main():
     arguments = process_args(sys.argv)
@@ -92,13 +95,12 @@ def main():
         #TODO check id field becaus if it's loaded everything *should* be loaded.
         log.debug("TODO figure out how to make difference between not loaded and empty field. Just wait for 5 secs?")
         log.debug("TODO USE LOADING SIGN presence to check loading state.")
-        
         log.debug("TODO figure out what to do with optional elements (key/entry info isn't always there.)")
+
         payload = payload2.Payload2()
-        scr  = scraper.Scraper(payload)
-        scr.close()
+        scr  = scraper.Scraper(payload, arguments["offline"])
         units = scr.get_units()
-        log.debug("Scraped " + str(len(units)) + "unit" + ("s" if len(units) > 1 else "") + ".")
+        log.info("Scraped " + str(len(units)) + "unit" + ("s" if len(units) > 1 else "") + ".")
         scrapings.Scrapings().create(units)
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")

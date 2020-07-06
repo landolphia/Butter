@@ -50,6 +50,14 @@
 		},
 		{
 			"page"	: "list",
+			"name"	: "id",
+			"id"	: false,
+			"xpath"	: "//strong[text()='ID']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "list",
 			"name"	: "listings",
 			"id"	: false,
 			"xpath"	: "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']",
@@ -66,9 +74,17 @@
 		},
 		{
 			"page"	: "unit",
+			"name"	: "id",
+			"id"	: false,
+			"xpath"	: "//strong[text()='ID']/..",
+			"offset": false,
+			"value"	: false
+		},
+		{
+			"page"	: "unit",
 			"name"	: "address",
 			"id"	: false,
-			"xpath"	: "//i[@title ='Map Listing']/..",
+			"xpath"	: "//i[@title='Map Listing']/..",
 			"offset": false,
 			"value"	: false
 		},

@@ -54,16 +54,17 @@ class Element_is_not_(object):
             return False
 
 class Elements:
-    def __init__(self, payload):
+    def __init__(self, payload, offline):
             self.log = logging.getLogger("bLog")
             self.log.debug("Initializing Elements.")
             
-            self.driver = webdriver.Chrome()
-            self.hold = WebDriverWait(self.driver, 100)
+            if not offline:
+                self.driver = webdriver.Chrome()
+                self.hold = WebDriverWait(self.driver, 100)
 
-            if self.driver == None:
-                self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
-                sys.exit()
+                if self.driver == None:
+                    self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
+                    sys.exit()
 
             self.payload = payload
     def __get_element__(self, page, name):
@@ -321,18 +322,16 @@ class Elements:
 
         unit = {}
         for l in data:
-            self.log.debug("Before: " + str(data[l]["value"]))
             try:
                 element = self.driver.find_element_by_xpath(data[l]["xpath"])
                 content = element.get_attribute("innerText")
                 unit[l] = {"value" : str(content)}
-                self.log.debug("After: " + str(data[l]["value"]))
             except NoSuchElementException:
                 self.log.warning("Element was not found. [" + str(l) + "]")
          
         return unit
     def wait_for_content_to_load(self, page, name):
-        self.log.debug("Waiting for element to be load. [" + str(page) + "/" + str(name) + "]")
+        self.log.debug("Waiting for content of element to be load. [" + str(page) + "/" + str(name) + "]")
 
         identifier = self.payload.xpath(page, name)
 

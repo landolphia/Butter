@@ -10,6 +10,7 @@ from datetime import datetime
 
 
 LISTING = "scrapings.xlsx"
+MAX_COLUMN_WIDTH = 60
 
 class Scrapings:
     def __init__(self):
@@ -37,12 +38,23 @@ class Scrapings:
         bold = workbook.add_format({"bold": True})
         worksheet = workbook.add_worksheet()
         worksheet.write_row(0,0, labels, bold)
-        
-        for col in range(len(labels)):
-                width = len(labels[col])
-                worksheet.set_column(col, col, width)
-                
 
+
+        # Getting columns width based on content
+        widths = [0] * len(labels)
+        for unit in data:
+            col = 0
+            for key in unit:
+                widths[col] = min([max([len(labels[col]), len(unit[key])]), MAX_COLUMN_WIDTH])
+                col = col + 1
+
+        # Setting columns width based on results
+        col = 0
+        for w in widths:
+            worksheet.set_column(col, col, widths[col])
+            col = col + 1
+        
+        # Filling in worksheet with data
         row = 1
         for unit in data:
             col = 0

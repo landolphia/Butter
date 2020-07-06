@@ -1,0 +1,26 @@
+import json
+import logging
+import os.path
+
+COLOR_FILE = "colors.json"
+KEYWORD_FILE = "keywords.json"
+
+
+class Keywords:
+    def __init__(self):
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing Keywords.")
+
+        self.colors = None
+
+        self.load_colors()
+        self.load_keywords()
+    def load_colors(self):
+        self.log.debug("Loading colors configuration file [" + COLOR_FILE + "].")
+        with open(COLOR_FILE) as data_file:
+            self.colors = json.load(data_file)
+    def load_keywords(self):
+        self.log.debug("Loading keywords configuration file [" + KEYWORD_FILE + "].")
+        with open(KEYWORD_FILE) as data_file:
+            self.keywords = json.load(data_file)
+    def get_keywords(self): return self.keywords

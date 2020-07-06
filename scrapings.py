@@ -1,4 +1,5 @@
 import geohelper
+import keywords
 
 import logging
 import os.path
@@ -36,6 +37,7 @@ class Scrapings:
         workbook = xlsxwriter.Workbook('scrapings.xlsx')
 
         bold = workbook.add_format({"bold": True})
+        not_bold = workbook.add_format({"bold": False})
         worksheet = workbook.add_worksheet()
         worksheet.write_row(0,0, labels, bold)
 
@@ -54,15 +56,27 @@ class Scrapings:
             worksheet.set_column(col, col, widths[col])
             col = col + 1
         
+        kw = keywords.Keywords()
         # Filling in worksheet with data
         row = 1
         for unit in data:
             col = 0
             for key in unit:
-                worksheet.write(row, col, unit[key])
+                kw_found = False
+                for k in kw.get_keywords():
+                    # TODO replace with appropriate color
+                    if str(k).lower() in str(unit[key]).lower():
+                        kw_found = True
+                        self.log.debug("Keyword found [" + str(k) + "] in (" + unit[key] + ")")
+                if kw_found == True:
+                    worksheet.write(row, col, unit[key], bold)
+                else:
+                    worksheet.write(row, col, unit[key], not_bold)
                 worksheet.set_row(row, 16)
                 col = col + 1
             row = row + 1
+
+        # Write key to spreadsheet
 
         workbook.close()
 

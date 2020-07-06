@@ -17,7 +17,7 @@ class Payload2:
             data = json.load(data_file)
 
         self.__init__data__(data)
-    def __add__element__(self, page, name, css_id, css_xpath, cell_offset, value):
+    def __add__element__(self, page, name, css_id, css_xpath, cell_offset, value, fluff):
         if page not in self.data:
             self.data[page] = {}
         if name not in self.data[page]:
@@ -30,7 +30,8 @@ class Payload2:
                 "id": css_id,
                 "xpath": css_xpath,
                 "offset": cell_offset,
-                "value": value
+                "value": value,
+                "fluff": fluff
             }
         else: # Duplicate key
             self.log.error("Error scraping initial data. Exiting." +
@@ -39,13 +40,14 @@ class Payload2:
                     "\nCSS ID = " + str(css_id) +
                     "\nCSS XPATH = " + str(css_xpath) +
                     "\nCell offset = " + str(cell_offset) +
-                    "\nValue = " + str(value))
+                    "\nValue = " + str(value) + 
+                    "\nFluff = " + str(fluff))
             sys.exit()
     def __init__data__(self, data):
         self.data = {}
         # Login page
         for i in data["payload"]:
-            self.__add__element__(i["page"], i["name"], i["id"], i["xpath"], i["offset"], i["value"])
+            self.__add__element__(i["page"], i["name"], i["id"], i["xpath"], i["offset"], i["value"], i["fluff"])
         self.credentials = None
 
     def set_value2(self, page, name, value, number):

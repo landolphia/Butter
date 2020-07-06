@@ -160,7 +160,6 @@ class Elements:
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
         if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
             sys.exit()
 
@@ -321,14 +320,18 @@ class Elements:
         data = self.payload.data["unit"]
 
         unit = {}
+
         for l in data:
             try:
                 element = self.driver.find_element_by_xpath(data[l]["xpath"])
                 content = element.get_attribute("innerText")
-                unit[l] = {"value" : str(content)}
+                content = content.replace(data[l]["fluff"], "")
             except NoSuchElementException:
                 self.log.warning("Element was not found. [" + str(l) + "]")
+                content = "-"
          
+            unit[l] = content
+
         return unit
     def wait_for_content_to_load(self, page, name):
         self.log.debug("Waiting for content of element to be load. [" + str(page) + "/" + str(name) + "]")

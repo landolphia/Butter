@@ -93,8 +93,7 @@ def main():
         nav.close()
     elif arguments["mode"] == "SCRAPE":
         #TODO check id field becaus if it's loaded everything *should* be loaded.
-        log.debug("TODO figure out what to do with optional elements (key/entry info isn't always there.)")
-        log.debug("TODO max height, prettify values ( remove unused text), add keywords")
+        log.debug("TODO max height, add keywords")
 
         payload = payload2.Payload2()
         scr  = scraper.Scraper(payload, arguments["offline"])

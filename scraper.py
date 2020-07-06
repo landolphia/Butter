@@ -15,25 +15,24 @@ class Scraper:
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Scraper.")
  
-        self.elements = elements.Elements(payload, offline)
         self.payload = payload 
         
         self.units = None
         if not offline:
+            self.elements = elements.Elements(payload, False)
             self.units = self.start()
         else:
             if not os.path.isfile(OFFLINE_FILE):
-                self.log.warning("Offline file doesn't exist. Downlaoding data to file.")
+                self.log.warning("Offline file doesn't exist. Downloading data to file.")
+                self.elements = elements.Elements(payload, False)
                 self.units = self.start()
-                self.elements.quit()
                 with open(OFFLINE_FILE, 'w') as f:
                    json.dump(self.units, f) 
-
-            if self.units == None:
+            else:
                 self.log.info("Loading data from offline file.")
                 with open(OFFLINE_FILE) as f:
                     self.units = json.load(f)
-                pprint.pprint(self.units)
+                self.elements = elements.Elements(payload, True)
 
     def get_units(self):
         return self.units
@@ -41,7 +40,11 @@ class Scraper:
         self.login()
         #TODO Get listing id from... somewhere?
 
-        return self.get_rentals_list("4067267")
+        result = self.get_rentals_list("4067267")
+
+        self.elements.quit()
+
+        return result
     def login(self):
         self.elements.go("login", "login url")
         self.elements.wait("login", "submit button")

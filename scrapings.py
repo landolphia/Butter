@@ -38,9 +38,24 @@ class Scrapings:
 
         bold = workbook.add_format({"bold": True})
         not_bold = workbook.add_format({"bold": False})
-        worksheet = workbook.add_worksheet()
-        worksheet.write_row(0,0, labels, bold)
 
+        color_formats = {}
+        kw = keywords.Keywords()
+        colors = kw.get_colors()
+        for c in colors:
+            bright = workbook.add_format()
+            bright.set_bg_color(colors[c][0])
+            dim = workbook.add_format()
+            dim.set_bg_color(colors[c][1])
+            color_formats[c] = {
+                    "bright": bright,
+                    "dim"   : dim
+                                }
+
+        # TODO When/if scraping multiple lists use multiple worksheets
+        # and name them appropriately.
+        worksheet = workbook.add_worksheet("Leads #" + str(leads_id))
+        worksheet.write_row(0,0, labels, bold)
 
         # Getting columns width based on content
         widths = [0] * len(labels)
@@ -56,7 +71,6 @@ class Scrapings:
             worksheet.set_column(col, col, widths[col])
             col = col + 1
         
-        kw = keywords.Keywords()
         # Filling in worksheet with data
         row = 1
         for unit in data:
@@ -66,10 +80,11 @@ class Scrapings:
                 for k in kw.get_keywords():
                     # TODO replace with appropriate color
                     if str(k).lower() in str(unit[key]).lower():
-                        kw_found = True
+                        kw_found = k 
                         self.log.debug("Keyword found [" + str(k) + "] in (" + unit[key] + ")")
-                if kw_found == True:
-                    worksheet.write(row, col, unit[key], bold)
+                        break
+                if not (kw_found == False):
+                    worksheet.write(row, col, unit[key], color_formats[kw.get_keywords()[kw_found]]["dim"])
                 else:
                     worksheet.write(row, col, unit[key], not_bold)
                 worksheet.set_row(row, 16)
@@ -77,6 +92,11 @@ class Scrapings:
             row = row + 1
 
         # Write key to spreadsheet
+        row = row + 2
+        for k in kw.get_keywords():
+            worksheet.write(row, 0, "", color_formats[kw.get_keywords()[k]]["bright"])
+            worksheet.write(row, 1, str(k), color_formats[kw.get_keywords()[k]]["dim"])
+            row = row + 1
 
         workbook.close()
 

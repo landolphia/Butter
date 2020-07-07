@@ -24,3 +24,17 @@ class Keywords:
         with open(KEYWORD_FILE) as data_file:
             self.keywords = json.load(data_file)
     def get_keywords(self): return self.keywords
+    def get_colors(self): return self.colors
+    def get_color(self, kw):
+        if not (self.keywords[kw]):
+            self.log.error("Keyword [" + str(kw) + "] doesn't exist. Can't apply color to cell.")
+            sys.exit()
+
+        default = ["#C0C0C0", "#E0E0E0"]
+
+        for c in self.colors:
+            if c == self.keywords[kw]:
+                self.log.warning("Found color for [" + str(kw) + "] = [" + str(c) + "]")
+                return c
+
+        return default

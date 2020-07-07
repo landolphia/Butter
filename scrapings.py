@@ -28,7 +28,7 @@ class Scrapings:
                     self.log.debug("Skipping duplicate column [" + str(v) + "]")
 
         return columns
-    def create(self, data):
+    def create(self, data, leads_id):
         if os.path.isfile(LISTING):
             self.log.warning("Deleting current scrapings [" + str(LISTING) + "].")
             os.remove(LISTING)

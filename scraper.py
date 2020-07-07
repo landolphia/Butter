@@ -16,6 +16,7 @@ class Scraper:
         self.log.debug("Initializing Scraper.")
  
         self.payload = payload 
+        self.lead_id = "4067267"
         
         self.units = None
         if not offline:
@@ -40,11 +41,12 @@ class Scraper:
         self.login()
         #TODO Get listing id from... somewhere?
 
-        result = self.get_rentals_list("4067267")
+        result = self.get_rentals_list(self.lead_id)
 
         self.elements.quit()
 
         return result
+    def get_lead_id(self): return self.lead_id
     def login(self):
         self.elements.go("login", "login url")
         self.elements.wait("login", "submit button")

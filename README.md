@@ -25,29 +25,49 @@ Uses the following modules.
 
 ## Usage
 
+### POST
+ POST: posts an ad based on listing.xlsx (check template).
 1. Download the listing spreadsheet to the running directory
-2. Download private.slr to the running directory
+2. Download ChromeDriver and private.slr to the running directory
 3. Add any images to post in a directory called "images" in the running directory, naming them sequentially from 1 to X(number of photos.)\
 The files need to be either .jpg, .jpeg, .gif or .png.
 4. Open your terminal
 5. Navigate to the directory containing the script and spreadsheet
 6. Run the script with:
 ```shell
-py main.py
+py main.py POST [INFO, DEBUG]
 ```
+
+Notes:
+- INFO is the default logging level.
+- DEBUG messages will be printed to debug.log by default anyway.
+
+### SCRAPE 
+ SCRAPE: scrapes online leads and creates a spreadsheet highlighting keywords defined in colors.json
+1. Download ChromeDriver and private.slr to the running directory
+2. Open your terminal
+3. Navigate to the directory containing the script and spreadsheet
+4. Run the script with:
+```shell
+py main.py SCRAPE [OFFLINE] [INFO, DEBUG]
+```
+
+Notes:
+- INFO is the default logging level.
+- DEBUG messages will be printed to debug.log by default anyway.
+- OFFLINE will download the leads data to a local file and use it upon subsequent runs with the OFFLINE argument
 
 ## To-do
 
- This branch will enable the user to either scrape online listings or post an ad based on a spreadsheet's data.
 - put as much as possible in config files (websites, credentials, elements, field properties (type/etc)
 - for now the work is based on getting listings online and processing them
-
 - get data from json for elements, payload, and navigator (flow of input)
+- merge SCRAPE/POST code
+- restructured file and folder hierarchy for better configuration/automation
 
 <details>
 	<summary> Click to expand </summary>
 
-- scrape listings from website.
 Other:
 - contact page
 - value formatting and validation
@@ -58,12 +78,15 @@ Other:
 
 ## History
 
-Current version: 0.2.5\
-- remaining taks list is more user friendly
+Current version: 0.3\
+- scrapes online leads
+- creates spreadsheet, highlighting keywords
 
 <details>
   <summary> Older versions </summary>
 
+v0.2.5\
+- remaining taks list is more user friendly
 v0.2.4\
 - faster (instant) description filling for tinyMCE
 v0.2.3

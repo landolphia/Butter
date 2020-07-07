@@ -77,12 +77,13 @@ def main():
 
     start_time = time.time()
     
+    log.debug("TODO merge functionalities in better structured files, compile to exe,  GUI.")
     if arguments["mode"] == "POST":
+        log.debug("TODO post to multiple websites.")
         data = payload.Payload()
         ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
         data.init(ss)
 
-        input("Wait")
         nav = navigation.Navigator(data)
         nav.start()
         nav.task_list()
@@ -93,13 +94,13 @@ def main():
         nav.close()
     elif arguments["mode"] == "SCRAPE":
         #TODO check id field becaus if it's loaded everything *should* be loaded.
-        log.debug("TODO max height, add keywords")
+        log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
 
         payload = payload2.Payload2()
         scr  = scraper.Scraper(payload, arguments["offline"])
         units = scr.get_units()
         log.info("Scraped " + str(len(units)) + " unit" + ("s" if len(units) > 1 else "") + ".")
-        scrapings.Scrapings().create(units)
+        scrapings.Scrapings().create(units, scr.get_lead_id())
     else:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
 

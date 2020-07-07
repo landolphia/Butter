@@ -13,7 +13,7 @@ import spreadsheet
 from logging import handlers
 
 
-VERSION = "0.2.5" #Bump up to 0.3 when done
+VERSION = "0.3"
 
 #TODO Investergate this
 #def install(package):

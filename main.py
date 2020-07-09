@@ -2,22 +2,14 @@ import logging
 import sys
 import time
 
-import credentials
 import navigation
-import payload
-import payload2
-import scraper
-import scrapings
-import spreadsheet
 
 from logging import handlers
 
 
 VERSION = "0.3"
 
-#TODO Investergate this
-#def install(package):
-#    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 def init_log(logLevel):
     log = logging.getLogger("bLog")
     log.setLevel(logging.DEBUG)
@@ -40,7 +32,11 @@ def init_log(logLevel):
     log.addHandler(streamHandler)
 
     return log
-
+def launch_poster(offline):
+    navigation.Navigator(offline)
+def launch_scraper(offline):
+    #TODO
+    scraper.Scraper(offline)
 def process_args(args):
     logLevel = logging.INFO
     app_mode = None
@@ -48,14 +44,12 @@ def process_args(args):
 
     i = 1
     for a in args:
-        # Logging level
         if a == "DEBUG":
             logLevel = logging.DEBUG
         elif a == "WARNING":
             logLevel = logging.WARNING
         elif a == "INFO":
             logLevel = logging.INFO
-        # Which mode to run as
         elif a == "POST":
             app_mode = "POST"
         elif a == "SCRAPE":
@@ -71,38 +65,19 @@ def process_args(args):
 
 def main():
     arguments = process_args(sys.argv)
+
     log = init_log(arguments["log level"])
     log.info("Butter v" + str(VERSION) + " is starting...")
     log.debug("Command line arguments: " + str(arguments))
 
     start_time = time.time()
     
-    log.debug("TODO merge functionalities in better structured files, compile to exe,  GUI.")
     if arguments["mode"] == "POST":
-        log.debug("TODO post to multiple websites.")
-        data = payload.Payload()
-        ss = spreadsheet.Spreadsheet(data.get_value("hidden", "gmaps"))
-        data.init(ss)
-
-        nav = navigation.Navigator(data)
-        nav.start()
-        nav.task_list()
-
-        log.warning("Please check the messages above to see if some elements still need to be filled manually.")
-
-        input("\nPress enter when you're done filling in missing details in the ad.")
-        nav.close()
+        launch_poster(arguments["offline"])
     elif arguments["mode"] == "SCRAPE":
-        #TODO check id field becaus if it's loaded everything *should* be loaded.
-        log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
-
-        payload = payload2.Payload2()
-        scr  = scraper.Scraper(payload, arguments["offline"])
-        units = scr.get_units()
-        log.info("Scraped " + str(len(units)) + " unit" + ("s" if len(units) > 1 else "") + ".")
-        scrapings.Scrapings().create(units, scr.get_lead_id())
+        launch_scraper(arguments["offline"])
     else:
-        log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. You can use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
+        log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. Use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
 
     log.debug("Finished in %s seconds." % (time.time() - start_time))
 

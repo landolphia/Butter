@@ -1,355 +1,53 @@
 {
-	"payload" : [
+	"mode" : "POST",
+	"elements" : [
 		{
-			"page"	: "login",
+			"page"	: "login",	
 			"name"	: "login url",
-			"id"  	: false,
-			"xpath"	: false,
-			"offset": false,
-			"value"	: "https://app.yougotlistings.com/login",
-			"fluff" : false
+			"value"	: { "content" : "https://offcampus.bu.edu/login" },
+			"actions" : [ "GO" ]
 		},
 		{
-			"page"	: "login",
+			"page"	: "login",	
+			"name"	: "link",
+			"identifier" : {
+				"type" : "xpath",
+			       	"value" : "//form[@id=\"login\"]/preceding-sibling::a"
+			},
+			"actions" : [ "WAIT", "CLICK" ]
+		},
+		{
+			"page"	: "login",	
+			"name"	: "add listing url",
+			"value"	: { "content" : "https://offcampus.bu.edu/user/add-listing" },
+			"actions" : [ "TODO" ]
+		},
+		{
+			"page"	: "login",	
 			"name"	: "username",
-			"id"  	: false,
-			"xpath"	: "//i[@class='user icon']/following-sibling::input",
-			"offset": false,
-			"value"	: "[CALL.GET_USERNAME]",
-			"fluff" : false
+			"identifier" : {
+				"type" : "id",
+			       	"value" : "username"
+			},
+			"actions" : [ "WAIT", "FILL_INPUT" ]
 		},
 		{
-			"page"	: "login",
+			"page"	: "login",	
 			"name"	: "password",
-			"id"  	: false,
-			"xpath"	: "//input[@type='password']",
-			"offset": false,
-			"value"	: "[CALL.GET_PASSWORD]",
-			"fluff" : false
+			"identifier" : {
+				"type" : "id",
+			       	"value" : "password"
+			},
+			"actions" : [ "FILL_INPUT" ]
 		},
 		{
-			"page"	: "login",
+			"page"	: "login",	
 			"name"	: "submit button",
-			"id"  	: false,
-			"xpath"	: "//button[@role='button']",
-			"offset": false,
-			"value"	: false,
-			"fluff" : false
-		},
-		{
-			"page"	: "list",
-			"name"	: "url",
-			"id"	: false,
-			"xpath"	: false,
-			"offset": false,
-			"value"	: "https://app.yougotlistings.com/leads/",
-			"fluff" : false
-		},
-		{
-			"page"	: "list",
-			"name"	: "news",
-			"id"	: "whatsnew",
-			"xpath"	: false,
-			"offset": false,
-			"value"	: false,
-			"fluff" : false
-		},
-		{
-			"page"	: "list",
-			"name"	: "id",
-			"id"	: false,
-			"xpath"	: "//strong[text()='ID']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : false
-		},
-		{
-			"page"	: "list",
-			"name"	: "listings",
-			"id"	: false,
-			"xpath"	: "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']",
-			"offset": false,
-			"value"	: false,
-			"fluff" : false
-		},
-		{
-			"page"	: "rental",
-			"name"	: "url",
-			"id"	: false,
-			"xpath"	: false,
-			"offset": false,
-			"value"	: "https://app.yougotlistings.com/leads/rental/",
-			"fluff" : false
-		},
-		{
-			"page"	: "unit",
-			"name"	: "id",
-			"id"	: false,
-			"xpath"	: "//strong[text()='ID']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "ID\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "address",
-			"id"	: false,
-			"xpath"	: "//i[@title='Map Listing']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "On Market"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "rent",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Rent']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Rent\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "available date",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Avail Date']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Avail Date\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "beds",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Beds']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Beds\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "baths",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Baths']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Baths\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "fee paid by owner",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Fee Paid By Owner']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Fee Paid By Owner\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "rent includes",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Rent Includes']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Rent Includes\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "square footage",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Square Footage']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Square Footage\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "laundry",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Laundry']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Laundry\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "building type",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Building Type']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Building Type\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "heat source",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Heat Source']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Heat Source\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "unit level",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Unit Level']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Unit Level\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "student",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Student']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Student\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "pets",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Pet']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Pet\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "parking",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Parking']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Parking\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "key info",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Key / Entry Info']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Key / Entry Info\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "tenant info",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Showing & Tenant Info']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Showing & Tenant Info\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "first month",
-			"id"	: false,
-			"xpath"	: "//strong[text()='First Month']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "First Month\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "last month",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Last Month']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Last Month\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "security",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Security']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Security\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "application fee",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Application Fee']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Application Fee\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "move in fee",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Move In Fee']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Move In Fee\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "pet deposit",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Pet Deposit']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Pet Deposit\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "key deposit",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Key Deposit']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Key Deposit\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "landlord name",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Name']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Name\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "landlord phone",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Phone']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Phone\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "landlord email",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Email']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Email\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "landlord contact",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Contact']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Contact\n"
-		},
-		{
-			"page"	: "unit",
-			"name"	: "notes",
-			"id"	: false,
-			"xpath"	: "//strong[text()='Internal Notes']/..",
-			"offset": false,
-			"value"	: false,
-			"fluff" : "Internal Notes\n"
+			"identifier" : {
+				"type" : "xpath",
+			       	"value" : "//input[@type=\"submit\"]"
+			},
+			"actions" : [ "CLICK" ]
 		}
 	]
 }

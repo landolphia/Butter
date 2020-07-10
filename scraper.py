@@ -7,13 +7,6 @@ import credentials
 import elements
 import logging
 
-# SOMETHING LIKE THIS
-# FOR element in payload:
-    sanitize value
-    for a in element.actions:
-        a(element)
-
-
 
 OFFLINE_FILE = "offline_data.json"
 

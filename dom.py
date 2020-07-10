@@ -1,0 +1,365 @@
+import logging
+import sys
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+
+class List_has_new_element(object):
+    def __init__(self, xpath, old_count):
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing List_has_new_element. [" + str(xpath) + " / " + str(old_count) + "]")
+
+        self.xpath = xpath 
+        self.old_count = old_count 
+    def __call__(self, driver):
+        elements = driver.find_elements_by_xpath(self.xpath)
+        if len(elements) > self.old_count:
+            self.log.debug("Found a new element, " + str(len(elements)) + " total.")
+            return True 
+        else:
+            return False
+
+class Element_is_not_(object):
+    def __init__(self, xpath, default_value):
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing Element_is_not_. [" + str(xpath) + "] [" + str(default_value) + "]")
+
+        self.default_value = default_value
+        self.xpath = xpath 
+    def __call__(self, driver):
+        element = driver.find_element_by_xpath(self.xpath)
+        if element:
+            self.log.debug("Element is loaded.")
+            
+            content = None
+            while content == None:
+                try:
+                    content = element.get_attribute("innerText")
+                except StaleElementReferenceException:
+                    self.log.warning("Element stale. Trying again.")
+                    element = driver.find_element_by_xpath(self.xpath)
+
+            self.log.debug("Content = " + content)
+            self.log.debug("Default = " + self.default_value)
+            self.log.debug("is = " + str(not (self.default_value in content)))
+
+            return not (self.default_value in content)
+        else:
+            return False
+
+class DOM:
+    def __init__(self):
+        # TODO Reimplement offline
+            self.log = logging.getLogger("bLog")
+            self.log.debug("Initializing DOM.")
+            
+            self.driver = webdriver.Chrome()
+            self.hold = WebDriverWait(self.driver, 100)
+
+            if self.driver == None:
+                self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
+                sys.exit()
+            #if not offline:
+            #    self.driver = webdriver.Chrome()
+            #    self.hold = WebDriverWait(self.driver, 100)
+
+            #    if self.driver == None:
+            #        self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
+            #        sys.exit()
+            #self.payload = payload
+
+    def __click__(self, element): self.__get_element__(element["identifier"]).click()
+    def __fill_input__(self, element):
+        e = self.__get_element__(element["identifier"])
+        value = element["value"]["content"]
+        if not value:
+            self.log.warning("The value for " + str(element["identifier"]) + " is missing. It will be replaced with [DEFAULT_VALUE].")
+            value = "[DEFAULT_VALUE]"
+
+        e.send_keys(value)
+    def __get_element__(self, identifier):
+        if identifier["type"] == "xpath":
+            element = self.driver.find_element_by_xpath(identifier["value"])
+        elif identifier["type"] == "id":
+            element = self.driver.find_element_by_id(identifier["value"])
+        else:
+            self.log.error("The type of identifier wasn't recognized. [" + identifier["type"]+ "]")
+            sys.exit()
+
+        return element
+    def __go__(self, url):
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
+    def __wait__(self, identifier):
+        self.log.debug("Waiting for element to load. [" + str(identifier["value"]) + "]")
+
+        if identifier["type"] == "xpath":
+            self.hold.until(EC.presence_of_element_located((By.XPATH, identifier["value"])))
+        elif identifier["type"] == "id":
+            self.hold.until(EC.presence_of_element_located((By.ID, identifier["value"])))
+        else:
+            self.log.error("Unrecognized CSS selector type [" + str(identifier["type"]) + "].")
+            sys.exit()
+
+        self.log.debug("Element loaded.")
+    def process_actions(self, element):
+        for a in element["actions"]["list"]:
+            if a == "GO": self.__go__(element["value"]["content"])
+            if a == "WAIT": self.__wait__(element["identifier"])
+            if a == "FILL_INPUT": self.__fill_input__(element)
+            if a == "CLICK": self.__click__(element)
+
+    #TODO NOT TREATED BELOW
+    def __get_element_fp__(self, page, name, fp_nb, fp_id):
+        name = name + str(fp_nb)
+        identifier = self.payload.xpath(page, name)
+
+        if identifier:
+            identifier = identifier.replace("FP_ID", str(fp_id))
+            element = self.driver.find_element_by_xpath(identifier)
+        else:
+            identifier = self.payload.id(page, name)
+            if identifier:
+                identifier = identifier.replace("FP_ID", str(fp_id))
+            element = self.driver.find_element_by_id(identifier)
+        if not element:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+
+        return element
+    def checkbox(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+
+        #FIXME Add a type field to the payload data for each element
+        #self.log.debug("FIX ME NOW! Add type to payload.")
+        # Temp fix for bools
+        if str(value).lower() == "y": value = True
+        if value == None: value = False 
+
+        if value == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+    def checkbox_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+
+        #FIXME Add a type field to the payload data for each element
+        #self.log.debug("FIX ME NOW! Add type to payload.")
+        if str(value).lower() == "y": value = True
+        if value == None: value = False 
+
+        if value == True:
+            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
+        else:
+            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+    def clear(self, page, name): self.__get_element__(page, name).clear()
+    def click_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).click()
+    def current_url(self):
+        return self.driver.current_url
+    def dropdown(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+
+        for option in element.find_elements_by_tag_name('option'):
+            if option.text.strip().lower() == str(value).lower():
+                option.click()
+    def dropdown_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+
+        for option in element.find_elements_by_tag_name('option'):
+            if option.text.strip().lower() == str(value).lower():
+                option.click()
+    def fill_input_date(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+        if not value:
+            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
+            sys.exit()
+
+        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
+    def fill_input_date_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+        if not value:
+            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
+            sys.exit()
+
+        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
+        self.log.debug("Check date.")
+    def fill_input_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+        if not value:
+            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
+            value = "[DEFAULT_VALUE]"
+
+        element.send_keys(value)
+    def fill_input_money(self, page, name):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys("$" + str(value))
+    def fill_input_money_fp(self, page, name, fp_nb, fp_id):
+        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
+        value = self.payload.get_value(page, name + str(fp_nb))
+
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys("$" + str(value))
+    def fill_input_not_null(self, page, name, default):
+        element = self.__get_element__(page, name)
+        value = self.payload.get_value(page, name)
+
+        if not value:
+            value = default
+
+        element.send_keys(value)
+    def go(self, page, name):
+        url = self.payload.get_value(page, name) 
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
+    def press_enter(self, page, name):
+        element = self.__get_element__(page, name)
+        element.send_keys(Keys.ENTER)
+    def quit(self): self.driver.quit()
+    def radio(self, page, name):
+        value = self.payload.get_value(page, name)
+        if value != None:
+            self.click(page, name)
+
+        return value
+    def radio_fp(self, page, name, fp_nb, fp_id):
+        value = self.payload.get_value(page, name + str(fp_nb))
+        if value != None:
+            self.click_fp(page, name, fp_nb, fp_id)
+
+        return value
+    def submit(self, page, name): self.__get_element__(page, name).submit()
+    def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).submit()
+    def tinyMCE(self, page, name, iframe_page, iframe_name):
+        description = self.payload.get_value(page, name)
+
+        iframe = self.__get_element__(iframe_page, iframe_name)
+        self.driver.switch_to.frame(iframe)
+
+        tinymce = self.__get_element__(page, name)
+        
+        javascript = "arguments[0].innerHTML = arguments[1];"
+        self.driver.execute_script( javascript, tinymce, description.replace('\n', '<br>'))
+        self.driver.switch_to.default_content()
+    def wait_for_new_list_element(self, page, name, old_count):
+        self.log.debug("Waiting for new element to be added to list. [" + str(page) + "/" + str(name) + "]")
+
+        identifier = self.payload.xpath(page, name)
+
+        if identifier:
+            condition = List_has_new_element(identifier, old_count)
+            self.hold.until(condition)
+            self.log.debug("New element added.")
+
+            return
+        else:
+            identifier = self.payload.id(page, name)
+
+        if identifier:
+            self.log.error("Waiting for new list elements by id hasn't been implemented.")
+            sys.exit()
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            sys.exit()
+    def task_list(self, tasks):
+        self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
+        self.driver.execute_script("window.open('', 'todo', 'height=400,width=400,top=0, left=0, toolbar=no,menubar=no,scrollbars=yes,location=no,status=no');")
+        self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
+        self.driver.switch_to_window("todo")
+
+        javascript = "l = document.createElement('ul'); l.id ='list'; document.body.appendChild(l);"
+        self.driver.execute_script(javascript)
+
+        for t in tasks:
+            javascript = "l = document.getElementById('list');"
+            javascript = javascript + str("i = document.createElement('li');")
+            javascript = javascript + str("text = document.createTextNode(arguments[0]);")
+            javascript = javascript + str("i.appendChild(text);")
+            javascript = javascript + str("l.appendChild(i);")
+            self.driver.execute_script(javascript, t)
+
+
+    def get_elements(self, page, name):
+        self.log.warning("This function shouldn't be used. You're using a test version of the script.")
+        identifier = self.payload.xpath(page, name)
+        if identifier:
+            elements = self.driver.find_elements_by_xpath(identifier)
+        else:
+            identifier = self.payload.id(page, name)
+            elements = self.driver.find_elements_by_id(identifier)
+        if not elements:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            
+        return elements
+    def get_value(self, page, name):
+        element = self.__get_element__(page, name)
+
+        return element.get_attribute("innerText")
+    def get_value_money(self, page, name):
+        element = self.__get_element__(page, name)
+        value = element.get_attribute("innerText")
+
+        return int(value.replace("Rent\n$", "").replace(",","").strip())
+    def go_list(self, page, name, identifier):
+        url = self.payload.get_value(page, name) 
+        url = url + str(identifier)
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
+    def go_rental(self, page, name, identifier):
+        url = self.payload.get_value(page, name) 
+        url = url + str(identifier)
+        self.log.debug("Navigating to \"" + str(url) + "\"")
+        self.driver.get(url)
+    def scrape_unit(self, identifier):
+        data = self.payload.data["unit"]
+
+        unit = {}
+
+        for l in data:
+            try:
+                element = self.driver.find_element_by_xpath(data[l]["xpath"])
+                content = element.get_attribute("innerText")
+                content = content.replace(data[l]["fluff"], "")
+            except NoSuchElementException:
+                self.log.warning("Element was not found. [" + str(l) + "]")
+                content = "-"
+         
+            unit[l] = content
+
+        return unit
+    def wait_for_content_to_load(self, page, name):
+        self.log.debug("Waiting for content of element to be load. [" + str(page) + "/" + str(name) + "]")
+
+        identifier = self.payload.xpath(page, name)
+
+        if identifier:
+            condition = Element_is_not_(identifier, "-")
+            self.hold.until(condition)
+            self.log.debug("Content loaded.")
+
+            return
+        else:
+            identifier = self.payload.id(page, name)
+
+        if identifier:
+            self.log.error("Waiting for elements to load by id hasn't been implemented.")
+            sys.exit()
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
+            sys.exit()

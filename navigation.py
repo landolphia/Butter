@@ -3,17 +3,93 @@
 #import time
 #import sys
 
+import json
 import logging
+import os
 
-import payload3
+import dom
+import payload
 
+
+OFFLINE_CACHE = "offline_data.json"
+LEADS_IDS = "leads.json"
 
 class Navigator:
     def __init__(self, offline):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Navigator.")
             
-        self.payload = payload3.Payload3()
+        self.payload = payload.Payload()
+        self.dom = dom.DOM()
+
+        if self.payload.mode == "SCRAPE":
+            self.__init_scraper__(offline)
+        elif self.payload.mode == "POST":
+            self.__init_poster__()
+        else:
+            self.log.error("[" + payload.mode + "] is not a valid mode.")
+            sys.exit()
+    # SCRAPER
+    def __get_leads__(self, f):
+        self.leads = []
+
+        if not os.path.isfile(LEADS_IDS):
+            self.log.error("Couldn't find the leads ids file. [" + LEADS_IDS + "].")
+            sys.exit()
+
+        with open(LEADS_IDS, 'r') as f:
+            self.leads = json.load(f)
+        
+        self.log.warning("This is the leads: " + str(self.leads))
+    def __get_rentals_list__(self, identifier):
+        self.log.error("Pick up here.")
+        self.log.warnign("START BY CONVERTION payload.json to new format FULLY")
+        #DECIDE HOW THE FLOW GOES
+        #DO I HAVE PASSIVE ACTIONS VS ACTIVE (AUTO TRIGGER?)
+        #HOW DO I DEFINE THE FLOW?
+
+        sys.exit()
+        unit_flow = self.payload["unit"]
+    def __init_scraper__(self, offline):
+        self.log.debug("Initializing Scraper.")
+
+        self.__get_leads__(LEADS_IDS)
+
+        self.units = []
+        for l in self.leads:
+            self.units.append({
+                "id" : l,
+                "content" : []
+                })
+
+        # Process auto
+
+        self.log.error("Move page one layer up, with exec.")
+        self.log.error("Auto execs seem to be grouped by at least page")
+        for p in self.payload.elements:
+            self.log.warning("P = " + str(p))
+            for n in self.payload.elements[p]:
+                self.log.warning("N = " + str(n))
+                if "actions" in self.payload.elements[p][n]:
+                    if self.payload.elements[p][n]["actions"]["exec"] == "auto":
+                        self.dom.process_actions(self.payload.elements[p][n])
+
+        input("AKLSKJD")
+
+
+
+        # Loop units for each leads id
+
+        for i in range(len(self.units)):
+            self.log.warning("I = " + str(i))
+            self.log.warning("U = " + str(self.units[i]))
+            # self.units[i][""] = self.__get_rentals_list__(int(l))
+        sys.exit()
+
+    # POSTER
+    def __init_poster__(self):
+        self.log.debug("TODO Initializing Poster.")
+
 #        self.elements = elements.Elements(payload)
 #
 #        self.tasks = []

@@ -35,8 +35,7 @@ def init_log(logLevel):
 def launch_poster(offline):
     navigation.Navigator(offline)
 def launch_scraper(offline):
-    #TODO
-    scraper.Scraper(offline)
+    navigation.Navigator(offline)
 def process_args(args):
     logLevel = logging.INFO
     app_mode = None

@@ -1,53 +1,606 @@
 {
-	"mode" : "POST",
+	"mode" : "SCRAPE",
 	"elements" : [
 		{
 			"page"	: "login",	
 			"name"	: "login url",
-			"value"	: { "content" : "https://offcampus.bu.edu/login" },
-			"actions" : [ "GO" ]
-		},
-		{
-			"page"	: "login",	
-			"name"	: "link",
-			"identifier" : {
-				"type" : "xpath",
-			       	"value" : "//form[@id=\"login\"]/preceding-sibling::a"
-			},
-			"actions" : [ "WAIT", "CLICK" ]
-		},
-		{
-			"page"	: "login",	
-			"name"	: "add listing url",
-			"value"	: { "content" : "https://offcampus.bu.edu/user/add-listing" },
-			"actions" : [ "TODO" ]
+			"value"	: { "content" : "https://app.yougotlistings.com/login" },
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["GO"]
+			}
 		},
 		{
 			"page"	: "login",	
 			"name"	: "username",
 			"identifier" : {
-				"type" : "id",
-			       	"value" : "username"
+				"type" : "xpath",
+			       	"value" : "//i[@class='user icon']/following-sibling::input"
 			},
-			"actions" : [ "WAIT", "FILL_INPUT" ]
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["WAIT", "FILL_INPUT"]
+			},
+			"value" : {
+				"actions" : {
+					"exec" : "auto",
+					"list" : ["GET_USERNAME"]
+				}
+			}
 		},
 		{
 			"page"	: "login",	
 			"name"	: "password",
 			"identifier" : {
-				"type" : "id",
-			       	"value" : "password"
+				"type" : "xpath",
+			       	"value" : "//input[@type='password']"
 			},
-			"actions" : [ "FILL_INPUT" ]
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["FILL_INPUT"]
+			},
+			"value" : {
+				"actions" : {
+					"exec" : "auto",
+					"list" : ["GET_PASSWORD"]
+				}
+			}
 		},
 		{
 			"page"	: "login",	
 			"name"	: "submit button",
 			"identifier" : {
 				"type" : "xpath",
-			       	"value" : "//input[@type=\"submit\"]"
+			       	"value" : "//button[@role=\"button\"]"
 			},
-			"actions" : [ "CLICK" ]
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["CLICK"]
+			}
+		},
+		{
+			"page"	: "list",
+			"name"	: "news",
+			"identifier" : {
+				"type" : "id",
+				"value" : "whatsnew"
+			},
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["WAIT"]
+			}
+		},
+		{
+			"page"	: "list",
+			"name"	: "url",
+			"value"	: { "content" : "https://app.yougotlistings.com/leads/" },
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["GO"]
+			}
+		},
+		{
+			"page"	: "list",
+			"name"	: "id",
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//strong[text()='ID']/.."
+			},
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["WAIT FOR CONTENT"]
+			}
+		},
+		{
+			"page" : "list",
+			"name" : "listings",
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']"
+			},
+			"actions" : {
+				"exec" : "auto",
+				"list" : ["GET ELEMENTS"]
+			}
+		},
+		{
+			"page" : "list",
+			"name" : "rental id",
+			"value" : { "content" : "data-rental-id" },
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			}
+
+		},
+		{
+			"page" : "unit",
+			"name" : "url",
+			"value" : { "content" : "https://app.yougotlistings.com/leads/rental/"},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GO"]
+			}
+		},
+		{
+			"page" : "unit",
+			"name" : "id",
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//strong[text()='ID']/..",
+				"fluff" : "ID\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["WAIT FOR CONTENT"]
+			}
+		},
+
+
+		
+		{
+			"page"	: "unit",
+			"name"	: "address",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//i[@title='Map Listing']/..",
+				"fluff" : "On Market"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "rent",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Rent']/..",
+				"fluff" : "Rent\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "available date",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Avail Date']/..",
+				"fluff" : "Avail Date\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "beds",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Beds']/..",
+				"fluff" : "Beds\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "baths",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Baths']/..",
+				"fluff" : "Baths\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "fee paid by owner",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Fee Paid By Owner']/..",
+				"fluff" : "Fee Paid By Owner\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "rent includes",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Rent Includes']/..",
+				"fluff" : "Rent Includes\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "square footage",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Square Footage']/..",
+				"fluff" : "Square Footage\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "laundry",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Laundry']/..",
+				"fluff" : "Laundry\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "building type",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Building Type']/..",
+				"fluff" : "Building Type\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "heat source",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Heat Source']/..",
+				"fluff" : "Heat Source\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "unit level",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Unit Level']/..",
+				"fluff" : "Unit Level\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "student",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Student']/..",
+				"fluff" : "Student\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "pets",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Pet']/..",
+				"fluff" : "Pet\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "parking",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Parking']/..",
+				"fluff" : "Parking\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "key info",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Key / Entry Info']/..",
+				"fluff" : "Key / Entry Info\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "tenant info",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Showing & Tenant Info']/..",
+				"fluff" : "Showing & Tenant Info\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "first month",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='First Month']/..",
+				"fluff" : "First Month\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "last month",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Last Month']/..",
+				"fluff" : "Last Month\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "security",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Security']/..",
+				"fluff" : "Security\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "application fee",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Application Fee']/..",
+				"fluff" : "Application Fee\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "move in fee",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Move In Fee']/..",
+				"fluff" : "Move In Fee\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "pet deposit",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Pet Deposit']/..",
+				"fluff" : "Pet Deposit\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "key deposit",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Key Deposit']/..",
+				"fluff" : "Key Deposit\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord name",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Name']/..",
+				"fluff" : "Name\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord phone",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Phone']/..",
+				"fluff" : "Phone\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord email",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Email']/..",
+				"fluff" : "Email\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "landlord contact",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Contact']/..",
+				"fluff" : "Contact\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
+		},
+		{
+			"page"	: "unit",
+			"name"	: "notes",
+			"identifier" : {
+				"type" : "xpath",
+				"value"	: "//strong[text()='Internal Notes']/..",
+				"fluff" : "Internal Notes\n"
+			},
+			"actions" : {
+				"exec" : "loop",
+				"list" : ["GET ATTRIBUTE"]
+			},
+			"value" : {
+				"content" : "innerText"
+			}
 		}
 	]
 }

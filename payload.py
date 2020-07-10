@@ -1,3 +1,5 @@
+import credentials
+
 import json
 import logging
 import os
@@ -64,6 +66,42 @@ class Payload:
             self.log.warning("Element = " + str(self.elements[page][name]))
 
         self.log.debug("Element processed.")
+    def __fill_value__(self, value):
+        if ("actions" in value) and (value["actions"]["exec"] == "auto"):
+            for a in value["actions"]["list"]:
+                self.log.debug("Processing value action: " + a)
+                if a == "GET_USERNAME":
+                    #FIXME
+                    creds = credentials.Credentials()
+                    value["content"] = creds.get_credentials("private.slr")["username2"]
+                elif a == "GET_PASSWORD":
+                    #FIXME
+                    creds = credentials.Credentials()
+                    value["content"] = creds.get_credentials("private.slr")["password2"]
+                # TODO elif a == "SPREADSHEET" and OFFSET isnumber
+                else:
+                    self.log.error("Invalid value action [" + str(a) + "].")
+
+        return value
+    def __init_data__(self, data):
+        self.__init_mode__(data)
+
+        self.elements= {}
+        for i in data["elements"]:
+            self.__add__element__(i)
+
+        self.credentials = None
+    def __init_mode__(self, data):
+        if "mode" in data:
+            if data["mode"] in ["SCRAPE", "POST"]:
+                self.mode = data["mode"]
+                self.log.debug("Setting mode to [" + self.mode + "]")
+            else: 
+                self.log.error("Invalid mode [" + data["mode"] + "].")
+                sys.exit()
+        else:
+            self.log.error("Mode not found in [" + PAYLOAD_FILE + "].")
+            sys.exit()
     def __remove_fluff__(self, value):
         content = value["content"]
         if ("fluff" in value):
@@ -77,19 +115,6 @@ class Payload:
             self.log.debug(" => [" + str(content) + "].")
     
         return content
-    def __fill_value__(self, value):
-        if ("actions" in value) and (value["actions"]["exec"] == "auto"):
-            for a in value["actions"]["list"]:
-                self.log.debug("Processing value action: " + a)
-                if a == "GET_USERNAME":
-                    self.log.error("SUPER TEMPORARY,  HARCODED PASSWORD AND USERNAME")
-                elif a == "GET_PASSWORD":
-                    self.log.error("SUPER TEMPORARY,  HARCODED PASSWORD AND USERNAME")
-                else:
-                    self.log.error("Invalid value action [" + str(a) + "].")
-
-        return value
-
     def __validate_identifier__(self, identifier):
         self.log.debug("Validating element identifier.")
         if not "type" in identifier:
@@ -111,32 +136,6 @@ class Payload:
     def __validate_content__(self, value):
         if not "content" in value:
             self.log.error("Missing element content.")
-            sys.exit()
-
-#        if name not in self.data[page]:
-#            if value == "[CALL.GET_USERNAME]":
-#                value = self.credentials["username2"]
-#            if value == "[CALL.GET_PASSWORD]":
-#                value = self.credentials["password2"]
-
-    def __init_data__(self, data):
-        self.__init_mode__(data)
-
-        self.elements= {}
-        for i in data["elements"]:
-            self.__add__element__(i)
-
-        self.credentials = None
-    def __init_mode__(self, data):
-        if "mode" in data:
-            if data["mode"] in ["SCRAPE", "POST"]:
-                self.mode = data["mode"]
-                self.log.debug("Setting mode to [" + self.mode + "]")
-            else: 
-                self.log.error("Invalid mode [" + data["mode"] + "].")
-                sys.exit()
-        else:
-            self.log.error("Mode not found in [" + PAYLOAD_FILE + "].")
             sys.exit()
 
 #TODO NOT UPDATED

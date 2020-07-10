@@ -108,12 +108,29 @@ class DOM:
             sys.exit()
 
         self.log.debug("Element loaded.")
+    def __wait_for_content__(self, identifier):
+        self.log.debug("Waiting for content of element to be load. [" + str(identifier) + "]")
+        self.log.warning("CSS ID hasn't been implemented here.")
+
+        xpath = identifier["value"]
+
+        if xpath:
+            condition = Element_is_not_(xpath, "-")
+            self.hold.until(condition)
+            self.log.debug("Content loaded.")
+            input("WAIT")
+
+            return
     def process_actions(self, element):
         for a in element["actions"]["list"]:
             if a == "GO": self.__go__(element["value"]["content"])
             if a == "WAIT": self.__wait__(element["identifier"])
             if a == "FILL_INPUT": self.__fill_input__(element)
             if a == "CLICK": self.__click__(element)
+    def process_actions_with_context(self, element, context):
+        for a in element["actions"]["list"]:
+            if a == "APPEND_AND_GO": self.__go__(element["value"]["content"] + context)
+            if a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
 
     #TODO NOT TREATED BELOW
     def __get_element_fp__(self, page, name, fp_nb, fp_id):
@@ -224,10 +241,6 @@ class DOM:
             value = default
 
         element.send_keys(value)
-    def go(self, page, name):
-        url = self.payload.get_value(page, name) 
-        self.log.debug("Navigating to \"" + str(url) + "\"")
-        self.driver.get(url)
     def press_enter(self, page, name):
         element = self.__get_element__(page, name)
         element.send_keys(Keys.ENTER)
@@ -316,16 +329,6 @@ class DOM:
         value = element.get_attribute("innerText")
 
         return int(value.replace("Rent\n$", "").replace(",","").strip())
-    def go_list(self, page, name, identifier):
-        url = self.payload.get_value(page, name) 
-        url = url + str(identifier)
-        self.log.debug("Navigating to \"" + str(url) + "\"")
-        self.driver.get(url)
-    def go_rental(self, page, name, identifier):
-        url = self.payload.get_value(page, name) 
-        url = url + str(identifier)
-        self.log.debug("Navigating to \"" + str(url) + "\"")
-        self.driver.get(url)
     def scrape_unit(self, identifier):
         data = self.payload.data["unit"]
 
@@ -343,23 +346,3 @@ class DOM:
             unit[l] = content
 
         return unit
-    def wait_for_content_to_load(self, page, name):
-        self.log.debug("Waiting for content of element to be load. [" + str(page) + "/" + str(name) + "]")
-
-        identifier = self.payload.xpath(page, name)
-
-        if identifier:
-            condition = Element_is_not_(identifier, "-")
-            self.hold.until(condition)
-            self.log.debug("Content loaded.")
-
-            return
-        else:
-            identifier = self.payload.id(page, name)
-
-        if identifier:
-            self.log.error("Waiting for elements to load by id hasn't been implemented.")
-            sys.exit()
-        else:
-            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
-            sys.exit()

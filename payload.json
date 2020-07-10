@@ -73,10 +73,10 @@
 		{
 			"page"	: "list",
 			"name"	: "url",
-			"value"	: { "content" : "https://app.yougotlistings.com/leads/" },
+			"value"	: {"content" : "https://app.yougotlistings.com/leads/"},
 			"actions" : {
-				"exec" : "auto",
-				"list" : ["GO"]
+				"exec" : "loop",
+				"list" : ["APPEND_AND_GO"]
 			}
 		},
 		{
@@ -87,8 +87,8 @@
 				"value" : "//strong[text()='ID']/.."
 			},
 			"actions" : {
-				"exec" : "auto",
-				"list" : ["WAIT FOR CONTENT"]
+				"exec" : "loop",
+				"list" : ["WAIT_FOR_CONTENT"]
 			}
 		},
 		{
@@ -99,7 +99,7 @@
 				"value" : "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']"
 			},
 			"actions" : {
-				"exec" : "auto",
+				"exec" : "loop",
 				"list" : ["GET ELEMENTS"]
 			}
 		},

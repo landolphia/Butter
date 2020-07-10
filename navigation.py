@@ -6,6 +6,7 @@
 import json
 import logging
 import os
+import sys
 
 import dom
 import payload
@@ -67,24 +68,30 @@ class Navigator:
         self.log.error("Move page one layer up, with exec.")
         self.log.error("Auto execs seem to be grouped by at least page")
         for p in self.payload.elements:
-            self.log.warning("P = " + str(p))
             for n in self.payload.elements[p]:
-                self.log.warning("N = " + str(n))
                 if "actions" in self.payload.elements[p][n]:
                     if self.payload.elements[p][n]["actions"]["exec"] == "auto":
                         self.dom.process_actions(self.payload.elements[p][n])
 
-        input("AKLSKJD")
+        input("On to loop")
+        for u in self.units:
+            for p in self.payload.elements:
+                for n in self.payload.elements[p]:
+                    if "actions" in self.payload.elements[p][n]:
+                        if self.payload.elements[p][n]["actions"]["exec"] == "loop":
+                            result = self.dom.process_actions_with_context(self.payload.elements[p][n], u["id"])
+                            self.log.debug("Loop action result = " + str(result))
+    
 
 
 
         # Loop units for each leads id
 
+        sys.exit()
         for i in range(len(self.units)):
             self.log.warning("I = " + str(i))
             self.log.warning("U = " + str(self.units[i]))
             # self.units[i][""] = self.__get_rentals_list__(int(l))
-        sys.exit()
 
     # POSTER
     def __init_poster__(self):

@@ -73,14 +73,19 @@ class Navigator:
                     if self.payload.elements[p][n]["actions"]["exec"] == "auto":
                         self.dom.process_actions(self.payload.elements[p][n])
 
-        input("On to loop")
         for u in self.units:
             for p in self.payload.elements:
                 for n in self.payload.elements[p]:
                     if "actions" in self.payload.elements[p][n]:
                         if self.payload.elements[p][n]["actions"]["exec"] == "loop":
                             result = self.dom.process_actions_with_context(self.payload.elements[p][n], u["id"])
-                            self.log.debug("Loop action result = " + str(result))
+                            if result != None:
+                                self.log.debug("Loop action result = " + str(result))
+                                if n == "listings":
+                                        rental_ids = result 
+                                        self.log.debug("rentals = " + str(rental_ids))
+                                        input("Check ids")
+
     
 
 

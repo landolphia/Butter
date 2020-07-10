@@ -93,6 +93,17 @@ class DOM:
             sys.exit()
 
         return element
+    def __get_attribute__(self, element, attribute): return element.get_attribute(attribute)
+    def __get_elements__(self, identifier):
+        if identifier["type"] == "xpath":
+            elements = self.driver.find_elements_by_xpath(identifier["value"])
+        elif identifier["type"] == "id":
+            elements = self.driver.find_elements_by_id(identifier["value"])
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + identifier["type"] + "]")
+            sys.exit()
+            
+        return elements
     def __go__(self, url):
         self.log.debug("Navigating to \"" + str(url) + "\"")
         self.driver.get(url)
@@ -118,9 +129,6 @@ class DOM:
             condition = Element_is_not_(xpath, "-")
             self.hold.until(condition)
             self.log.debug("Content loaded.")
-            input("WAIT")
-
-            return
     def process_actions(self, element):
         for a in element["actions"]["list"]:
             if a == "GO": self.__go__(element["value"]["content"])
@@ -128,11 +136,20 @@ class DOM:
             if a == "FILL_INPUT": self.__fill_input__(element)
             if a == "CLICK": self.__click__(element)
     def process_actions_with_context(self, element, context):
+        result = None
         for a in element["actions"]["list"]:
             if a == "APPEND_AND_GO": self.__go__(element["value"]["content"] + context)
             if a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
+            if a == "GET_ELEMENTS_ATTRIBUTES":
+                elements = self.__get_elements__(element["identifier"])
+                result = []
+                for e in elements:
+                    result.append(self.__get_attribute__(e, element["value"]["content"]))
+
+        return result
 
     #TODO NOT TREATED BELOW
+    #TODO
     def __get_element_fp__(self, page, name, fp_nb, fp_id):
         name = name + str(fp_nb)
         identifier = self.payload.xpath(page, name)
@@ -306,24 +323,6 @@ class DOM:
             javascript = javascript + str("i.appendChild(text);")
             javascript = javascript + str("l.appendChild(i);")
             self.driver.execute_script(javascript, t)
-
-
-    def get_elements(self, page, name):
-        self.log.warning("This function shouldn't be used. You're using a test version of the script.")
-        identifier = self.payload.xpath(page, name)
-        if identifier:
-            elements = self.driver.find_elements_by_xpath(identifier)
-        else:
-            identifier = self.payload.id(page, name)
-            elements = self.driver.find_elements_by_id(identifier)
-        if not elements:
-            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
-            
-        return elements
-    def get_value(self, page, name):
-        element = self.__get_element__(page, name)
-
-        return element.get_attribute("innerText")
     def get_value_money(self, page, name):
         element = self.__get_element__(page, name)
         value = element.get_attribute("innerText")

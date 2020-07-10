@@ -98,20 +98,11 @@
 				"type" : "xpath",
 				"value" : "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']"
 			},
-			"actions" : {
-				"exec" : "loop",
-				"list" : ["GET ELEMENTS"]
-			}
-		},
-		{
-			"page" : "list",
-			"name" : "rental id",
 			"value" : { "content" : "data-rental-id" },
 			"actions" : {
 				"exec" : "loop",
-				"list" : ["GET ATTRIBUTE"]
+				"list" : ["GET_ELEMENTS_ATTRIBUTES"]
 			}
-
 		},
 		{
 			"page" : "unit",

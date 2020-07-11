@@ -7,7 +7,7 @@ class Credentials:
     def __init__(self):
         self.log = logging.getLogger("bLog")
     def get_credentials(self, slr):
-        self.log.debug("Getting credentials from file [" + slr + "]")
+        self.log.debug("Getting credentials from [" + slr + "]")
         creds = {}
     
         with open (slr, "r") as slurp:

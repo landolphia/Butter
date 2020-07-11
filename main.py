@@ -70,7 +70,7 @@ def main():
     log.debug("Command line arguments: " + str(arguments))
 
     start_time = time.time()
-    
+
     if arguments["mode"] == "POST":
         launch_poster(arguments["offline"])
     elif arguments["mode"] == "SCRAPE":

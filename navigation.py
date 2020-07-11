@@ -10,6 +10,7 @@ import sys
 
 import dom
 import payload
+import spreadsheet
 
 
 OFFLINE_CACHE = "offline_data.json"
@@ -20,15 +21,25 @@ class Navigator:
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Navigator.")
             
-        self.payload = payload.Payload()
-        self.dom = dom.DOM()
+        self.pl = payload.Payload()
 
-        if self.payload.mode == "SCRAPE":
-            self.__init_scraper__(offline)
-        elif self.payload.mode == "POST":
+        if self.pl.mode == "SCRAPE":
+            if offline:
+                self.units = self.__get_offline_data__()
+            else:
+                self.dom = dom.DOM()
+                self.units = self.__init_scraper__()
+
+            self.log.debug("Saving data to cache file.")
+            with open(OFFLINE_CACHE, 'w') as f:
+                json.dump(self.units, f) 
+
+            #TODO FIXME scrape vs post?
+            spreadsheet.Spreadsheet(output=self.units)
+        elif self.pl.mode == "POST":
             self.__init_poster__()
         else:
-            self.log.error("[" + payload.mode + "] is not a valid mode.")
+            self.log.error("[" + self.pl.mode + "] is not a valid mode.")
             sys.exit()
     # SCRAPER
     def __get_leads__(self, f):
@@ -42,6 +53,15 @@ class Navigator:
             self.leads = json.load(f)
         
         self.log.warning("This is the leads: " + str(self.leads))
+    def __get_offline_data__(self):
+        if not os.path.isfile(OFFLINE_CACHE):
+            self.log.warning("Offline cache file doesn't exist. Downloading data to file.")
+            self.dom = dom.DOM()
+            return self.__init_scraper__()
+        else:
+            self.log.info("Loading data from offline cache.")
+            with open(OFFLINE_CACHE) as f:
+                return json.load(f)
     def __get_rentals_list__(self, identifier):
         self.log.error("Pick up here.")
         self.log.warnign("START BY CONVERTION payload.json to new format FULLY")
@@ -50,54 +70,44 @@ class Navigator:
         #HOW DO I DEFINE THE FLOW?
 
         sys.exit()
-        unit_flow = self.payload["unit"]
-    def __init_scraper__(self, offline):
+        unit_flow = self.pl["unit"]
+    def __init_scraper__(self):
         self.log.debug("Initializing Scraper.")
 
         self.__get_leads__(LEADS_IDS)
 
-        self.units = []
+        # Process run once 
+        for p in self.pl.run_once:
+            self.log.debug("Run once : " + str(p))
+            for e in self.pl.run_once[p]:
+                self.dom.process_actions(e)
+
+        # Process repeat
+        unit_ids = {}
         for l in self.leads:
-            self.units.append({
-                "id" : l,
-                "content" : []
-                })
-
-        # Process auto
-
-        self.log.error("Move page one layer up, with exec.")
-        self.log.error("Auto execs seem to be grouped by at least page")
-        for p in self.payload.elements:
-            for n in self.payload.elements[p]:
-                if "actions" in self.payload.elements[p][n]:
-                    if self.payload.elements[p][n]["actions"]["exec"] == "auto":
-                        self.dom.process_actions(self.payload.elements[p][n])
-
-        for u in self.units:
-            for p in self.payload.elements:
-                for n in self.payload.elements[p]:
-                    if "actions" in self.payload.elements[p][n]:
-                        if self.payload.elements[p][n]["actions"]["exec"] == "loop":
-                            result = self.dom.process_actions_with_context(self.payload.elements[p][n], u["id"])
-                            if result != None:
-                                self.log.debug("Loop action result = " + str(result))
-                                if n == "listings":
-                                        rental_ids = result 
-                                        self.log.debug("rentals = " + str(rental_ids))
-                                        input("Check ids")
-
-    
-
-
+            self.log.debug("Processing leads #" + str(l))
+            for e in self.pl.repeat["leads"]:
+                unit_ids[str(l)] = self.dom.process_actions(e, identifier=l)
 
         # Loop units for each leads id
+        units = {}
+        for l in self.leads:
+            units[str(l)] = []
+            for u in unit_ids[str(l)]:
+                unit = {}
+                for e in self.pl.repeat["unit"]:
+                    result = self.dom.process_actions(e, identifier=u)
+                    if "fluff" in e:
+                        unit[e["fluff"].strip()] = result
+                units[str(l)].append(unit)
 
-        sys.exit()
-        for i in range(len(self.units)):
-            self.log.warning("I = " + str(i))
-            self.log.warning("U = " + str(self.units[i]))
-            # self.units[i][""] = self.__get_rentals_list__(int(l))
+        for l in self.leads:
+            self.log.warning("L: " + str(l))
+            for u in units[str(l)]:
+                self.log.warning("Us: " + str(u))
+        input("Patcha")
 
+        return units
     # POSTER
     def __init_poster__(self):
         self.log.debug("TODO Initializing Poster.")

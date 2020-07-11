@@ -1,3 +1,5 @@
+import credentials
+
 import logging
 import sys
 
@@ -26,74 +28,157 @@ class List_has_new_element(object):
             return False
 
 class Element_is_not_(object):
-    def __init__(self, xpath, default_value):
+    def __init__(self, identifier, default_value):
         self.log = logging.getLogger("bLog")
-        self.log.debug("Initializing Element_is_not_. [" + str(xpath) + "] [" + str(default_value) + "]")
+        self.log.debug("Initializing Element_is_not_. [" + str(identifier) + "] [" + str(default_value) + "]")
 
         self.default_value = default_value
-        self.xpath = xpath 
+        self.identifier =identifier 
     def __call__(self, driver):
-        element = driver.find_element_by_xpath(self.xpath)
+        if self.identifier["type"] == "xpath":
+            element = driver.find_element_by_xpath(self.identifier["value"])
+        elif self.identifier["type"] == "id":
+            element = driver.find_element_by_id(self.identifier["value"])
+        else:
+            self.log.error("The type of identifier wasn't recognized. [" + self.identifier["type"]+ "]")
+            sys.exit()
+
         if element:
-            self.log.debug("Element is loaded.")
-            
             content = None
             while content == None:
                 try:
                     content = element.get_attribute("innerText")
                 except StaleElementReferenceException:
                     self.log.warning("Element stale. Trying again.")
-                    element = driver.find_element_by_xpath(self.xpath)
+                    if self.identifier["type"] == "xpath":
+                        element = driver.find_element_by_xpath(self.identifier["value"])
+                    elif self.identifier["type"] == "id":
+                        element = driver.find_element_by_id(self.identifier["value"])
 
-            self.log.debug("Content = " + content)
-            self.log.debug("Default = " + self.default_value)
-            self.log.debug("is = " + str(not (self.default_value in content)))
+            loaded = not (self.default_value in content)
+            if loaded:
+                self.log.debug("Element is loaded.")
 
-            return not (self.default_value in content)
+            return loaded
         else:
             return False
 
 class DOM:
     def __init__(self):
         # TODO Reimplement offline
-            self.log = logging.getLogger("bLog")
-            self.log.debug("Initializing DOM.")
-            
-            self.driver = webdriver.Chrome()
-            self.hold = WebDriverWait(self.driver, 100)
+        self.log = logging.getLogger("bLog")
+        self.log.debug("Initializing DOM.")
+           
+        self.driver = webdriver.Chrome()
+        self.hold = WebDriverWait(self.driver, 100)
 
-            if self.driver == None:
-                self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
+        if self.driver == None:
+            self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
+            sys.exit()
+           #if not offline:
+           #    self.driver = webdriver.Chrome()
+           #    self.hold = WebDriverWait(self.driver, 100)
+
+           #    if self.driver == None:
+           #        self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
+           #        sys.exit()
+           #self.payload = payload
+    def process_actions(self, element, **kwargs):
+        self.log.debug("Processing action list for [" + str(element) + "].")
+
+        argument = None
+        for k in kwargs:
+            if k == "identifier":
+                argument = kwargs[k]
+            else:
+                self.log.warning("Unrecognized argument [" + str(k) + "].")
+
+        for a in element["actions"]:
+            if a == "APPEND_AND_GO":
+                if argument:
+                    self.__go__(element["url"] + str(argument))
+                else:
+                    self.log.error("Missing argument.")
+                    sys.exit()
+            elif a == "CLICK": self.__click__(element)
+            elif a == "FILL_INPUT": self.__fill_input__(element)
+            elif a == "GET_ATTRIBUTE":
+                result = "-"
+                if not "attribute" in element:
+                    self.log.error("Missing attribute.")
+                    sys.exit()
+                else:
+                    self.log.debug("Attribute = " + str(element["attribute"]))
+
+                e = self.__get_element__(element["identifier"])
+                if e:
+                    result = self.__get_attribute__(e, element["attribute"])
+                
+                if "fluff" in element:
+                    result = result.replace(element["fluff"], "")
+                
+                return result
+            elif a == "GET_ELEMENTS_ATTRIBUTE":
+                #TODO handle StaleElement exception
+                if not "attribute" in element:
+                    self.log.error("Missing attribute.")
+                    sys.exit()
+                else:
+                    self.log.debug("Attribute = " + str(element["attribute"]))
+
+                elements = self.__get_elements__(element["identifier"])
+                result = []
+                for e in elements:
+                    result.append(self.__get_attribute__(e, element["attribute"]))
+
+                return result
+            elif a == "GET_PASSWORD":
+                element["get result"] = credentials.Credentials().get_credentials("private.slr")["password2"]
+            elif a == "GET_USERNAME": 
+                element["get result"] = credentials.Credentials().get_credentials("private.slr")["username2"]
+            elif a == "GO": self.__go__(element["url"])
+            elif a == "UNFLUFF":
+                self.log.warning("UNFLUIFF")
+                input("LKJASF")
+                return element
+                #content = content.replace(data[l]["fluff"], "")
+                #self.log.debug("LAKJSD")
+                #sys.exit()
+            elif a == "WAIT": self.__wait__(element["identifier"])
+            elif a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
+            else:   
+                self.log.error("Invalid action [" + str(a) + "]")
                 sys.exit()
-            #if not offline:
-            #    self.driver = webdriver.Chrome()
-            #    self.hold = WebDriverWait(self.driver, 100)
-
-            #    if self.driver == None:
-            #        self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
-            #        sys.exit()
-            #self.payload = payload
-
-    def __click__(self, element): self.__get_element__(element["identifier"]).click()
+            # TODO a == "SPREADSHEET" and OFFSET isnumber
+    def __click__(self, element):
+        self.log.debug("Clicking on [" + element["identifier"]["value"] + "].")
+        self.__get_element__(element["identifier"]).click()
     def __fill_input__(self, element):
         e = self.__get_element__(element["identifier"])
-        value = element["value"]["content"]
-        if not value:
-            self.log.warning("The value for " + str(element["identifier"]) + " is missing. It will be replaced with [DEFAULT_VALUE].")
+        value = element["get result"]
+        self.log.debug("Filling input [" + element["identifier"]["value"] + "] with \"" + value + "\"")
+        if not value: #FIXME Bail?
+            self.log.warning("The value for " + str(element) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
 
         e.send_keys(value)
     def __get_element__(self, identifier):
+        element = None
         if identifier["type"] == "xpath":
-            element = self.driver.find_element_by_xpath(identifier["value"])
+            try:
+                element = self.driver.find_element_by_xpath(identifier["value"])
+            except NoSuchElementException:
+                self.log.warning("Element was not found. [" + str(identifier) + "]")
         elif identifier["type"] == "id":
-            element = self.driver.find_element_by_id(identifier["value"])
+            try:
+                element = self.driver.find_element_by_id(identifier["value"])
+            except NoSuchElementException:
+                self.log.warning("Element was not found. [" + str(identifier) + "]")
         else:
             self.log.error("The type of identifier wasn't recognized. [" + identifier["type"]+ "]")
             sys.exit()
 
         return element
-    def __get_attribute__(self, element, attribute): return element.get_attribute(attribute)
     def __get_elements__(self, identifier):
         if identifier["type"] == "xpath":
             elements = self.driver.find_elements_by_xpath(identifier["value"])
@@ -120,21 +205,13 @@ class DOM:
 
         self.log.debug("Element loaded.")
     def __wait_for_content__(self, identifier):
-        self.log.debug("Waiting for content of element to be load. [" + str(identifier) + "]")
-        self.log.warning("CSS ID hasn't been implemented here.")
+        self.log.debug("Waiting for content of element to be loaded. [" + str(identifier) + "]")
 
-        xpath = identifier["value"]
+        condition = Element_is_not_(identifier, "-")
+        self.hold.until(condition)
+#TODO Below
 
-        if xpath:
-            condition = Element_is_not_(xpath, "-")
-            self.hold.until(condition)
-            self.log.debug("Content loaded.")
-    def process_actions(self, element):
-        for a in element["actions"]["list"]:
-            if a == "GO": self.__go__(element["value"]["content"])
-            if a == "WAIT": self.__wait__(element["identifier"])
-            if a == "FILL_INPUT": self.__fill_input__(element)
-            if a == "CLICK": self.__click__(element)
+    def __get_attribute__(self, element, attribute): return element.get_attribute(attribute)
     def process_actions_with_context(self, element, context):
         result = None
         for a in element["actions"]["list"]:

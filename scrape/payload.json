@@ -11,14 +11,16 @@
 				"identifier" : {
 					"type" : "xpath",
 					"value" : "//i[@class='user icon']/following-sibling::input"
-				}
+				},
+				"username" : "username2"
 			},
 			{
 				"actions" : ["GET_PASSWORD", "FILL_INPUT"],
 				"identifier" : {
 					"type" : "xpath",
 					"value" : "//input[@type='password']"
-				}
+				},
+				"password": "password2"
 			},
 			{
 				"actions" : ["CLICK"],

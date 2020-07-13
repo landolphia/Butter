@@ -19,7 +19,7 @@ def init_log(logLevel):
         log.gerhandlers.clear()
     
     fileFormatter = logging.Formatter("%(asctime)s [%(levelname)s] from (%(module)s:%(lineno)s): %(message)s")
-    fileHandler = logging.handlers.RotatingFileHandler("debug.log", mode='a', maxBytes=1*1024*1024, backupCount=2, encoding=None, delay=0)
+    fileHandler = logging.handlers.RotatingFileHandler("debug.log", mode='a', maxBytes=1*1024*1024, backupCount=0, encoding=None, delay=0)
     fileHandler.setLevel(logging.DEBUG)
     fileHandler.setFormatter(fileFormatter)
     
@@ -32,10 +32,6 @@ def init_log(logLevel):
     log.addHandler(streamHandler)
 
     return log
-def launch_poster(offline):
-    navigation.Navigator(offline)
-def launch_scraper(offline):
-    navigation.Navigator(offline)
 def process_args(args):
     logLevel = logging.INFO
     app_mode = None
@@ -71,13 +67,12 @@ def main():
 
     start_time = time.time()
 
-    if arguments["mode"] == "POST":
-        launch_poster(arguments["offline"])
-    elif arguments["mode"] == "SCRAPE":
-        launch_scraper(arguments["offline"])
-    else:
+    
+    if not arguments["mode"] in ["SCRAPE", "POST"]:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. Use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
+        sys.exit()
 
+    navigation.Navigator(arguments["offline"], arguments["mode"])
     log.debug("Finished in %s seconds." % (time.time() - start_time))
 
 main()

@@ -13,15 +13,15 @@ import payload
 import spreadsheet
 
 
-OFFLINE_CACHE = "offline_data.json"
-LEADS_IDS = "leads.json"
+OFFLINE_CACHE = "./scrape/offline_data.json"
+LEADS_IDS = "./scrape/leads.json"
 
 class Navigator:
-    def __init__(self, offline):
+    def __init__(self, offline, mode):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Navigator.")
-            
-        self.pl = payload.Payload()
+
+        self.pl = payload.Payload(mode)
 
         if self.pl.mode == "SCRAPE":
             if offline:

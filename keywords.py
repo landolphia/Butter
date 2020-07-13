@@ -2,14 +2,15 @@ import json
 import logging
 import os.path
 
-COLOR_FILE = "colors.json"
-KEYWORD_FILE = "keywords.json"
+COLOR_FILE = "./scrape/colors.json"
+KEYWORD_FILE = "./scrape/keywords.json"
 
 
 class Keywords:
     def __init__(self):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Keywords.")
+
 
         self.colors = None
 

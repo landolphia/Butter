@@ -4,7 +4,8 @@
 *.pyc
 *.swp
 *.xlsx
-images/*
+build/*
 chromedriver.exe
+images/*
 offline_data.json
 private.slr

@@ -59,11 +59,10 @@ Notes:
 
 ## To-do
 
-- put as much as possible in config files (websites, credentials, elements, field properties (type/etc)
-- for now the work is based on getting listings online and processing them
-- get data from json for elements, payload, and navigator (flow of input)
-- merge SCRAPE/POST code
-- restructured file and folder hierarchy for better configuration/automation
+- Directory structure for configuration files
+- Ponder data validation ( Better errors for xlsx scraping? )
+- Ponder keywords improvement
+- GUI
 
 <details>
 	<summary> Click to expand </summary>
@@ -78,15 +77,20 @@ Other:
 
 ## History
 
-Current version: 0.3\
-- scrapes online leads
-- creates spreadsheet, highlighting keywords
+Current version: 0.9.1\
+- using cx_freeze to compile to exe
 
 <details>
   <summary> Older versions </summary>
 
+v.9\
+- new JSON format, actions are tied to elements
+- SCRAPE/POST merged (POST isn't implemented)
+v0.3\
+- scrapes online leads
+- creates spreadsheet, highlighting keywords
 v0.2.5\
-- remaining taks list is more user friendly
+- remaining tasks list is more user friendly
 v0.2.4\
 - faster (instant) description filling for tinyMCE
 v0.2.3
@@ -94,7 +98,7 @@ v0.2.3
 v0.2.2[HOTFIX]
 - waits for user to press enter after running the script to close the browser window
 - credentials obfuscated
-- fixed type in payload, leading to duplicate page/name entr
+- fixed typo in payload, leading to duplicate page/name entr
 v0.2
 - date and pets
 - multiple floorplans

@@ -37,6 +37,7 @@ class Navigator:
             #TODO FIXME scrape vs post?
             spreadsheet.Spreadsheet(output=self.units)
         elif self.pl.mode == "POST":
+            self.dom = dom.DOM()
             self.__init_poster__()
         else:
             self.log.error("[" + self.pl.mode + "] is not a valid mode.")
@@ -110,11 +111,16 @@ class Navigator:
         return units
     # POSTER
     def __init_poster__(self):
-        self.log.debug("TODO Initializing Poster.")
+        self.log.debug("Initializing Poster.")
 
-#        self.elements = elements.Elements(payload)
-#
-#        self.tasks = []
+        #TODO extract tasks to module?
+        self.tasks = []
+
+        # Process run once 
+        for p in self.pl.run_once:
+            self.log.debug("Run once : " + str(p))
+            for e in self.pl.run_once[p]:
+                self.dom.process_actions(e)
 #    def add_task(self, task):
 #        self.log.debug(task)
 #        self.tasks.append(task)

@@ -4,7 +4,7 @@ import os
 import sys
 
 
-PAYLOAD_FILE = "payload.json"
+PAYLOAD_FILE = "payload_post.json"
 
 class Payload:
     def __init__(self):

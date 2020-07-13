@@ -1,0 +1,345 @@
+{
+	"mode" : "POST",
+	"run once" : {
+		"login" : [
+			{
+				"actions" : ["GO"],
+				"url"	: "https://offcampus.bu.edu/login/" 
+			},
+			{
+				"actions" : ["WAIT", "CLICK"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//form[@id=\"login\"]/preceding-sibling::a"
+				}
+			},
+			{
+				"actions" : ["GET_USERNAME", "WAIT", "FILL_INPUT"],
+				"username" : "username1",
+				"identifier" : {
+					"type" : "id",
+					"value" : "username"
+				}
+			},
+			{
+				"actions" : ["GET_PASSWORD", "FILL_INPUT"],
+				"password" : "password1",
+				"identifier" : {
+					"type" : "id",
+					"value" : "password"
+				}
+			},
+			{
+				"actions" : ["CLICK"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//input[@type=\"submit\"]"
+				}
+			},
+			{"//BREAK": "break"},
+			{"//TODO STILL" :
+			"self.__add__element__(\"login\", \"add listing url\", None, None, None, \"https://offcampus.bu.edu/user/add-listing/\")"},
+			{"self.__add__element__(\"hidden\", \"gmaps\", None, None, None, self.credentials[\"api_key\"])":
+			"//THIS IS BELOW, BEloW"}
+		]
+	},
+	"repeat" : {
+		"leads" : [
+			{
+				"actions" : ["APPEND_AND_GO"],
+				"url" : "https://app.yougotlistings.com/leads/"
+			},
+			{
+				"actions" : ["WAIT_FOR_CONTENT"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//strong[text()='ID']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ELEMENTS_ATTRIBUTE"],
+				"attribute" : "data-rental-id",
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']"
+				}
+			}
+		],
+		"unit" : [
+			{
+				"actions" : ["APPEND_AND_GO"],
+				"url" : "https://app.yougotlistings.com/leads/rental/"
+			},
+			{
+				"actions" : ["WAIT_FOR_CONTENT", "GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "ID\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//strong[text()='MLS ID' or 'ID']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "On Market",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//i[@title='Map Listing']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Rent\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Rent']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Avail Date\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Avail Date']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Beds\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Beds']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Baths\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Baths']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Fee Paid By Owner\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Fee Paid By Owner']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Rent Includes\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Rent Includes']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Square Footage\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Square Footage']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Laundry\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Laundry']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Building Type\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Building Type']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Heat Source\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Heat Source']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Unit Level\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Unit Level']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Student\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Student']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Pet\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Pet']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Parking\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Parking']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Key / Entry Info\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Key / Entry Info']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Showing & Tenant Info\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Showing & Tenant Info']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "First Month\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='First Month']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Last Month\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Last Month']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Security\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Security']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Application Fee\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Application Fee']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Move In Fee\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Move In Fee']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Pet Deposit\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Pet Deposit']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Key Deposit\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Key Deposit']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Name\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Name']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Phone\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Phone']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Email\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Email']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Contact\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Contact']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Internal Notes\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Internal Notes']/.."
+				}
+			}
+		]
+	}
+}

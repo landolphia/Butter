@@ -133,9 +133,13 @@ class DOM:
 
                 return result
             elif a == "GET_PASSWORD":
-                element["get result"] = credentials.Credentials().get_credentials("private.slr")["password2"]
+                identifier = element["password"]
+                self.log.debug("Password: " + str(identifier))
+                element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
             elif a == "GET_USERNAME": 
-                element["get result"] = credentials.Credentials().get_credentials("private.slr")["username2"]
+                identifier = element["username"]
+                self.log.debug("Username: " + str(identifier))
+                element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
             elif a == "GO": self.__go__(element["url"])
             elif a == "UNFLUFF":
                 self.log.warning("UNFLUIFF")

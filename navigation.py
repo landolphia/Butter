@@ -37,6 +37,8 @@ class Navigator:
             #TODO FIXME scrape vs post?
             spreadsheet.Spreadsheet(output=self.units)
         elif self.pl.mode == "POST":
+            self.log.error("Ad posting is disabled in this version")
+            sys.exit()
             self.dom = dom.DOM()
             self.__init_poster__()
         else:

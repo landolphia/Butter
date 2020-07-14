@@ -12,6 +12,6 @@ executables = [
 
 setup(name='Butter',
       version = '0.9',
-      description = 'An ad scraping/posting tool.',
+      description = 'An ad posting/scraping tool.',
       options = {'build_exe': build_options},
       executables = executables)

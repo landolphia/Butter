@@ -10,7 +10,7 @@ import re
 from datetime import datetime
 
 
-LISTING = "scrapings.xlsx"
+LISTING = "./scrape/scrapings.xlsx"
 MAX_COLUMN_WIDTH = 60
 
 class Spreadsheet:

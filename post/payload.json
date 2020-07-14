@@ -35,311 +35,814 @@
 					"type" : "xpath",
 					"value" : "//input[@type=\"submit\"]"
 				}
-			},
-			{"//BREAK": "break"},
-			{"//TODO STILL" :
-			"self.__add__element__(\"login\", \"add listing url\", None, None, None, \"https://offcampus.bu.edu/user/add-listing/\")"},
-			{"self.__add__element__(\"hidden\", \"gmaps\", None, None, None, self.credentials[\"api_key\"])":
-			"//THIS IS BELOW, BEloW"}
+			}
 		]
 	},
-	"repeat" : {
-		"leads" : [
+	"repeat" : {//THIS HAS TO BE CHECKED, ITEM BY ITEM
+		"add listing" : [
 			{
-				"actions" : ["APPEND_AND_GO"],
-				"url" : "https://app.yougotlistings.com/leads/"
-			},
+				"actions" : ["GO"],
+				"url"	: "https://offcampus.bu.edu/user/add-listing/" 
+			}
+		],
+		"location" : [
 			{
-				"actions" : ["WAIT_FOR_CONTENT"],
+				"actions" : ["WAIT"],
+				"cell" : 0,
 				"identifier" : {
-					"type" : "xpath",
-					"value" : "//strong[text()='ID']/.."
+					"type" : "id",
+					"value": "address-autocomplete-place"
 				}
 			},
 			{
-				"actions" : ["GET_ELEMENTS_ATTRIBUTE"],
-				"attribute" : "data-rental-id",
+				"actions" : ["FILL_INPUT", "PRESS_ENTER"],
+				"cell" : 1,
 				"identifier" : {
 					"type" : "xpath",
-					"value" : "//div[@class='ui celled grid ygl-table group-rentals no-border-top']/div[@class='row']"
+					"value": "//*[@id=\"address_autocomplete\"]"
+				}
+			},//FIGURE OUT PARSING
+			{
+				"actions" : ["WAIT", "FILL_INPUT"],
+				"identifier" : {
+					"type" : "id",
+					"value": "address"
+				}
+				"value" FIGURE OUT
+			},
+			{
+				"actions" : ["FILL_INPUT"],
+				"identifier" : {
+					"type" : "id",
+					"value": "city"
+				}
+				"value" FIGURE OUT
+			},
+			{
+				"actions" : ["FILL_INPUT"],
+				"identifier" : {
+					"type" : "id",
+					"value": "zip"
+				}
+				"value" FIGURE OUT
+			},
+			{
+				"actions" : ["DROPDOWN"],
+				"identifier" : {
+					"type" : "id",
+					"value": "state"
+				}
+			},
+			{
+				"actions" : ["NONE"],
+				self.__add__element__("location", "unit", None, None, None, address["unit"])
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 2,
+				"identifier" : {
+					"type" : "id",
+					"value": "opt_street-0"
+				}
+			},
+			{
+				"actions" : ["SUBMIT"],
+				"identifier" : {
+					"type" : "xpath",
+					"value": "//form[@action=\"/user/add-listing\"]"
+				}
+			},
+			{
+				"actions" : ["WAIT", "FILL_INPUT_NOT_NULL", "PRESS_ENTER"],
+				"cell" : 3, 
+				"default" : "[TEST], implement this",
+				"identifier" : {
+					"type" : "id",
+					"value": "property_name"
 				}
 			}
 		],
-		"unit" : [
+		"rent" : [
 			{
-				"actions" : ["APPEND_AND_GO"],
-				"url" : "https://app.yougotlistings.com/leads/rental/"
-			},
-			{
-				"actions" : ["WAIT_FOR_CONTENT", "GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "ID\n",
+				"actions" : ["WAIT", "CLICK"],
 				"identifier" : {
 					"type" : "xpath",
-					"value" : "//strong[text()='MLS ID' or 'ID']/.."
+					"value" : "//a[@data-target=\"rent\"]"
 				}
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "On Market",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//i[@title='Map Listing']/.."
-				}
+			       "actions" : ["DROPDOWN"],
+			       "cell" : 6,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "buildingtype"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Rent\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Rent']/.."
-				}
+			       "actions" : ["SPECIAL CHECKBOX"],
+			       "cell" : 7,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "multi-unit-no"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Avail Date\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Avail Date']/.."
-				}
+			       "actions" : ["SPECIAL CHECKBOX],
+			       "cell" : 7,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "multi-unit-yes"
+			       }
+			},
+			//FLOORPLAN
+			{
+			       "actions" : [],
+			       "cell" : 8,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "floorplan-0-bedrooms"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Beds\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Beds']/.."
-				}
+			       "actions" : [],
+			       "cell" : 9,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "floorplan-0-bathrooms"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Baths\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Baths']/.."
-				}
+			       "actions" : [],
+			       "cell" : 10,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "floorplan-0-sqft"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Fee Paid By Owner\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Fee Paid By Owner']/.."
-				}
+			       "actions" : [],
+			       "cell" : 11,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "floorplan-0-rent_value"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Rent Includes\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Rent Includes']/.."
-				}
+			       "actions" : [],
+			       "cell" : 12,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "floorplan-0-per_bedroom"
+			       }
+			},
+			//END FLOORPLAN
+			{
+			       "actions" : ["CHECKBOX"],
+			       "cell" : 13,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "security_deposit_amenities-231"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Square Footage\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Square Footage']/.."
-				}
+			       "actions" : ["CHECKBOX"],
+			       "cell" : 14,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "security_deposit_amenities-161"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Laundry\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Laundry']/.."
-				}
+			       "actions" : ["CHECKBOX"],
+			       "cell" : 15,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "security_deposit_amenities-162"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Building Type\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Building Type']/.."
-				}
+			       "actions" : ["CHECKBOX"],
+			       "cell" : 16,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "security_deposit_amenities-165"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Heat Source\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Heat Source']/.."
-				}
+			       "actions" : ["CHECKBOX'],
+			       "cell" : 17,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "security_deposit_amenities-164"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Unit Level\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Unit Level']/.."
-				}
+			       "actions" : ["CHECKBOX"],
+			       "cell" : 18,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "security_deposit_amenities-163"
+			       }
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Student\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Student']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Pet\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Pet']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Parking\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Parking']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Key / Entry Info\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Key / Entry Info']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Showing & Tenant Info\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Showing & Tenant Info']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "First Month\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='First Month']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Last Month\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Last Month']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Security\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Security']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Application Fee\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Application Fee']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Move In Fee\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Move In Fee']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Pet Deposit\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Pet Deposit']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Key Deposit\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Key Deposit']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Name\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Name']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Phone\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Phone']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Email\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Email']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Contact\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Contact']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
-				"fluff" : "Internal Notes\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Internal Notes']/.."
-				}
+			       "actions" : ["FILL INPUT NOT NULL", "PRESS_ENTER"],
+			       "cell" : 19,
+			       "identifier" : {
+				       "type" : "id",
+				       "value" : "specials"
+			       }
 			}
+		],
+		"floorplan": [
+			{
+			}
+		],
+		"floorplans" : [
+			{
+			}
+		],
+		"amenities" : [
+			{
+				"actions" : ["WAIT", "CLICK"],
+				"identifier" {
+					"type" : "xpath",
+					"value" : "//a[@data-target=\"amenities\"]"
+				}
+			},
+			{
+				"actions" : ["GET_PET_POLICY", "DROPDOWN"],
+				"cell" : 31,
+				"identifier" : {
+					"type" : "id",
+					"value" : "pet_policy"
+        //policy = str(ss.get_key(31)).lower()
+        //if "not allowed" in policy:
+        //    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Not Allowed")
+        //elif "considered" in policy:
+        //    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Considered")
+        //else: # Assumed to be allowed
+        //    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Allowed")
+				}
+			},
+			{
+				"actions" : ["GET_CAT_POLICY", "CHECKBOX"],
+				"identifier" : {
+					"type" : "id",
+					"value" : "pet_policy"
+				}
+        //if "cat" in policy:
+        //    self.__add__element__("amenities", "cats", "pet_types-27", None, None, "Y")
+        //else:
+        //    self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
+
+        //if "dog" in policy:
+        //    self.__add__element__("amenities", "dogs", "pet_types-28", None, None, "Y")
+        //else:
+        //    self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
+			},
+			//END PET TODO
+			{
+				"actions" : ["DROPDOWN"],
+				"cell" : 32,
+				"identifier" : {
+					"type" : "id",
+					"value" : "lead_paint"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 34,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-1"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 35,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-20"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-202"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 37,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-15"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 38,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-26"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 39,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-8"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 40,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-7"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 41,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-82"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 42,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-21"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 43,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-303"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 44,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-200"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 45,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-204"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 46,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-6"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 47,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-205"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 48,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-206"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 49,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-41"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 50,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-207"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 51,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-208"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 52,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[1]-203"
+				}
+			},
+        # Agency
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" :	54,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[8]-50"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[8]-51", 55,
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-45", 57,
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 58,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-46"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 59,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-19"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 60,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-133"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 61,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-10"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 62,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-44"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 63,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[2]-11"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 65,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-16"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 66,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-17"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 67,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-76"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 68,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-18"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 69,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-63"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 70,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-42"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 71,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-77"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 72,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[5]-75"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 74,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-120"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 75,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-95"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 76,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-99"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 77,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-97"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 78,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-100"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 79,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-25"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 80,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[9]-98"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 82,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-5"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 83,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-4"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 84,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-3"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 85,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-2"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 86,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-35"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 87,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-226"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 88,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-39"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 89,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-124"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 90,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-22"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 91,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[3]-23"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 93,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[4]-37"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 94,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[4]-142"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 95,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[4]-36"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 96,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[4]-38"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 98,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[7]-12"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 99,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[7]-143"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 100,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[7]-33"
+		}
+	},
+	{
+		"actions" : ["CHECKBOX"],
+		"cell" : 101,
+		"identifier" : {
+			"type" : "id",
+			"value" : "amenity[7]-9"
+		}
+	},
+	//CHEKC THOSE THREE, DESCRIPTION
+	{
+		"actions" : [""],
+		"identifier" : {
+			"type" : "id",
+			"value" : "description_ifr"
+		}
+	},
+	{
+	"property id", None, None, 111, None)
+	},
+	{
+		"actions" : [""],
+		"cell" : 112,
+		"identifier" : {
+			"type" : "id",
+			"value" : "tinymce"
+		}
+	},
+
+	//CONTACT TO DO
+        self.__add__element__("contact", "link", None, "//a[@data-target=\"contact\"]", None, None)
+        self.__add__element__("contact", "name", "contact_name", None, 114, None)
+        self.__add__element__("contact", "phone", "contact_phone", None, 115, None)
+        self.__add__element__("contact", "text", "sms", None, 116, None)
+        self.__add__element__("contact", "email", None, "//input[@class=\"select2-search__field\"]", 117, None)
+        self.__add__element__("contact", "email arrow", "select2-email-container", None, None, None)
+        self.__add__element__("contact", "office hours", "contact_time", None, 118, None)
+        self.__add__element__("contact", "twitter", "twitter", None, 119, None)
+        self.__add__element__("contact", "facebook", "facebook", None, 120, None)
+        self.__add__element__("contact", "instagram", "instagram", None, 121, None)
+        self.__add__element__("contact", "website", "website", None, 122, None)
+        self.__add__element__("contact", "lease link", "lease_link", None, 123, None)
+        self.__add__element__("contact", "lease button", "lease_upload", None, 124, None)
+	//PHOTOS TO DO
+        self.__add__element__("photos", "link", None, "//a[@data-target=\"images\"]", None, None)
+        self.__add__element__("photos", "uploader", None, "//input[@id=\"image_uploads\"]/../..", 126, None)
+        self.__add__element__("photos", "virtual tour", None, "//a[@data-target=\"images\"]", 134, None)
+        self.__add__element__("photos", "promotional video", None, "//a[@data-target=\"images\"]", 127, None)
+        self.__add__element__("photos", "li", None, "//li[@class=\"clearfix uploaded-image\"]", None, None)
+        
+
+			
 		]
 	}
 }
+			"//BREAK": "break"
+			"//TODO STILL" :
+			{"self.__add__element__(\"hidden\", \"gmaps\", None, None, None, self.credentials[\"api_key\"])":
+			"//THIS IS BELOW, BEloW"}

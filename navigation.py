@@ -136,66 +136,10 @@ class Navigator:
 #        self.fill_photos()
 #    def close(self):
 #        self.elements.quit()
-#    def login(self):
-#        self.elements.go("login", "login url")
-#
-#        self.elements.wait("login", "link")
-#        self.elements.click("login", "link")
-#
-#        self.elements.wait("login", "username")
-#        
-#        self.elements.fill_input("login", "username")
-#        self.elements.fill_input("login", "password")
-#
-#        self.elements.click("login", "submit button")
-#    def add_listing(self):
-#        self.elements.go("login", "add listing url")
-#
-#        self.elements.wait("location", "full address")
-#
-#        self.elements.fill_input("location", "full address input")
-#        self.elements.press_enter("location", "full address input")
-#    def fill_address(self):
-#        self.elements.wait("location", "address")
-#
-#        self.log.debug("Filling in address details for [" + self.payload.get_value("location", "full address") + "].")
-#   
-#        self.elements.fill_input("location", "address")
-#        self.elements.fill_input("location", "city")
-#        self.elements.fill_input("location", "zip")
-#    
-#        self.elements.dropdown("location", "state")
-#
-#        self.elements.checkbox("location", "exact flag")
-#
-#
-#        self.elements.submit("location", "address form")
-#
-#        self.elements.wait("location", "property name")
-#
-#        self.elements.fill_input_not_null("location", "property name", "[TEST]") #FIXME Fix this before release
-#        self.elements.press_enter("location", "property name")
-#    def fill_rent(self):
-#        self.elements.wait("rent", "rent link")
-#        self.elements.click("rent", "rent link")
-#
-#        self.elements.dropdown("rent", "building type")
-#
-#        if self.payload.get_bool("rent", "floorplans yes"):
-#            self.elements.radio("rent", "floorplans yes")
-#        else:
-#            self.elements.radio("rent", "floorplans no")
-#
-#        self.elements.checkbox("rent", "broker")
-#        self.elements.checkbox("rent", "first")
-#        self.elements.checkbox("rent", "last")
-#        self.elements.checkbox("rent", "upfront")
-#        self.elements.checkbox("rent", "references")
-#        self.elements.checkbox("rent", "security")
-#
-#        self.elements.fill_input_not_null("rent", "specials", " ")
-#        self.elements.press_enter("rent", "specials")
-#
+
+TODO
+
+/FLOORPLANS
 #        if self.payload.get_bool("rent", "floorplans yes"):
 #            self.fill_floorplans()
 #            self.fill_specifics(True)
@@ -310,13 +254,10 @@ class Navigator:
 #
 #        self.elements.radio("specifics", "renew yes")
 #        self.elements.submit("specifics", "renew yes")
+//END TODO
+
+/TODO
 #    def fill_amenities(self):
-#        self.elements.wait("amenities", "link")
-#        self.elements.click("amenities", "link")
-#
-#        self.elements.dropdown("amenities", "pet policy")
-#        self.elements.checkbox("amenities", "cats")
-#        self.elements.checkbox("amenities", "dogs")
 #
 #        self.elements.dropdown("amenities", "lead paint")
 #    

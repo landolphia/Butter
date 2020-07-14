@@ -55,30 +55,24 @@ py main.py SCRAPE [OFFLINE] [INFO, DEBUG]
 Notes:
 - INFO is the default logging level.
 - DEBUG messages will be printed to debug.log by default anyway.
-- OFFLINE will download the leads data to a local file and use it upon subsequent runs with the OFFLINE argument
+- OFFLINE will download the data if it's not available and use it upon subsequent runs with the OFFLINE argument
 
 ## To-do
 
-- Directory structure for configuration files
-- Ponder data validation ( Better errors for xlsx scraping? )
-- Ponder keywords improvement
-- GUI
 
 <details>
 	<summary> Click to expand </summary>
 
-Other:
-- contact page
-- value formatting and validation
-- value type in payload
-- remove lxml (see next item)
-- consolidate with HTML scraper
+- Ponder data validation ( Better errors for xlsx scraping? )
+- Ponder keywords improvement
+- GUI
 </details>
 
 ## History
 
 Current version: 0.9.1\
 - using cx_freeze to compile to exe
+- directory structure for configuration files
 
 <details>
   <summary> Older versions </summary>

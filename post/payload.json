@@ -61,7 +61,9 @@
 					"type" : "xpath",
 					"value": "//*[@id=\"address_autocomplete\"]"
 				}
-			},//FIGURE OUT PARSING
+			}//FIGURE OUT PARSING
+		],
+		"address" : [
 			{
 				"actions" : ["WAIT", "FILL_INPUT"],
 				"identifier" : {
@@ -115,7 +117,7 @@
 			{
 				"actions" : ["WAIT", "FILL_INPUT_NOT_NULL", "PRESS_ENTER"],
 				"cell" : 3, 
-				"default" : "[TEST], implement this",
+	#			"default" : "[TEST], implement this",
 				"identifier" : {
 					"type" : "id",
 					"value": "property_name"
@@ -131,133 +133,205 @@
 				}
 			},
 			{
-			       "actions" : ["DROPDOWN"],
-			       "cell" : 6,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "buildingtype"
-			       }
+				"actions" : ["DROPDOWN"],
+				"cell" : 6,
+				"identifier" : {
+					"type" : "id",
+					"value" : "buildingtype"
+				}
 			},
 			{
-			       "actions" : ["SPECIAL CHECKBOX"],
-			       "cell" : 7,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "multi-unit-no"
-			       }
+				"actions" : ["SPECIAL RADIO"],
+				"cell" : 7,
+				"identifier" : {
+					"type" : "id",
+					"value" : "multi-unit-no"
+				}
 			},
 			{
-			       "actions" : ["SPECIAL CHECKBOX],
-			       "cell" : 7,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "multi-unit-yes"
-			       }
-			},
-			//FLOORPLAN
-			{
-			       "actions" : [],
-			       "cell" : 8,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "floorplan-0-bedrooms"
-			       }
+				"actions" : ["SPECIAL RADIO],
+				"cell" : 7,
+				"identifier" : {
+					"type" : "id",
+					"value" : "multi-unit-yes"
+				}
 			},
 			{
-			       "actions" : [],
-			       "cell" : 9,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "floorplan-0-bathrooms"
-			       }
+				"actions" : ["CHECKBOX"],
+				"cell" : 13,
+				"identifier" : {
+					"type" : "id",
+					"value" : "security_deposit_amenities-231"
+				}
 			},
 			{
-			       "actions" : [],
-			       "cell" : 10,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "floorplan-0-sqft"
-			       }
+				"actions" : ["CHECKBOX"],
+				"cell" : 14,
+				"identifier" : {
+					"type" : "id",
+					"value" : "security_deposit_amenities-161"
+				}
 			},
 			{
-			       "actions" : [],
-			       "cell" : 11,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "floorplan-0-rent_value"
-			       }
+				"actions" : ["CHECKBOX"],
+				"cell" : 15,
+				"identifier" : {
+					"type" : "id",
+					"value" : "security_deposit_amenities-162"
+				}
 			},
 			{
-			       "actions" : [],
-			       "cell" : 12,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "floorplan-0-per_bedroom"
-			       }
-			},
-			//END FLOORPLAN
-			{
-			       "actions" : ["CHECKBOX"],
-			       "cell" : 13,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "security_deposit_amenities-231"
-			       }
+				"actions" : ["CHECKBOX"],
+				"cell" : 16,
+				"identifier" : {
+					"type" : "id",
+					"value" : "security_deposit_amenities-165"
+				}
 			},
 			{
-			       "actions" : ["CHECKBOX"],
-			       "cell" : 14,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "security_deposit_amenities-161"
-			       }
+				"actions" : ["CHECKBOX'],
+				"cell" : 17,
+				"identifier" : {
+					"type" : "id",
+					"value" : "security_deposit_amenities-164"
+				}
 			},
 			{
-			       "actions" : ["CHECKBOX"],
-			       "cell" : 15,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "security_deposit_amenities-162"
-			       }
+				"actions" : ["CHECKBOX"],
+				"cell" : 18,
+				"identifier" : {
+					"type" : "id",
+					"value" : "security_deposit_amenities-163"
+				}
 			},
 			{
-			       "actions" : ["CHECKBOX"],
-			       "cell" : 16,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "security_deposit_amenities-165"
-			       }
-			},
-			{
-			       "actions" : ["CHECKBOX'],
-			       "cell" : 17,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "security_deposit_amenities-164"
-			       }
-			},
-			{
-			       "actions" : ["CHECKBOX"],
-			       "cell" : 18,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "security_deposit_amenities-163"
-			       }
-			},
-			{
-			       "actions" : ["FILL INPUT NOT NULL", "PRESS_ENTER"],
-			       "cell" : 19,
-			       "identifier" : {
-				       "type" : "id",
-				       "value" : "specials"
-			       }
+				"actions" : ["FILL INPUT NOT NULL", "PRESS_ENTER"],
+				"cell" : 19,
+				"identifier" : {
+					"type" : "id",
+					"value" : "specials"
+				}
 			}
 		],
 		"floorplan": [
 			{
+				"actions" : ["WAIT", "DROWPDOWN"],
+				"cell" : 8,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-bedrooms"
+				}
+			},
+			{
+				"actions" : ["DROPDOWN"],
+				"cell" : 9,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-bathrooms"
+				}
+			},
+			{
+				"actions" : ["FILL_INPUT"],
+				"cell" : 10,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-sqft"
+				}
+			},
+			{
+				"actions" : ["FILL_INPUT_MONEY"],
+				"cell" : 11,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-rent_value"
+				}
+			},
+			//RENT TYPE
+			{
+				"actions" : ["DROPDOWN"],
+				"cell" : 12,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-per_bedroom"
+				}
+			},
+			//RENT SPECIAL (DUPLICATE FROM "RENT" ? )
+			{
+				"actions" : ["PRESS_ENTER"],
+				"cell" : 19,
+				"identifier" : {
+					"type" : "id",
+					"value" : "specials"
+				}
 			}
+			
 		],
 		"floorplans" : [
+			"link", None, "//a[@data-target=\"floorplans\"]", None, None)
+			"add link", None, "//button[@name=\"create-floorplan\"]", None, None)
+			"total number",  None, None, None, i)
+			offset = FP_START + ( n * FP_LENGTH)
+			# Floorplans/The following cell rows are relative to the offset above.
+			"name" + str(n), "floorplan-FP_ID-name", None, offset + 0, None)
+			"specials" + str(n), "floorplan-FP_ID-specials", None, offset + 1, None)
+			"bedrooms" + str(n), "floorplan-FP_ID-bedrooms", None, offset + 2, None)
+			"bathrooms" + str(n), "floorplan-FP_ID-bathrooms", None, offset + 3, None)
+			"occupants" + str(n), "floorplan-FP_ID-occupants", None, offset + 4, None)
+			"square feet" + str(n), "floorplan-FP_ID-sqft", None, offset + 5, None)
+			"monthly rent" + str(n), "floorplan-FP_ID-rent_value", None, offset + 6, None)
+			"rental type" + str(n), "floorplan-FP_ID-per_bedroom", None, offset + 7, None)
+			# Floorplans/Amenities
+			"ac" + str(n), "floorplan-FP_ID-amenity[1]-1", None, offset + 9, None)
+			"carpet" + str(n), "floorplan-FP_ID-amenity[1]-20", None, offset + 10, None)
+			"dining room" + str(n), "floorplan-FP_ID-amenity[1]-202", None, offset + 11, None)
+			"disability access" + str(n), "floorplan-FP_ID-amenity[1]-15", None, offset + 12, None)
+			"dishwasher" + str(n), "floorplan-FP_ID-amenity[1]-26", None, offset + 13, None)
+			"fireplace" + str(n), "floorplan-FP_ID-amenity[1]-8", None, offset + 14, None)
+			"furnished" + str(n), "floorplan-FP_ID-amenity[1]-7", None, offset + 15, None)
+			"garbage disposal" + str(n), "floorplan-FP_ID-amenity[1]-82", None, offset + 16, None)
+			"hardwood" + str(n), "floorplan-FP_ID-amenity[1]-21", None, offset + 17, None)
+			"high-speed internet" + str(n), "floorplan-FP_ID-amenity[1]-303", None, offset + 18, None)
+			"living room" + str(n), "floorplan-FP_ID-amenity[1]-200", None, offset + 19, None)
+			"microwave" + str(n), "floorplan-FP_ID-amenity[1]-204", None, offset + 20, None)
+			"patio" + str(n), "floorplan-FP_ID-amenity[1]-6", None, offset + 21, None)
+			"private garden" + str(n), "floorplan-FP_ID-amenity[1]-205", None, offset + 22, None)
+			"shared garden" + str(n), "floorplan-FP_ID-amenity[1]-206", None, offset + 23, None)
+			"smoke free" + str(n), "floorplan-FP_ID-amenity[1]-41", None, offset + 24, None)
+			"additional storage" + str(n), "floorplan-FP_ID-amenity[1]-207", None, offset + 25, None)
+			"included storage" + str(n), "floorplan-FP_ID-amenity[1]-208", None, offset + 26, None)
+			"study" + str(n), "floorplan-FP_ID-amenity[1]-203", None, offset + 27, None)
+			# Floorplans/Availability
+			availability = str(self.ss.get_key(offset+28)).lower()
+			value = ("Y" if availability == "not available" else None)
+			self.__add__element__("floorplans", "availability not" + str(n), "floorplan-FP_ID-move-in-not", None, None, value)
+			value = ("Y" if availability == "a specific date" else None)
+			self.__add__element__("floorplans", "availability specific" + str(n), "floorplan-FP_ID-move-in-date", None, None, value)
+			value = ("Y" if availability == "between two dates" else None)
+			self.__add__element__("floorplans", "availability range" + str(n), "floorplan-FP_ID-move-in-range", None, None, value)
+			value = ("Y" if availability == "ongoing" else None)
+			self.__add__element__("floorplans", "availability ongoing" + str(n), "floorplan-FP_ID-move-in-now", None, None, value)
+
+			date = None
+			if self.get_value("floorplans", "availability specific" + str(n)) != None:
+			date = self.ss.parse_date(self.ss.get_key(offset+29))
+			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
+			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+			elif self.get_value("floorplans", "availability range" + str(n)) != None:
+			date = self.ss.parse_date(self.ss.get_key(offset+29))
+			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
+			date = self.ss.parse_date(self.ss.get_key(offset+30))
+			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+			else:
+			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
+			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+
+			# Floorplans/Description++
+			"description" + str(n), "floorplan-FP_ID-description", None, offset + 31, None)
+			"virtual tour" + str(n), "floorplan-FP_ID-virtual-tour", None, offset + 33, None)
+			"webpage" + str(n), "floorplan-FP_ID-website", None, offset + 34, None)
+			"lease" + str(n), "floorplan-FP_ID-lease", None, offset + 35, None)
+			"image" + str(n), "floorplan-FP_ID-image", None, offset + 36, None)
+           
 			{
 			}
 		],
@@ -275,13 +349,13 @@
 				"identifier" : {
 					"type" : "id",
 					"value" : "pet_policy"
-        //policy = str(ss.get_key(31)).lower()
-        //if "not allowed" in policy:
-        //    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Not Allowed")
-        //elif "considered" in policy:
-        //    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Considered")
-        //else: # Assumed to be allowed
-        //    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Allowed")
+					//policy = str(ss.get_key(31)).lower()
+					//if "not allowed" in policy:
+					//    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Not Allowed")
+					//elif "considered" in policy:
+					//    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Considered")
+					//else: # Assumed to be allowed
+					//    self.__add__element__("amenities", "pet policy", "pet_policy", None, None, "Pets Allowed")
 				}
 			},
 			{
@@ -290,15 +364,15 @@
 					"type" : "id",
 					"value" : "pet_policy"
 				}
-        //if "cat" in policy:
-        //    self.__add__element__("amenities", "cats", "pet_types-27", None, None, "Y")
-        //else:
-        //    self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
+				//if "cat" in policy:
+				//    self.__add__element__("amenities", "cats", "pet_types-27", None, None, "Y")
+				//else:
+				//    self.__add__element__("amenities", "cats", "pet_types-27", None, None, None)
 
-        //if "dog" in policy:
-        //    self.__add__element__("amenities", "dogs", "pet_types-28", None, None, "Y")
-        //else:
-        //    self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
+				//if "dog" in policy:
+				//    self.__add__element__("amenities", "dogs", "pet_types-28", None, None, "Y")
+				//else:
+				//    self.__add__element__("amenities", "dogs", "pet_types-28", None, None, None)
 			},
 			//END PET TODO
 			{
@@ -461,388 +535,508 @@
 					"value" : "amenity[1]-203"
 				}
 			},
-        # Agency
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" :	54,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[8]-50"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[8]-51", 55,
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-45", 57,
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 58,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-46"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 59,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-19"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 60,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-133"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 61,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-10"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 62,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-44"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 63,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[2]-11"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 65,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-16"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 66,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-17"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 67,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-76"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 68,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-18"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 69,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-63"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 70,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-42"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 71,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-77"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 72,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[5]-75"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 74,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-120"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 75,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-95"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 76,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-99"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 77,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-97"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 78,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-100"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 79,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-25"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 80,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[9]-98"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 82,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-5"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 83,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-4"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 84,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-3"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 85,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-2"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 86,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-35"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 87,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-226"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 88,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-39"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 89,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-124"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 90,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-22"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 91,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[3]-23"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 93,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[4]-37"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 94,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[4]-142"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 95,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[4]-36"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 96,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[4]-38"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 98,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[7]-12"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 99,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[7]-143"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 100,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[7]-33"
-		}
-	},
-	{
-		"actions" : ["CHECKBOX"],
-		"cell" : 101,
-		"identifier" : {
-			"type" : "id",
-			"value" : "amenity[7]-9"
-		}
-	},
-	//CHEKC THOSE THREE, DESCRIPTION
-	{
-		"actions" : [""],
-		"identifier" : {
-			"type" : "id",
-			"value" : "description_ifr"
-		}
-	},
-	{
-	"property id", None, None, 111, None)
-	},
-	{
-		"actions" : [""],
-		"cell" : 112,
-		"identifier" : {
-			"type" : "id",
-			"value" : "tinymce"
-		}
-	},
+			# Agency
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" :	54,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[8]-50"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[8]-51", 55
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-45", 57
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 58,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-46"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 59,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-19"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 60,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-133"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 61,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-10"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 62,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-44"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 63,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-11"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 65,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-16"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 66,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-17"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 67,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-76"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 68,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-18"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 69,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-63"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 70,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-42"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 71,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-77"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 72,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-75"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 74,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-120"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 75,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-95"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 76,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-99"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 77,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-97"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 78,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-100"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 79,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-25"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 80,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-98"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 82,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-5"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 83,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-4"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 84,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-3"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 85,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-2"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 86,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-35"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 87,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-226"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 88,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-39"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 89,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-124"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 90,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-22"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 91,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-23"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 93,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-37"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 94,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-142"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 95,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-36"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 96,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-38"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 98,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-12"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 99,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-143"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 100,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-33"
+				}
+			},
+			{
+				"actions" : ["CHECKBOX"],
+				"cell" : 101,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-9"
+				}
+			},
+			//CHEKC THOSE THREE, DESCRIPTION
+			{
+				"actions" : [""],
+				"identifier" : {
+					"type" : "id",
+					"value" : "description_ifr"
+				}
+			},
+			{
+				"property id", None, None, 111, None)
+			},
+			{
+				"actions" : [""],
+				"cell" : 112,
+				"identifier" : {
+					"type" : "id",
+					"value" : "tinymce"
+				}
+			},
 
-	//CONTACT TO DO
-        self.__add__element__("contact", "link", None, "//a[@data-target=\"contact\"]", None, None)
-        self.__add__element__("contact", "name", "contact_name", None, 114, None)
-        self.__add__element__("contact", "phone", "contact_phone", None, 115, None)
-        self.__add__element__("contact", "text", "sms", None, 116, None)
-        self.__add__element__("contact", "email", None, "//input[@class=\"select2-search__field\"]", 117, None)
-        self.__add__element__("contact", "email arrow", "select2-email-container", None, None, None)
-        self.__add__element__("contact", "office hours", "contact_time", None, 118, None)
-        self.__add__element__("contact", "twitter", "twitter", None, 119, None)
-        self.__add__element__("contact", "facebook", "facebook", None, 120, None)
-        self.__add__element__("contact", "instagram", "instagram", None, 121, None)
-        self.__add__element__("contact", "website", "website", None, 122, None)
-        self.__add__element__("contact", "lease link", "lease_link", None, 123, None)
-        self.__add__element__("contact", "lease button", "lease_upload", None, 124, None)
+			"contact" : [
+				{
+					"actions" : ["GO"],
+					"identifier" : {
+						"type" : "xpath",
+						"value" : "//a[@data-target=\"contact\"]"
+					}
+				},
+				{
+					"actions" : [""],
+					"cell" : 114,
+					"identifier" : {
+						"type" : "id",
+						"value" : "contact_name"
+					}
+				},
+				{
+					"actions" : [""],
+					"cell" : 115,
+					"identifier" : {
+						"type" : "id",
+						"value" : "contact_phone"
+					}
+				},
+				{
+					"actions" : [""],
+					"cell" : 116,
+					"identifier" : {
+						"type" : "id",
+						"value" : "sms"
+					}
+				},
+				{
+					"actions" : [""],
+					"cell" : 117,
+					"identifier" : {
+						"type" : "xpath",
+						"value" : "//input[@class=\"select2-search__field\"]"
+					}
+				},
+				{
+					"actions" : [""],
+					"cell" : 118,
+					"identifier" : {
+						"type" : "id",
+						"value" : "select2-email-container"
+					}
+				},
+				{
+					"actions" : [""],
+					"cell" : 118,
+					"identifier" : {
+						"type" : "id",
+						"value" : "contact_time"]
+					}
+				},	
+				{
+					"actions" : [""],
+					"cell" : 119,
+					"identifier" : {
+						"type" : "id",
+						"value" : "twitter"]
+					}
+				},	
+				{
+					"actions" : [""],
+					"cell" : 120,
+					"identifier" : {
+						"type" : "id",
+						"value" : "facebook"]
+					}
+				},	
+				{
+					"actions" : [""],
+					"cell" : 121,
+					"identifier" : {
+						"type" : "id",
+						"value" : "instagram"]
+					}
+				},	
+				{
+					"actions" : [""],
+					"cell" : 122,
+					"identifier" : {
+						"type" : "id",
+						"value" : "website"]
+					}
+				},	
+				{
+					"actions" : [""],
+					"cell" : 123,
+					"identifier" : {
+						"type" : "id",
+						"value" : "lease_link"]
+					}
+				},	
+				{
+					"actions" : [""],
+					"cell" : 124,
+					"identifier" : {
+						"type" : "id",
+						"value" : "lease_upload"]
+					}
+				}	
+	],
 	//PHOTOS TO DO
-        self.__add__element__("photos", "link", None, "//a[@data-target=\"images\"]", None, None)
-        self.__add__element__("photos", "uploader", None, "//input[@id=\"image_uploads\"]/../..", 126, None)
-        self.__add__element__("photos", "virtual tour", None, "//a[@data-target=\"images\"]", 134, None)
-        self.__add__element__("photos", "promotional video", None, "//a[@data-target=\"images\"]", 127, None)
-        self.__add__element__("photos", "li", None, "//li[@class=\"clearfix uploaded-image\"]", None, None)
-        
-
-			
-		]
+	"photos" : [
+		{
+			"actions" : ["WAIT", "CLICK"],
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//a[@data-target=\"images\"]"
+			}
+		},
+		"//a[@data-target=\"images\"]",
+		{
+			"actions" : ["WAIT", "CLICK"],
+			"cell" : 126,
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//input[@id=\"image_uploads\"]/../.."
+			}
+		},
+		{
+			"actions" : [""],
+			"cell" : 134,
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//a[@data-target=\"images\"]" #FIXME
+			}
+		},
+		{
+			"actions" : [""],
+			"cell" : 127,
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//a[@data-target=\"images\"]" #FIXME
+			}
+		},
+		{
+			"actions" : [""],
+			"cell" : 
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//li[@class=\"clearfix uploaded-image\"]"
+			}
+		}
+	]
 	}
 }
-			"//BREAK": "break"
-			"//TODO STILL" :
-			{"self.__add__element__(\"hidden\", \"gmaps\", None, None, None, self.credentials[\"api_key\"])":
-			"//THIS IS BELOW, BEloW"}

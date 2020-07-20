@@ -48,6 +48,8 @@ def process_args(args):
             logLevel = logging.INFO
         elif a == "POST":
             app_mode = "POST"
+        elif a == "POST_TEST":
+            app_mode = "POST_TEST"
         elif a == "SCRAPE":
             app_mode = "SCRAPE"
         elif a == "OFFLINE":
@@ -108,12 +110,12 @@ def main():
 
     start_time = time.time()
 
-    if not arguments["mode"] in ["SCRAPE", "POST"]:
+    if not arguments["mode"] in ["SCRAPE", "POST", "POST_TEST"]:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. Use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
         instructions(None)
         sys.exit()
 
-    navigation.Navigator(arguments["offline"], arguments["mode"])
+    navigation.Navigator(arguments["offline"], arguments["mode"],  arguments["mode"] == "POST_TEST")
     log.debug("Finished in %s seconds." % (time.time() - start_time))
 
 main()

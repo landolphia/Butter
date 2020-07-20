@@ -1,4 +1,5 @@
 import credentials
+import spreadsheet
 
 import logging
 import sys
@@ -75,14 +76,9 @@ class DOM:
         if self.driver == None:
             self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
             sys.exit()
-           #if not offline:
-           #    self.driver = webdriver.Chrome()
-           #    self.hold = WebDriverWait(self.driver, 100)
 
-           #    if self.driver == None:
-           #        self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
-           #        sys.exit()
-           #self.payload = payload
+        g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
+        self.ss = spreadsheet.Spreadsheet(slurp=g_key) 
     def process_actions(self, element, **kwargs):
         self.log.debug("Processing action list for [" + str(element) + "].")
 
@@ -96,7 +92,7 @@ class DOM:
         for a in element["actions"]:
             if a == "APPEND_AND_GO":
                 if argument:
-                    self.__go__(element["url"] + str(argument))
+                    self.go(element["url"] + str(argument))
                 else:
                     self.log.error("Missing argument.")
                     sys.exit()
@@ -118,6 +114,10 @@ class DOM:
                     result = result.replace(element["fluff"], "")
                 
                 return result
+            elif a == "GET_CELL_DATA":
+                identifier = element["cell"]
+                element["get result"] = self.ss.get_key(identifier)
+                self.log.debug("Getting cell #" + str(identifier) + " = [" + element["get result"] + "]")
             elif a == "GET_ELEMENTS_ATTRIBUTE":
                 #TODO handle StaleElement exception
                 if not "attribute" in element:
@@ -140,7 +140,10 @@ class DOM:
                 identifier = element["username"]
                 self.log.debug("Username: " + str(identifier))
                 element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
-            elif a == "GO": self.__go__(element["url"])
+            elif a == "GO": self.go(element["url"])
+            elif a == "IF_NOT_HARVARD":
+                if "harvardhousingoffcampus" in self.current_url():
+                    return True
             elif a == "UNFLUFF":
                 self.log.warning("UNFLUIFF")
                 input("LKJASF")
@@ -148,6 +151,9 @@ class DOM:
                 #content = content.replace(data[l]["fluff"], "")
                 #self.log.debug("LAKJSD")
                 #sys.exit()
+            elif a == "PRESS_ENTER":
+                e = self.__get_element__(element["identifier"])
+                if e: e.send_keys(Keys.ENTER)
             elif a == "WAIT": self.__wait__(element["identifier"])
             elif a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
             else:   
@@ -193,7 +199,7 @@ class DOM:
             sys.exit()
             
         return elements
-    def __go__(self, url):
+    def go(self, url):
         self.log.debug("Navigating to \"" + str(url) + "\"")
         self.driver.get(url)
     def __wait__(self, identifier):
@@ -213,13 +219,17 @@ class DOM:
 
         condition = Element_is_not_(identifier, "-")
         self.hold.until(condition)
+
+
+
+
 #TODO Below
 
     def __get_attribute__(self, element, attribute): return element.get_attribute(attribute)
     def process_actions_with_context(self, element, context):
         result = None
         for a in element["actions"]["list"]:
-            if a == "APPEND_AND_GO": self.__go__(element["value"]["content"] + context)
+            if a == "APPEND_AND_GO": self.go(element["value"]["content"] + context)
             if a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
             if a == "GET_ELEMENTS_ATTRIBUTES":
                 elements = self.__get_elements__(element["identifier"])
@@ -229,8 +239,8 @@ class DOM:
 
         return result
 
-    #TODO NOT TREATED BELOW
-    #TODO
+#TODO NOT TREATED BELOW
+#TODO
     def __get_element_fp__(self, page, name, fp_nb, fp_id):
         name = name + str(fp_nb)
         identifier = self.payload.xpath(page, name)
@@ -339,9 +349,6 @@ class DOM:
             value = default
 
         element.send_keys(value)
-    def press_enter(self, page, name):
-        element = self.__get_element__(page, name)
-        element.send_keys(Keys.ENTER)
     def quit(self): self.driver.quit()
     def radio(self, page, name):
         value = self.payload.get_value(page, name)

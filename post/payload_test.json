@@ -1,0 +1,57 @@
+{
+	"mode" : "POST",
+	"run once" : {
+		"login" : [
+			{
+				"actions" : ["IF_NOT_HARVARD", "WAIT", "CLICK"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//form[@id=\"login\"]/preceding-sibling::a"
+				}
+			},
+			{
+				"actions" : ["GET_USERNAME", "WAIT", "FILL_INPUT"],
+				"username" : "username1",
+				"identifier" : {
+					"type" : "id",
+					"value" : "username"
+				}
+			},
+			{
+				"actions" : ["GET_PASSWORD", "FILL_INPUT"],
+				"password" : "password1",
+				"identifier" : {
+					"type" : "id",
+					"value" : "password"
+				}
+			},
+			{
+				"actions" : ["CLICK"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//input[@type=\"submit\"]"
+				}
+			}
+		]
+	},
+	"repeat" : {
+		"location" : [
+			{
+				"actions" : ["WAIT"],
+				"cell" : 0,
+				"identifier" : {
+					"type" : "id",
+					"value": "address-autocomplete-place"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT", "PRESS_ENTER"],
+				"cell" : 1,
+				"identifier" : {
+					"type" : "xpath",
+					"value": "//*[@id=\"address_autocomplete\"]"
+				}
+			}
+		]
+	}
+}

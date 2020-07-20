@@ -17,11 +17,11 @@ OFFLINE_CACHE = "./scrape/offline_data.json"
 LEADS_IDS = "./scrape/leads.json"
 
 class Navigator:
-    def __init__(self, offline, mode):
+    def __init__(self, offline, mode, test):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Navigator.")
 
-        self.pl = payload.Payload(mode)
+        self.pl = payload.Payload(mode, test)
 
         if self.pl.mode == "SCRAPE":
             if offline:
@@ -37,8 +37,13 @@ class Navigator:
             #TODO FIXME scrape vs post?
             spreadsheet.Spreadsheet(output=self.units)
         elif self.pl.mode == "POST":
+            print("Posting has been disabled in this version.")
+            sys.exit()
             self.dom = dom.DOM()
             self.__init_poster__()
+        elif self.pl.mode == "POST_TEST":
+            self.dom = dom.DOM()
+            self.__init_poster_test__()
         else:
             self.log.error("[" + self.pl.mode + "] is not a valid mode.")
             sys.exit()
@@ -109,6 +114,52 @@ class Navigator:
         input("Patcha")
 
         return units
+    # POSTER TEST
+    def __get_sites__(self):
+        return [
+                {
+                    "login" : "https://offcampus.bu.edu/login/",
+                    "add listing" : "https://offcampus.bu.edu/user/add-listing/"
+                },
+                {
+                    "login" : "https://offcampushousing.bc.edu/login/",
+                    "add listing" : "https://offcampushousing.bc.edu/user/add-listing/"
+                },
+                {
+                    "login" : "https://offcampus.massart.edu/login/",
+                    "add listing" : "https://offcampus.massart.edu/user/add-listing/"
+                },
+                {
+                    "login" : "https://www.harvardhousingoffcampus.com/login/",
+                    "add listing" : "https://www.harvardhousingoffcampus.com/user/add-listing/"
+                },
+                {
+                    "login" : "https://offcampushousing.suffolk.edu/login/",
+                    "add listing" : "https://offcampushousing.suffolk.edu/user/add-listing/"
+                }
+        ]
+
+    def __init_poster_test__(self):
+        self.log.debug("Initializing Poster.")
+
+        #TODO extract tasks to module?
+        self.tasks = []
+
+        self.sites = self.__get_sites__()
+
+        # Process run once 
+        for s in self.sites:
+            self.dom.go(s["login"])
+            for p in self.pl.run_once:
+                self.log.debug("Run once : " + str(p))
+                for e in self.pl.run_once[p]:
+                    self.dom.process_actions(e)
+            self.dom.go(s["add listing"])
+            for e in self.pl.repeat["location"]:
+                result = self.dom.process_actions(e)
+                print("Result = " + str(result))
+            input("Check.")
+
     # POSTER
     def __init_poster__(self):
         self.log.debug("Initializing Poster.")

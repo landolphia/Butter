@@ -882,6 +882,110 @@
 					"value" : "amenity[7]-9"
 				}
 			}
+		],
+		"contact" : [
+			{
+				"actions" : ["WAIT", "CLICK"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//a[@data-target=\"contact\"]"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "WAIT", "FILL_INPUT"],
+				"cell" : 119,
+				"identifier" : {
+					"type" : "id",
+					"value" : "contact_name"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 120,
+				"identifier" : {
+					"type" : "id",
+					"value" : "contact_phone"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 121,
+				"identifier" : {
+					"type" : "id",
+					"value" : "sms"
+				}
+			},
+			{
+				"actions" : ["WAIT", "CLICK"],
+				"identifier" : {
+					"type" : "id",
+					"value" : "select2-email-container"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA","WAIT", "FILL_INPUT"],
+				"cell" : 122,
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//input[@class=\"select2-search__field\"]"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 125,
+				"identifier" : {
+					"type" : "id",
+					"value" : "contact_time"
+				}
+			},	
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 124,
+				"identifier" : {
+					"type" : "id",
+					"value" : "twitter"
+				}
+			},	
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 123,
+				"identifier" : {
+					"type" : "id",
+					"value" : "facebook"
+				}
+			},	
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 124,
+				"identifier" : {
+					"type" : "id",
+					"value" : "instagram"
+				}
+			},	
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 127,
+				"identifier" : {
+					"type" : "id",
+					"value" : "website"
+				}
+			},	
+			{
+				"actions" : [],
+				"cell" : 128,
+				"identifier" : {
+					"type" : "id",
+					"value" : "lease_link"
+				}
+			},	
+			{
+				"actions" : [],
+				"cell" : 129,
+				"identifier" : {
+					"type" : "id",
+					"value" : "lease_upload"
+				}
+			}	
 		]
 	}
 }

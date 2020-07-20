@@ -160,14 +160,18 @@ class Navigator:
             for e in self.pl.repeat["address"]:
                 result = self.dom.process_actions(e)
             self.add_task("Check location page and fill in details.")
-            for e in self.pl.repeat["rent"]:
+            #for e in self.pl.repeat["rent"]:
+            #    result = self.dom.process_actions(e)
+            #self.add_task("Fill in specifics.")
+            #for e in self.pl.repeat["floorplan"]:
+            #    result = self.dom.process_actions(e)
+            #for e in self.pl.repeat["amenities"]:
+            #    result = self.dom.process_actions(e)
+            #self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
+            for e in self.pl.repeat["contact"]:
                 result = self.dom.process_actions(e)
-            self.add_task("Fill in specifics.")
-            for e in self.pl.repeat["floorplan"]:
-                result = self.dom.process_actions(e)
-            for e in self.pl.repeat["amenities"]:
-                result = self.dom.process_actions(e)
-            self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
+            self.log.warning("Some fields might be doubled in the contact page")
+            self.add_task("Lease needs to be filled in manually in contact page.")
 
             self.task_list()
 

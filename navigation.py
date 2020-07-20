@@ -117,26 +117,26 @@ class Navigator:
     # POSTER TEST
     def __get_sites__(self):
         return [
-                {
-                    "login" : "https://offcampus.bu.edu/login/",
-                    "add listing" : "https://offcampus.bu.edu/user/add-listing/"
-                },
-                {
-                    "login" : "https://offcampushousing.bc.edu/login/",
-                    "add listing" : "https://offcampushousing.bc.edu/user/add-listing/"
-                },
+                #{
+                #    "login" : "https://offcampus.bu.edu/login/",
+                #    "add listing" : "https://offcampus.bu.edu/user/add-listing/"
+                #},
+                #{
+                #    "login" : "https://offcampushousing.bc.edu/login/",
+                #    "add listing" : "https://offcampushousing.bc.edu/user/add-listing/"
+                #},
                 {
                     "login" : "https://offcampus.massart.edu/login/",
                     "add listing" : "https://offcampus.massart.edu/user/add-listing/"
-                },
-                {
-                    "login" : "https://www.harvardhousingoffcampus.com/login/",
-                    "add listing" : "https://www.harvardhousingoffcampus.com/user/add-listing/"
-                },
-                {
-                    "login" : "https://offcampushousing.suffolk.edu/login/",
-                    "add listing" : "https://offcampushousing.suffolk.edu/user/add-listing/"
                 }
+                #{
+                #    "login" : "https://www.harvardhousingoffcampus.com/login/",
+                #    "add listing" : "https://www.harvardhousingoffcampus.com/user/add-listing/"
+                #},
+                #{
+                #    "login" : "https://offcampushousing.suffolk.edu/login/",
+                #    "add listing" : "https://offcampushousing.suffolk.edu/user/add-listing/"
+                #}
         ]
 
     def __init_poster_test__(self):
@@ -157,8 +157,26 @@ class Navigator:
             self.dom.go(s["add listing"])
             for e in self.pl.repeat["location"]:
                 result = self.dom.process_actions(e)
-                print("Result = " + str(result))
+            for e in self.pl.repeat["address"]:
+                result = self.dom.process_actions(e)
+            self.add_task("Check location page and fill in details.")
+            for e in self.pl.repeat["rent"]:
+                result = self.dom.process_actions(e)
+            self.add_task("Fill in specifics.")
+            for e in self.pl.repeat["floorplan"]:
+                result = self.dom.process_actions(e)
+            for e in self.pl.repeat["amenities"]:
+                result = self.dom.process_actions(e)
+            self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
+
+            self.task_list()
+
             input("Check.")
+    def add_task(self, task):
+        self.log.debug(task)
+        self.tasks.append(task)
+    def task_list(self):
+        self.dom.task_list(self.tasks)
 
     # POSTER
     def __init_poster__(self):
@@ -172,19 +190,6 @@ class Navigator:
             self.log.debug("Run once : " + str(p))
             for e in self.pl.run_once[p]:
                 self.dom.process_actions(e)
-#    def add_task(self, task):
-#        self.log.debug(task)
-#        self.tasks.append(task)
-#    def start(self):
-#        self.login()
-#        self.add_listing()
-#        self.fill_address()
-#        self.fill_rent()
-#        self.fill_amenities()
-#        self.fill_contact()
-#        self.fill_photos()
-#    def close(self):
-#        self.elements.quit()
 
 #TODO
 
@@ -437,5 +442,3 @@ class Navigator:
 #            else:
 #                self.log.error("The file [" + path + "] doesn't exist.")
 #                sys.exit()
-#    def task_list(self):
-#        self.elements.task_list(self.tasks)

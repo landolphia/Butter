@@ -79,6 +79,7 @@ class DOM:
 
         g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
         self.ss = spreadsheet.Spreadsheet(slurp=g_key) 
+        self.address = self.ss.parse_address(self.ss.get_key(0))
     def process_actions(self, element, **kwargs):
         self.log.debug("Processing action list for [" + str(element) + "].")
 
@@ -96,8 +97,54 @@ class DOM:
                 else:
                     self.log.error("Missing argument.")
                     sys.exit()
+            elif a == "CHECKBOX":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                if str(value).lower() == "y": value = True
+                if value == None: value = False 
+
+                if value == True:
+                    self.driver.execute_script("arguments[0].setAttribute('checked','true')", e)
+                else:
+                    self.driver.execute_script("arguments[0].removeAttribute('checked')", e)
             elif a == "CLICK": self.__click__(element)
+            elif a == "DROPDOWN":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                for option in e.find_elements_by_tag_name('option'):
+                    if option.text.strip().lower() == str(value).lower():
+                        option.click()
             elif a == "FILL_INPUT": self.__fill_input__(element)
+            elif a == "FILL_INPUT_MONEY":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                e.send_keys(Keys.CONTROL + "a")
+                e.send_keys(Keys.DELETE)
+                e.send_keys("$" + str(value))
+            elif a == "FILL_INPUT_NOT_NULL":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                if not value:
+                    value = element["default"]
+
+                e.send_keys(value)
+            elif a == "FILL_TINYMCE":
+                iframe = self.__get_element__(element["iframe"])
+                self.driver.switch_to.frame(iframe)
+
+                tinymce = self.__get_element__(element["identifier"])
+                
+                javascript = "arguments[0].innerHTML = arguments[1];"
+                self.driver.execute_script( javascript, tinymce, element["get result"].replace('\n', '<br>'))
+                self.driver.switch_to.default_content()
+            elif a == "GET_ADDRESS_STREET": element["get result"] = str(self.address["number"] + " " + self.address["name"])
+            elif a == "GET_ADDRESS_CITY": element["get result"] = str(self.address["city"])
+            elif a == "GET_ADDRESS_ZIP": element["get result"] = str(self.address["zip"])
+            elif a == "GET_ADDRESS_STATE": element["get result"] = str(self.address["state"])
             elif a == "GET_ATTRIBUTE":
                 result = "-"
                 if not "attribute" in element:
@@ -114,10 +161,28 @@ class DOM:
                     result = result.replace(element["fluff"], "")
                 
                 return result
+            elif a == "GET_CAT_POLICY":
+                e = self.__get_element__(element["identifier"])
+                identifier = element["cell"]
+                policy = self.ss.get_key(identifier).lower()
+
+                if "cat" in policy:
+                    element["get result"] = "Y"
+                else:
+                    element["get result"] = False
+            elif a == "GET_DOG_POLICY":
+                e = self.__get_element__(element["identifier"])
+                identifier = element["cell"]
+                policy = self.ss.get_key(identifier).lower()
+
+                if "dog" in policy:
+                    element["get result"] = "Y"
+                else:
+                    element["get result"] = False
             elif a == "GET_CELL_DATA":
                 identifier = element["cell"]
                 element["get result"] = self.ss.get_key(identifier)
-                self.log.debug("Getting cell #" + str(identifier) + " = [" + element["get result"] + "]")
+                self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_ELEMENTS_ATTRIBUTE":
                 #TODO handle StaleElement exception
                 if not "attribute" in element:
@@ -136,14 +201,39 @@ class DOM:
                 identifier = element["password"]
                 self.log.debug("Password: " + str(identifier))
                 element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
+            elif a == "GET_PET_POLICY":
+                e = self.__get_element__(element["identifier"])
+                identifier = element["cell"]
+                policy = self.ss.get_key(identifier).lower()
+
+                if "not allowed" in policy:
+                    element["get result"] = "Pets Not Allowed"
+                elif "considered" in policy:
+                    element["get result"] = "Pets Considered"
+                else: # Assumed to be allowed
+                    element["get result"] = "Pets Allowed"
             elif a == "GET_USERNAME": 
                 identifier = element["username"]
                 self.log.debug("Username: " + str(identifier))
                 element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
             elif a == "GO": self.go(element["url"])
+            elif a == "IF_FALSE":
+                e = self.__get_element__(element["identifier"])
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "y")
+            elif a == "IF_TRUE":
+                e = self.__get_element__(element["identifier"])
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() == "y")
             elif a == "IF_NOT_HARVARD":
                 if "harvardhousingoffcampus" in self.current_url():
                     return True
+            elif a == "PRESS_ENTER":
+                e = self.__get_element__(element["identifier"])
+                if e: e.send_keys(Keys.ENTER)
+            elif a == "RADIO":
+                e = self.__get_element__(element["identifier"])
+                if element["get result"] == True:
+                    e.click()
+            elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
             elif a == "UNFLUFF":
                 self.log.warning("UNFLUIFF")
                 input("LKJASF")
@@ -151,9 +241,6 @@ class DOM:
                 #content = content.replace(data[l]["fluff"], "")
                 #self.log.debug("LAKJSD")
                 #sys.exit()
-            elif a == "PRESS_ENTER":
-                e = self.__get_element__(element["identifier"])
-                if e: e.send_keys(Keys.ENTER)
             elif a == "WAIT": self.__wait__(element["identifier"])
             elif a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
             else:   
@@ -166,7 +253,7 @@ class DOM:
     def __fill_input__(self, element):
         e = self.__get_element__(element["identifier"])
         value = element["get result"]
-        self.log.debug("Filling input [" + element["identifier"]["value"] + "] with \"" + value + "\"")
+        self.log.debug("Filling input [" + element["identifier"]["value"] + "] with \"" + str(value) + "\"")
         if not value: #FIXME Bail?
             self.log.warning("The value for " + str(element) + " is missing. It will be replaced with [DEFAULT_VALUE].")
             value = "[DEFAULT_VALUE]"
@@ -257,20 +344,7 @@ class DOM:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
 
         return element
-    def checkbox(self, page, name):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
 
-        #FIXME Add a type field to the payload data for each element
-        #self.log.debug("FIX ME NOW! Add type to payload.")
-        # Temp fix for bools
-        if str(value).lower() == "y": value = True
-        if value == None: value = False 
-
-        if value == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def checkbox_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
@@ -288,13 +362,6 @@ class DOM:
     def click_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).click()
     def current_url(self):
         return self.driver.current_url
-    def dropdown(self, page, name):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-
-        for option in element.find_elements_by_tag_name('option'):
-            if option.text.strip().lower() == str(value).lower():
-                option.click()
     def dropdown_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
@@ -327,13 +394,6 @@ class DOM:
             value = "[DEFAULT_VALUE]"
 
         element.send_keys(value)
-    def fill_input_money(self, page, name):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-
-        element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(Keys.DELETE)
-        element.send_keys("$" + str(value))
     def fill_input_money_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
@@ -341,28 +401,13 @@ class DOM:
         element.send_keys(Keys.CONTROL + "a")
         element.send_keys(Keys.DELETE)
         element.send_keys("$" + str(value))
-    def fill_input_not_null(self, page, name, default):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-
-        if not value:
-            value = default
-
-        element.send_keys(value)
     def quit(self): self.driver.quit()
-    def radio(self, page, name):
-        value = self.payload.get_value(page, name)
-        if value != None:
-            self.click(page, name)
-
-        return value
     def radio_fp(self, page, name, fp_nb, fp_id):
         value = self.payload.get_value(page, name + str(fp_nb))
         if value != None:
             self.click_fp(page, name, fp_nb, fp_id)
 
         return value
-    def submit(self, page, name): self.__get_element__(page, name).submit()
     def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).submit()
     def tinyMCE(self, page, name, iframe_page, iframe_name):
         description = self.payload.get_value(page, name)

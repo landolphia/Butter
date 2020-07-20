@@ -37,8 +37,6 @@ class Navigator:
             #TODO FIXME scrape vs post?
             spreadsheet.Spreadsheet(output=self.units)
         elif self.pl.mode == "POST":
-            self.log.error("Ad posting is disabled in this version")
-            sys.exit()
             self.dom = dom.DOM()
             self.__init_poster__()
         else:
@@ -137,9 +135,9 @@ class Navigator:
 #    def close(self):
 #        self.elements.quit()
 
-TODO
+#TODO
 
-/FLOORPLANS
+#/FLOORPLANS
 #        if self.payload.get_bool("rent", "floorplans yes"):
 #            self.fill_floorplans()
 #            self.fill_specifics(True)
@@ -254,9 +252,9 @@ TODO
 #
 #        self.elements.radio("specifics", "renew yes")
 #        self.elements.submit("specifics", "renew yes")
-//END TODO
+#//END TODO
 
-/TODO
+#/TODO
 #    def fill_amenities(self):
 #
 #        self.elements.dropdown("amenities", "lead paint")

@@ -26,3 +26,8 @@ class Credentials:
             creds[i] = base64.b64decode(creds[i]).decode("utf-8")
 
         return creds 
+    def create_credentials(self, string):
+        string = string.encode("utf-8")
+        print("Original string: " + str(string))
+        obf = base64.b64encode(string)
+        print("Obfs: " + str(obf))

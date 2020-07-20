@@ -107,7 +107,7 @@ def main():
     log.debug("Command line arguments: " + str(arguments))
 
     start_time = time.time()
-    
+
     if not arguments["mode"] in ["SCRAPE", "POST"]:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. Use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
         instructions(None)

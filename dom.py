@@ -98,6 +98,8 @@ class DOM:
         for k in kwargs:
             if k == "identifier":
                 argument = kwargs[k]
+            if k == "iteration":
+                argument = kwargs[k]
             else:
                 self.log.warning("Unrecognized argument [" + str(k) + "].")
 
@@ -128,6 +130,17 @@ class DOM:
                     if option.text.strip().lower() == str(value).lower():
                         option.click()
             elif a == "FILL_INPUT": self.__fill_input__(element)
+            elif a == "FILL_INPUT_FP":
+                fp_nb = argument
+                e = self.__get_element_fp__(element)
+                cell = element["cell"] + (fp_nb * element["offset"])
+                value = self.ss.get_key(cell).lower()
+
+                if not value:
+                    self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
+                    value = "[DEFAULT_VALUE]"
+
+                e.send_keys(value)
             elif a == "FILL_INPUT_DATE":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
@@ -222,6 +235,10 @@ class DOM:
                     result.append(self.__get_attribute__(e, element["attribute"]))
 
                 return result
+            elif a == "GET_FP_ID":
+                url = str(self.current_url())
+                fp_id = url.rsplit('/', 1)[-1]
+                element["FP_ID"] = fp_id
             elif a == "GET_PASSWORD":
                 identifier = element["password"]
                 self.log.debug("Password: " + str(identifier))
@@ -319,6 +336,14 @@ class DOM:
             sys.exit()
 
         return element
+    def __get_element_fp__(self, element):
+        self.log.debug("Identifier before : " + str(element["identifier"]["value"]))
+        element["identifier"]["value"] = element["identifier"]["value"].replace("FP_ID", element["FP_ID"])
+        self.log.debug("Identifier after : " + str(element["identifier"]["value"]))
+
+        e = self.__get_element__(element["identifier"])
+
+        return e
     def __get_elements__(self, identifier):
         if identifier["type"] == "xpath":
             elements = self.driver.find_elements_by_xpath(identifier["value"])
@@ -401,22 +426,6 @@ class DOM:
 
 #TODO NOT TREATED BELOW
 #TODO
-    def __get_element_fp__(self, page, name, fp_nb, fp_id):
-        name = name + str(fp_nb)
-        identifier = self.payload.xpath(page, name)
-
-        if identifier:
-            identifier = identifier.replace("FP_ID", str(fp_id))
-            element = self.driver.find_element_by_xpath(identifier)
-        else:
-            identifier = self.payload.id(page, name)
-            if identifier:
-                identifier = identifier.replace("FP_ID", str(fp_id))
-            element = self.driver.find_element_by_id(identifier)
-        if not element:
-            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
-
-        return element
 
     def checkbox_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)

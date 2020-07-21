@@ -146,7 +146,7 @@ class Navigator:
             self.dom.go(s["login"])
             for p in self.pl.run_once:
                 if p == "login": self.dom.go(s["add listing"])
-                if p in ["login", "location", "address", "floorplans"]:#, "rent", "specifics", "floorplan", "amenities", "contact", "photos"]
+                if p in ["login", "location", "address", "rent", "floorplans"]:#, "specifics", "floorplan", "amenities", "contact", "photos"]
                     self.log.debug("Run once : " + str(p))
                     for e in self.pl.run_once[p]:
                         self.dom.process_actions(e)
@@ -157,6 +157,16 @@ class Navigator:
             self.log.warning("Check cells' #s after  amenities.")
             self.add_task("Lease needs to be filled in manually in contact page.")
             self.add_task("The photos' descriptions and types need to be entered manually.")
+
+            i = 0
+            while i < 2:
+                for p in self.pl.repeat:
+                    self.log.debug("Repeat : " + str(p))
+                    self.log.warning("Floorplan #" + str(i))
+                    for e in self.pl.repeat[p]:
+                        self.dom.process_actions(e, iteration = i)
+                i = i + 1
+
 
             #        if self.payload.get_bool("rent", "floorplans yes"):
             #            self.fill_floorplans()

@@ -1138,6 +1138,8 @@
 				}
 			}
 		],
+	},
+	"repeat" : {
 		"floorplans" : [
 			{
 				"actions" : ["WAIT", "CLICK"],
@@ -1145,345 +1147,268 @@
 					"type" : "xpath",
 					"value" : "//a[@data-target=\"floorplans\"]"
 				}
-			}
-		]
-	},
-	"repeat" : {
-		"floorplans" : [
-		offset = 142
-		length = 36
+			},
 			{
 				"actions" : ["WAIT", "CLICK"],
 				"identifier" : {
 					"type" : "xpath",
-					"value" : "//button[@name=\"create-floorplan\""
+					"value" : "//button[@name=\"create-floorplan\"]"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "FILL_INPUT_FP"],
+				"cell" : 142,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-name"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "FILL_INPUT_FP"],
+				"cell" : 143,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-specials"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
+				"cell" : 144,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-bedrooms"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
+				"cell" : 145,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-bathrooms"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
+				"cell" : 146,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-occupants"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "FILL_INPUT_FP"],
+				"cell" : 147,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-sqft"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "FILL_INPUT_FP_MONEY"],
+				"cell" : 148,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-rent_value"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
+				"cell" : 149,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-per_bedroom"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-amenities"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 150,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-1"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 151,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-78"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 152,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-79"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 153,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-20"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 154,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-202"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 155,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-15"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 156,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-26"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 157,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-8"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 158,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-7"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 159,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-21"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 160,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-303"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 161,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-200"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 162,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-468"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 163,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-204"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 164,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-6"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 165,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-136"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 166,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-41"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 167,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-207"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 168,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-208"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : ,
+				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
+				"cell" : 169,
+				"offset" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-203"
 				}
 			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-move-in-not"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-move-in-now"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-move-in-date"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-move-in-range"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-start"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-end"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-description"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-virtual-tour"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-website"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-lease"
-				}
-			},
-			{
-				"actions" : [],
-				"cell" : ,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-FP_ID-image"
-				}
-			}
-		]
-	}
-}
-		
-
+			
+			
 			availability = str(self.ss.get_key(offset+28)).lower()
 			value = ("Y" if availability == "not available" else None)
 			self.__add__element__("floorplans", "availability not" + str(n), "floorplan-FP_ID-move-in-not", None, None, value)
@@ -1508,13 +1433,107 @@
 			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
 			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
 
-			# Floorplans/Description++
-			"description" + str(n), "floorplan-FP_ID-description", None, offset + 31, None)
-			"virtual tour" + str(n), "floorplan-FP_ID-virtual-tour", None, offset + 33, None)
-			"webpage" + str(n), "floorplan-FP_ID-website", None, offset + 34, None)
-			"lease" + str(n), "floorplan-FP_ID-lease", None, offset + 35, None)
-			"image" + str(n), "floorplan-FP_ID-image", None, offset + 36, None)
+			{
+				actions : [], borken
+				"cell" : 170,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-move-in-not"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 170,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-move-in-now"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 170,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-move-in-date"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 170,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-move-in-range"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_SPECIFIC_FP", "GET_DATE_FP", "FILL_INPUT_DATE_FP"],
+				"cell" : 171,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-start"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_SPECIFIC_FP", "GET_DATE_FP", "FILL_INPUT_DATE_FP"],
+				"actions" : [],
+				"cell" : 172,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-end"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "FILL_TINYMCE_FP"],
+				"cell" : 173,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-description"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 174,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-virtual-tour"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 175,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-website"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 176,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-lease"
+				}
+			},
+			{
+				"actions" : [],
+				"cell" : 177,
+				"offset" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-image"
+				}
+			}
+			//save at the end
 		]
 	}
 }
-

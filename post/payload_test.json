@@ -197,6 +197,69 @@
 				}
 			}
 		],
+		"specifics" : [
+			self.__add__element__("specifics", "link", None, "//a[@data-target=\"details\"]", None, None)
+			{
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//a[@data-target=\"details\"]"
+				}
+			},
+			{
+				"cell" : 22,
+				"identifier" : {
+					"type" : "id",
+					"value" : "max-occupants"
+				}
+			},
+			{
+				"cell" : 23,
+				"identifier" : {
+					"type" : "id",
+					"value" : "allow_sublets-display"
+				}
+			},
+			{
+				"cell" : 24,
+				"identifier" : {
+					"type" : "id",
+					"value" : "sublet-display"
+				}
+			},
+			{
+				"cell" : 25,
+				"identifier" : {
+					"type" : "id",
+					"value" : "shared-display"
+				}
+			},
+
+        availability = str(self.ss.get_key(26)).lower()
+        value = ("Y" if availability == "on a specific date" else None)
+        self.__add__element__("specifics", "available date", "move-in-date", None, None, value)
+        value = ("Y" if availability == "between two dates" else None)
+        self.__add__element__("specifics", "available range", "move-in-range", None, None, value)
+        value = ("Y" if availability == "ongoing" else None)
+        self.__add__element__("specifics", "available ongoing", "move-in-now", None, None, value)
+        
+        date = None
+        if self.get_value("specifics", "available date") != None:
+            date = self.ss.parse_date(self.ss.get_key(27))
+            self.__add__element__("specifics", "start date", "start", None, 27, date)
+            self.__add__element__("specifics", "end date", "end", None, 28, date)
+        elif self.get_value("specifics", "available range") != None:
+            date = self.ss.parse_date(self.ss.get_key(27))
+            self.__add__element__("specifics", "start date", "start", None, 27, date)
+            date = self.ss.parse_date(self.ss.get_key(28))
+            self.__add__element__("specifics", "end date", "end", None, 28, date)
+        else:
+            self.__add__element__("specifics", "start date", "start", None, 27, date)
+            self.__add__element__("specifics", "end date", "end", None, 28, date)
+
+        self.__add__element__("specifics", "renew unknown", "renew-option-unknown", None, 29, None)
+        self.__add__element__("specifics", "renew yes", "renew-option-yes", None, 29, None)
+        self.__add__element__("specifics", "renew no", "renew-option-no", None, 29, None)
+		],
 		"floorplan": [
 			{
 				"actions" : ["GET_CELL_DATA", "WAIT", "DROPDOWN"],
@@ -927,7 +990,7 @@
 				"cell" : 122,
 				"identifier" : {
 					"type" : "xpath",
-					"value" : "//input[@class=\"select2-search__field\"]"
+					"value" : "//span[@class='select2-search select2-search--dropdown']/input[1]"
 				}
 			},
 			{

@@ -16,7 +16,7 @@ SCRAPINGS = "./scrape/scrapings.xlsx"
 MAX_COLUMN_WIDTH = 60
 
 # Slurp
-LISTING = "./post/listing_fp.xlsx"
+LISTING = "./post/listing_nofp.xlsx"
 SHEET_NAME = 0
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
@@ -56,7 +56,6 @@ class Spreadsheet:
        if not isinstance(date, datetime):
            self.log.error("This date is not valid \'" + str(date) + "\'.\nPlease check the data in the spreadsheet.")
            self.log.warning("This is the only format accepted for dates 'DD/MM/202Y'.")
-    
            sys.exit()
        date = date.strftime("%m/%d/%Y")
     

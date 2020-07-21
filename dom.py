@@ -117,6 +117,16 @@ class DOM:
                     if option.text.strip().lower() == str(value).lower():
                         option.click()
             elif a == "FILL_INPUT": self.__fill_input__(element)
+            elif a == "FILL_INPUT_DATE":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                if not value:
+                    self.log.ERROR("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
+                    sys.exit()
+
+                value = self.ss.parse_date(value)
+                self.driver.execute_script("arguments[0].value = '" + value + "'", e)
             elif a == "FILL_INPUT_MONEY":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
@@ -183,6 +193,10 @@ class DOM:
                 identifier = element["cell"]
                 element["get result"] = self.ss.get_key(identifier)
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
+            elif a == "GET_DATE":
+                identifier = element["date cell"]
+                element["get result"] = self.ss.get_key(identifier)
+                self.log.debug("Getting date in cell # " + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_ELEMENTS_ATTRIBUTE":
                 #TODO handle StaleElement exception
                 if not "attribute" in element:
@@ -218,20 +232,34 @@ class DOM:
                 element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
             elif a == "GO": self.go(element["url"])
             elif a == "IF_FALSE":
-                e = self.__get_element__(element["identifier"])
                 element["get result"] = (self.ss.get_key(element["cell"]).lower() != "y")
             elif a == "IF_TRUE":
-                e = self.__get_element__(element["identifier"])
                 element["get result"] = (self.ss.get_key(element["cell"]).lower() == "y")
+            elif a == "IF_DATE_NOW":
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "ongoing")
+            elif a == "IF_DATE_RANGE":
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "between two dates")
+            elif a == "IF_DATE_SPECIFIC":
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "on a specific date")
+            elif a == "IF_NOT_FP":
+                if (self.ss.get_key(element["fp cell"]).lower() == "y"):
+                    return False
+            elif a == "IF_UNKNOWN":
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "unknown")
+            elif a == "IF_YES":
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "yes")
+            elif a == "IF_NO":
+                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "no")
             elif a == "IF_NOT_HARVARD":
                 if "harvardhousingoffcampus" in self.current_url():
+                    self.log.warning("Make sure this condition is right.")
                     return True
             elif a == "PRESS_ENTER":
                 e = self.__get_element__(element["identifier"])
                 if e: e.send_keys(Keys.ENTER)
             elif a == "RADIO":
-                e = self.__get_element__(element["identifier"])
                 if element["get result"] == True:
+                    e = self.__get_element__(element["identifier"])
                     e.click()
             elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
             elif a == "UNFLUFF":
@@ -369,14 +397,6 @@ class DOM:
         for option in element.find_elements_by_tag_name('option'):
             if option.text.strip().lower() == str(value).lower():
                 option.click()
-    def fill_input_date(self, page, name):
-        element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
-        if not value:
-            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
-            sys.exit()
-
-        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
     def fill_input_date_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))

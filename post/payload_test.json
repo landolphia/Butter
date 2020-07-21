@@ -198,21 +198,24 @@
 			}
 		],
 		"specifics" : [
-			self.__add__element__("specifics", "link", None, "//a[@data-target=\"details\"]", None, None)
 			{
+				"actions" : ["WAIT", "CLICK"],
 				"identifier" : {
 					"type" : "xpath",
 					"value" : "//a[@data-target=\"details\"]"
 				}
 			},
 			{
+				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "DROPDOWN"],
 				"cell" : 22,
+				"fp cell" : 7,
 				"identifier" : {
 					"type" : "id",
 					"value" : "max-occupants"
 				}
 			},
 			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
 				"cell" : 23,
 				"identifier" : {
 					"type" : "id",
@@ -220,6 +223,7 @@
 				}
 			},
 			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
 				"cell" : 24,
 				"identifier" : {
 					"type" : "id",
@@ -227,38 +231,88 @@
 				}
 			},
 			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
 				"cell" : 25,
 				"identifier" : {
 					"type" : "id",
 					"value" : "shared-display"
 				}
 			},
-
-        availability = str(self.ss.get_key(26)).lower()
-        value = ("Y" if availability == "on a specific date" else None)
-        self.__add__element__("specifics", "available date", "move-in-date", None, None, value)
-        value = ("Y" if availability == "between two dates" else None)
-        self.__add__element__("specifics", "available range", "move-in-range", None, None, value)
-        value = ("Y" if availability == "ongoing" else None)
-        self.__add__element__("specifics", "available ongoing", "move-in-now", None, None, value)
-        
-        date = None
-        if self.get_value("specifics", "available date") != None:
-            date = self.ss.parse_date(self.ss.get_key(27))
-            self.__add__element__("specifics", "start date", "start", None, 27, date)
-            self.__add__element__("specifics", "end date", "end", None, 28, date)
-        elif self.get_value("specifics", "available range") != None:
-            date = self.ss.parse_date(self.ss.get_key(27))
-            self.__add__element__("specifics", "start date", "start", None, 27, date)
-            date = self.ss.parse_date(self.ss.get_key(28))
-            self.__add__element__("specifics", "end date", "end", None, 28, date)
-        else:
-            self.__add__element__("specifics", "start date", "start", None, 27, date)
-            self.__add__element__("specifics", "end date", "end", None, 28, date)
-
-        self.__add__element__("specifics", "renew unknown", "renew-option-unknown", None, 29, None)
-        self.__add__element__("specifics", "renew yes", "renew-option-yes", None, 29, None)
-        self.__add__element__("specifics", "renew no", "renew-option-no", None, 29, None)
+			{
+				"actions" : ["IF_DATE_NOW", "RADIO"],
+				"cell" : 26,
+				"identifier" : {
+					"type" : "id",
+					"value" : "move-in-now"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_SPECIFIC", "RADIO"],
+				"cell" : 26,
+				"identifier" : {
+					"type" : "id",
+					"value" : "move-in-date"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_RANGE", "RADIO"],
+				"cell" : 26,
+				"identifier" : {
+					"type" : "id",
+					"value" : "move-in-range"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_SPECIFIC", "GET_DATE", "FILL_INPUT_DATE"],
+				"cell" : 26,
+				"date cell" : 27,
+				"identifier" : {
+					"type" : "id",
+					"value" : "start"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_RANGE", "GET_DATE", "FILL_INPUT_DATE"],
+				"cell" : 26,
+				"date cell" : 27,
+				"identifier" : {
+					"type" : "id",
+					"value" : "start"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_RANGE", "GET_DATE", "FILL_INPUT_DATE"],
+				"cell" : 26,
+				"date cell" : 28,
+				"identifier" : {
+					"type" : "id",
+					"value" : "end"
+				}
+			},
+			{
+				"actions" : ["IF_UNKNOWN", "RADIO"],
+				"cell" : 29,
+				"identifier" : {
+					"type" : "id",
+					"value" : "renew-option-unknown"
+				}
+			},
+			{
+				"actions" : ["IF_YES", "RADIO"],
+				"cell" : 29,
+				"identifier" : {
+					"type" : "id",
+					"value" : "renew-option-yes"
+				}
+			},
+			{
+				"actions" : ["IF_NO", "RADIO", "SUBMIT"],
+				"cell" : 29,
+				"identifier" : {
+					"type" : "id",
+					"value" : "renew-option-no"
+				}
+			}
 		],
 		"floorplan": [
 			{

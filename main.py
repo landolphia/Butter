@@ -117,5 +117,6 @@ def main():
 
     navigation.Navigator(arguments["offline"], arguments["mode"],  arguments["mode"] == "POST_TEST")
     log.debug("Finished in %s seconds." % (time.time() - start_time))
+    input("Check that the data has been entered correctly and press ENTER.")
 
 main()

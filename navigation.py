@@ -148,6 +148,7 @@ class Navigator:
         self.sites = self.__get_sites__()
 
         # Process run once 
+        self.log.warning("Move everything but FPs into run once.")
         for s in self.sites:
             self.dom.go(s["login"])
             for p in self.pl.run_once:
@@ -160,22 +161,22 @@ class Navigator:
             for e in self.pl.repeat["address"]:
                 result = self.dom.process_actions(e)
             self.add_task("Check location page and fill in details.")
-            #for e in self.pl.repeat["rent"]:
-            #    result = self.dom.process_actions(e)
-            #self.add_task("Fill in specifics.")
-            #for e in self.pl.repeat["floorplan"]:
-            #    result = self.dom.process_actions(e)
-            #for e in self.pl.repeat["amenities"]:
-            #    result = self.dom.process_actions(e)
-            #self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
+            for e in self.pl.repeat["rent"]:
+                result = self.dom.process_actions(e)
+            for e in self.pl.repeat["specifics"]:
+                result = self.dom.process_actions(e)
+            self.log.warning("Add date parsing.")
+            for e in self.pl.repeat["floorplan"]:
+                result = self.dom.process_actions(e)
+            for e in self.pl.repeat["amenities"]:
+                result = self.dom.process_actions(e)
+            self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
             for e in self.pl.repeat["contact"]:
                 result = self.dom.process_actions(e)
             self.log.warning("Some fields might be doubled in the contact page")
             self.add_task("Lease needs to be filled in manually in contact page.")
 
             self.task_list()
-
-            input("Check.")
     def add_task(self, task):
         self.log.debug(task)
         self.tasks.append(task)
@@ -195,8 +196,6 @@ class Navigator:
             for e in self.pl.run_once[p]:
                 self.dom.process_actions(e)
 
-#TODO
-
 #/FLOORPLANS
 #        if self.payload.get_bool("rent", "floorplans yes"):
 #            self.fill_floorplans()
@@ -204,18 +203,6 @@ class Navigator:
 #        else:
 #            self.fill_floorplan()
 #            self.fill_specifics(False)
-#    def fill_floorplan(self):
-#        self.elements.wait("rent", "bedrooms")
-#        
-#        self.elements.dropdown("rent", "bedrooms")
-#        self.elements.dropdown("rent", "bathrooms")
-#
-#        self.elements.fill_input("rent", "square feet")
-#        self.elements.fill_input_money("rent", "monthly rent")
-#
-#        self.elements.dropdown("rent", "type")
-#
-#        self.elements.press_enter("rent", "specials")
 #    def fill_floorplans(self):
 #        i = 0
 #        fp_number = self.payload.get_value("floorplans", "total number")
@@ -314,105 +301,6 @@ class Navigator:
 #        self.elements.submit("specifics", "renew yes")
 #//END TODO
 
-#/TODO
-#    def fill_amenities(self):
-#
-#        self.elements.dropdown("amenities", "lead paint")
-#    
-#        # Features
-#        self.elements.checkbox("amenities", "ac")
-#        self.elements.checkbox("amenities", "carpet")
-#        self.elements.checkbox("amenities", "dining room")
-#        self.elements.checkbox("amenities", "disability access")
-#        self.elements.checkbox("amenities", "dishwasher")
-#        self.elements.checkbox("amenities", "fireplace")
-#        self.elements.checkbox("amenities", "furnished")
-#        self.elements.checkbox("amenities", "garbage disposal")
-#        self.elements.checkbox("amenities", "hardwood")
-#        self.elements.checkbox("amenities", "internet")
-#        self.elements.checkbox("amenities", "living room")
-#        self.elements.checkbox("amenities", "microwave")
-#        self.elements.checkbox("amenities", "patio")
-#        self.elements.checkbox("amenities", "private garden")
-#        self.elements.checkbox("amenities", "shared garden")
-#        self.elements.checkbox("amenities", "smoke free")
-#        self.elements.checkbox("amenities", "additional storage")
-#        self.elements.checkbox("amenities", "included storage")
-#        self.elements.checkbox("amenities", "study")
-#        #Agency
-#        self.elements.checkbox("amenities", "agent fee")
-#        self.elements.checkbox("amenities", "no fee")
-#        # Community
-#        self.elements.checkbox("amenities", "fitness room")
-#        self.elements.checkbox("amenities", "individual leases")
-#        self.elements.checkbox("amenities", "near bus")
-#        self.elements.checkbox("amenities", "near T")
-#        self.elements.checkbox("amenities", "pool")
-#        self.elements.checkbox("amenities", "roommate matching")
-#        self.elements.checkbox("amenities", "tennis court")
-#        # Lease
-#        self.elements.checkbox("amenities", "12 months")
-#        self.elements.checkbox("amenities", "9 months")
-#        self.elements.checkbox("amenities", "fall sublet")
-#        self.elements.checkbox("amenities", "flexible lease")
-#        self.elements.checkbox("amenities", "month to month")
-#        self.elements.checkbox("amenities", "short term lease")
-#        self.elements.checkbox("amenities", "spring sublet")
-#        self.elements.checkbox("amenities", "summer sublet")
-#        # Security
-#        self.elements.checkbox("amenities", "courtesy officer")
-#        self.elements.checkbox("amenities", "dead bolt")
-#        self.elements.checkbox("amenities", "exterior light")
-#        self.elements.checkbox("amenities", "intercom")
-#        self.elements.checkbox("amenities", "security guard")
-#        self.elements.checkbox("amenities", "security system")
-#        self.elements.checkbox("amenities", "video surveillance")
-#        # Utilities
-#        self.elements.checkbox("amenities", "cable")
-#        self.elements.checkbox("amenities", "electricity")
-#        self.elements.checkbox("amenities", "gas")
-#        self.elements.checkbox("amenities", "heat")
-#        self.elements.checkbox("amenities", "high-speed internet")
-#        self.elements.checkbox("amenities", "hot water")
-#        self.elements.checkbox("amenities", "local phone")
-#        self.elements.checkbox("amenities", "recycling")
-#        self.elements.checkbox("amenities", "trash")
-#        self.elements.checkbox("amenities", "water")
-#        # Parking
-#        self.elements.checkbox("amenities", "garage")
-#        self.elements.checkbox("amenities", "no parking")
-#        self.elements.checkbox("amenities", "off street parking")
-#        self.elements.checkbox("amenities", "on street parking")
-#        # Laundry
-#        self.elements.checkbox("amenities", "laundry room")
-#        self.elements.checkbox("amenities", "no laundry")
-#        self.elements.checkbox("amenities", "wd hookups")
-#        self.elements.checkbox("amenities", "wd in unit")
-#        # Description
-#        self.elements.tinyMCE("amenities", "description", "amenities", "tinymce")
-#        self.elements.submit("amenities", "wd in unit")
-#    def fill_contact(self):
-#        self.add_task("The contact page needs to be filled manually.")
-#        #self.elements.wait("contact", "link")
-#        #self.elements.click("contact", "link")
-#
-#        #self.elements.wait("contact", "name")
-#        #self.elements.fill_input("contact", "name")
-#        #self.elements.fill_input("contact", "phone")
-#        #self.elements.fill_input("contact", "text")
-#
-#        #self.elements.click("contact", "email arrow")
-#        #self.elements.fill_input("contact", "email")
-#
-#        #self.elements.fill_input("contact", "office hours")
-#        #self.elements.fill_input("contact", "twitter")
-#        #self.elements.fill_input("contact", "facebook")
-#        #self.elements.fill_input("contact", "instagram")
-#        #self.elements.fill_input("contact", "website")
-#
-#        #TODO
-#        #self.elements.fill_input("contact", "lease link")
-#        #self.elements.fill_input("contact", "lease button")
 #    def fill_photos(self):
 #        #TODO dropdown image type
 #        #TODO input description

@@ -137,42 +137,35 @@ class Navigator:
         self.log.debug("Initializing Poster.")
 
         #TODO extract tasks to module?
-        self.tasks = []
-
         self.sites = self.__get_sites__()
 
         # Process run once 
         self.log.warning("Move everything but FPs into run once.")
         for s in self.sites:
+            self.tasks = []
             self.dom.go(s["login"])
             for p in self.pl.run_once:
-                self.log.debug("Run once : " + str(p))
-                for e in self.pl.run_once[p]:
-                    self.dom.process_actions(e)
-            self.dom.go(s["add listing"])
-            for e in self.pl.repeat["location"]:
-                result = self.dom.process_actions(e)
-            for e in self.pl.repeat["address"]:
-                result = self.dom.process_actions(e)
-            self.add_task("Check location page and fill in details.")
-            #for e in self.pl.repeat["rent"]:
-            #    result = self.dom.process_actions(e)
-            #for e in self.pl.repeat["specifics"]:
-            #    result = self.dom.process_actions(e)
-            #self.log.warning("Add date parsing.")
-            #for e in self.pl.repeat["floorplan"]:
-            #    result = self.dom.process_actions(e)
-            #for e in self.pl.repeat["amenities"]:
-            #    result = self.dom.process_actions(e)
-            #self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
-            #for e in self.pl.repeat["contact"]:
-            #    result = self.dom.process_actions(e)
-            #self.log.warning("Some fields might be doubled in the contact page")
-            #self.log.warning("Check cells' #s after  amenities.")
-            #self.add_task("Lease needs to be filled in manually in contact page.")
-            for e in self.pl.repeat["photos"]:
-                result = self.dom.process_actions(e)
+                if p == "login": self.dom.go(s["add listing"])
+                if p in ["login", "location", "address", "floorplans"]:#, "rent", "specifics", "floorplan", "amenities", "contact", "photos"]
+                    self.log.debug("Run once : " + str(p))
+                    for e in self.pl.run_once[p]:
+                        self.dom.process_actions(e)
+            self.add_task("Check location page and fill in details (campuses?).")
+            self.log.warning("Add date parsing.")
+            self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
+            self.log.warning("Some fields might be doubled in the contact page")
+            self.log.warning("Check cells' #s after  amenities.")
+            self.add_task("Lease needs to be filled in manually in contact page.")
             self.add_task("The photos' descriptions and types need to be entered manually.")
+
+            #        if self.payload.get_bool("rent", "floorplans yes"):
+            #            self.fill_floorplans()
+            #            self.fill_specifics(True)
+            #        else:
+            #            self.fill_floorplan()
+            #            self.fill_specifics(False)
+            #for e in self.pl.repeat["floorplans"]:
+            #   result = self.dom.process_actions(e)
 
             self.task_list()
     def add_task(self, task):
@@ -195,12 +188,6 @@ class Navigator:
                 self.dom.process_actions(e)
 
 #/FLOORPLANS
-#        if self.payload.get_bool("rent", "floorplans yes"):
-#            self.fill_floorplans()
-#            self.fill_specifics(True)
-#        else:
-#            self.fill_floorplan()
-#            self.fill_specifics(False)
 #    def fill_floorplans(self):
 #        i = 0
 #        fp_number = self.payload.get_value("floorplans", "total number")

@@ -2,7 +2,10 @@ import credentials
 import spreadsheet
 
 import logging
+import os
+import pyautogui
 import sys
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,14 +17,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class List_has_new_element(object):
-    def __init__(self, xpath, old_count):
+    def __init__(self, identifier, old_count):
         self.log = logging.getLogger("bLog")
-        self.log.debug("Initializing List_has_new_element. [" + str(xpath) + " / " + str(old_count) + "]")
+        self.log.debug("Initializing List_has_new_element. [" + str(identifier) + " / " + str(old_count) + "]")
 
-        self.xpath = xpath 
+        self.identifier = identifier 
         self.old_count = old_count 
     def __call__(self, driver):
-        elements = driver.find_elements_by_xpath(self.xpath)
+        elements = []
+        if self.identifier["type"] == "xpath":
+            elements = driver.find_elements_by_xpath(self.identifier["value"])
+        elif self.identifier["type"] == "id":
+            elements = driver.find_elements_by_id(self.identifier["value"])
+        else:
+            self.log.error("The type of the element wasn't recognized. [" + self.identifier["type"] + "]")
+            sys.exit()
+
         if len(elements) > self.old_count:
             self.log.debug("Found a new element, " + str(len(elements)) + " total.")
             return True 
@@ -108,7 +119,7 @@ class DOM:
                     self.driver.execute_script("arguments[0].setAttribute('checked','true')", e)
                 else:
                     self.driver.execute_script("arguments[0].removeAttribute('checked')", e)
-            elif a == "CLICK": self.__click__(element)
+            elif a == "CLICK": self.__click__(element["identifier"])
             elif a == "DROPDOWN":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
@@ -262,6 +273,10 @@ class DOM:
                     e = self.__get_element__(element["identifier"])
                     e.click()
             elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
+            elif a == "UPLOAD_IMAGES":
+                uploader = element["identifier"]
+                photo_list = element["list"]
+                self.upload_photos(uploader, photo_list)
             elif a == "UNFLUFF":
                 self.log.warning("UNFLUIFF")
                 input("LKJASF")
@@ -275,9 +290,9 @@ class DOM:
                 self.log.error("Invalid action [" + str(a) + "]")
                 sys.exit()
             # TODO a == "SPREADSHEET" and OFFSET isnumber
-    def __click__(self, element):
-        self.log.debug("Clicking on [" + element["identifier"]["value"] + "].")
-        self.__get_element__(element["identifier"]).click()
+    def __click__(self, identifier):
+        self.log.debug("Clicking on [" + str(identifier) + "].")
+        self.__get_element__(identifier).click()
     def __fill_input__(self, element):
         e = self.__get_element__(element["identifier"])
         value = element["get result"]
@@ -335,8 +350,38 @@ class DOM:
         condition = Element_is_not_(identifier, "-")
         self.hold.until(condition)
 
+    def upload_photos(self, uploader, photo_list):
+        photos = []
+        for root, dirs, files in os.walk("./post/images/"):
+            for f in files:
+                if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".gif") or f.endswith(".png"):
+                    path = os.path.join(root, f)
+                    self.log.debug("Photo found. [" + path + "]")
+                    photos.append(path)
 
+        uploads = 0
+        for i in range(len(photos)):
+            path = os.path.abspath(photos[i])
+            self.log.debug("Uploading file #" + str(i) + " [" + photos[i] + "] [" + path + "]")
 
+            self.__wait__(uploader)
+            self.__click__(uploader)
+
+            if os.path.isfile(photos[i]):
+                time.sleep(1)
+                pyautogui.write(path, interval=0.075)
+                pyautogui.press('enter')
+                self.wait_for_new_list_element(photo_list, uploads)
+                uploads = uploads + 1
+            else:
+                self.log.error("The file [" + path + "] doesn't exist.")
+                sys.exit()
+    def wait_for_new_list_element(self, identifier, old_count):
+        self.log.debug("Waiting for new element to be added to list. [" + str(identifier) + "]")
+
+        condition = List_has_new_element(identifier, old_count)
+        self.hold.until(condition)
+        self.log.debug("New element added.")
 
 #TODO Below
 
@@ -440,26 +485,6 @@ class DOM:
         javascript = "arguments[0].innerHTML = arguments[1];"
         self.driver.execute_script( javascript, tinymce, description.replace('\n', '<br>'))
         self.driver.switch_to.default_content()
-    def wait_for_new_list_element(self, page, name, old_count):
-        self.log.debug("Waiting for new element to be added to list. [" + str(page) + "/" + str(name) + "]")
-
-        identifier = self.payload.xpath(page, name)
-
-        if identifier:
-            condition = List_has_new_element(identifier, old_count)
-            self.hold.until(condition)
-            self.log.debug("New element added.")
-
-            return
-        else:
-            identifier = self.payload.id(page, name)
-
-        if identifier:
-            self.log.error("Waiting for new list elements by id hasn't been implemented.")
-            sys.exit()
-        else:
-            self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
-            sys.exit()
     def task_list(self, tasks):
         self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
         self.driver.execute_script("window.open('', 'todo', 'height=400,width=400,top=0, left=0, toolbar=no,menubar=no,scrollbars=yes,location=no,status=no');")

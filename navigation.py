@@ -1,8 +1,3 @@
-#import os
-#import pyautogui
-#import time
-#import sys
-
 import json
 import logging
 import os
@@ -111,7 +106,6 @@ class Navigator:
             self.log.warning("L: " + str(l))
             for u in units[str(l)]:
                 self.log.warning("Us: " + str(u))
-        input("Patcha")
 
         return units
     # POSTER TEST
@@ -161,20 +155,24 @@ class Navigator:
             for e in self.pl.repeat["address"]:
                 result = self.dom.process_actions(e)
             self.add_task("Check location page and fill in details.")
-            for e in self.pl.repeat["rent"]:
+            #for e in self.pl.repeat["rent"]:
+            #    result = self.dom.process_actions(e)
+            #for e in self.pl.repeat["specifics"]:
+            #    result = self.dom.process_actions(e)
+            #self.log.warning("Add date parsing.")
+            #for e in self.pl.repeat["floorplan"]:
+            #    result = self.dom.process_actions(e)
+            #for e in self.pl.repeat["amenities"]:
+            #    result = self.dom.process_actions(e)
+            #self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
+            #for e in self.pl.repeat["contact"]:
+            #    result = self.dom.process_actions(e)
+            #self.log.warning("Some fields might be doubled in the contact page")
+            #self.log.warning("Check cells' #s after  amenities.")
+            #self.add_task("Lease needs to be filled in manually in contact page.")
+            for e in self.pl.repeat["photos"]:
                 result = self.dom.process_actions(e)
-            for e in self.pl.repeat["specifics"]:
-                result = self.dom.process_actions(e)
-            self.log.warning("Add date parsing.")
-            for e in self.pl.repeat["floorplan"]:
-                result = self.dom.process_actions(e)
-            for e in self.pl.repeat["amenities"]:
-                result = self.dom.process_actions(e)
-            self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
-            for e in self.pl.repeat["contact"]:
-                result = self.dom.process_actions(e)
-            self.log.warning("Some fields might be doubled in the contact page")
-            self.add_task("Lease needs to be filled in manually in contact page.")
+            self.add_task("The photos' descriptions and types need to be entered manually.")
 
             self.task_list()
     def add_task(self, task):
@@ -277,60 +275,3 @@ class Navigator:
 #            self.elements.submit_fp("floorplans", "name", i, fp_id)
 #
 #            i = i + 1
-#    def fill_specifics(self, fp):
-#        self.elements.wait("specifics", "link")
-#        self.elements.click("specifics", "link")
-#
-#        if not fp:
-#            self.elements.dropdown("specifics", "max occupants")
-#
-#        self.elements.checkbox("specifics", "allow sublet")
-#        self.elements.checkbox("specifics", "is sublet")
-#        self.elements.checkbox("specifics", "roommate situation")
-#
-#        self.elements.radio("specifics", "available ongoing")
-#
-#        if self.elements.radio("specifics", "available date") != None:
-#            self.elements.fill_input_date("specifics", "start date")
-#
-#        if self.elements.radio("specifics", "available range") != None:
-#            self.elements.fill_input_date("specifics", "start date")
-#            self.elements.fill_input_date("specifics", "end date")
-#
-#        self.elements.radio("specifics", "renew yes")
-#        self.elements.submit("specifics", "renew yes")
-#//END TODO
-
-#    def fill_photos(self):
-#        #TODO dropdown image type
-#        #TODO input description
-#        self.add_task("The photos' descriptions and types need to be entered manually.")
-#
-#        photos = []
-#        for root, dirs, files in os.walk("./images/"):
-#            for f in files:
-#                if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".gif") or f.endswith(".png"):
-#                    path = os.path.join(root, f)
-#                    self.log.debug("Photo found. [" + path + "]")
-#                    photos.append(path)
-#
-#        self.elements.wait("photos", "link")
-#        self.elements.click("photos", "link")
-#
-#        uploads = 0
-#        for i in range(len(photos)):
-#            path = os.path.abspath(photos[i])
-#            self.log.debug("Uploading file #" + str(i) + " [" + photos[i] + "] [" + path + "]")
-#
-#            self.elements.wait("photos", "uploader")
-#            self.elements.click("photos", "uploader")
-#
-#            if os.path.isfile(photos[i]):
-#                time.sleep(1)
-#                pyautogui.write(path, interval=0.075)
-#                pyautogui.press('enter')
-#                self.elements.wait_for_new_list_element("photos", "li", uploads)
-#                uploads = uploads + 1
-#            else:
-#                self.log.error("The file [" + path + "] doesn't exist.")
-#                sys.exit()

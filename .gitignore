@@ -6,6 +6,6 @@
 *.xlsx
 build/*
 chromedriver.exe
-images/*
+post/images/*
 offline_data.json
 private.slr

@@ -69,48 +69,6 @@
 			}
 		],
 ,
-	//PHOTOS TO DO
-	"photos" : [
-		{
-			"actions" : ["WAIT", "CLICK"],
-			"identifier" : {
-				"type" : "xpath",
-				"value" : "//a[@data-target=\"images\"]"
-			}
-		},
-		"//a[@data-target=\"images\"]",
-		{
-			"actions" : ["WAIT", "CLICK"],
-			"cell" : 126,
-			"identifier" : {
-				"type" : "xpath",
-				"value" : "//input[@id=\"image_uploads\"]/../.."
-			}
-		},
-		{
-			"actions" : [""],
-			"cell" : 134,
-			"identifier" : {
-				"type" : "xpath",
-				"value" : "//a[@data-target=\"images\"]" #FIXME
-			}
-		},
-		{
-			"actions" : [""],
-			"cell" : 127,
-			"identifier" : {
-				"type" : "xpath",
-				"value" : "//a[@data-target=\"images\"]" #FIXME
-			}
-		},
-		{
-			"actions" : [""],
-			"cell" : 
-			"identifier" : {
-				"type" : "xpath",
-				"value" : "//li[@class=\"clearfix uploaded-image\"]"
-			}
-		}
-	]
-	}
+]
+}
 }

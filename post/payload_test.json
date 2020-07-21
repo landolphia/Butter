@@ -1103,6 +1103,42 @@
 					"value" : "lease_upload"
 				}
 			}	
+		],
+		"photos" : [
+			{
+				"actions" : ["WAIT", "CLICK"],
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//a[@data-target=\"images\"]"
+				}
+			},
+			{
+				"actions" : ["WAIT", "UPLOAD_IMAGES"],
+				"list" : {
+					"type" : "xpath",
+					"value" : "//li[@class=\"clearfix uploaded-image\"]"
+				},
+				"identifier" : {
+					"type" : "xpath",
+					"value" : "//input[@id=\"image_uploads\"]/../.."
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 132,
+				"identifier" : {
+					"type" : "id",
+					"value" : "virtual_tour"
+				}
+			},
+			{
+				"actions" : [],
+				"note" : "Add a video tour cell in the template.",
+				"identifier" : {
+					"type" : "id",
+					"value" : "video"
+				}
+			}
 		]
 	}
 }

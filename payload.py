@@ -42,12 +42,40 @@ class Payload:
     def __init__data__(self):
         self.data = {}
         # Login page
-        self.__add__element__("login", "login url", None, None, None, "https://offcampus.bu.edu/login/")
-        self.__add__element__("login", "add listing url", None, None, None, "https://offcampus.bu.edu/user/add-listing/")
-        self.__add__element__("login", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
-        self.__add__element__("login", "submit button", None, "//input[@type=\"submit\"]", None, None)
-        self.__add__element__("login", "username", "username", None, None, self.credentials["username1"])
-        self.__add__element__("login", "password", "password", None, None, self.credentials["password1"])
+        self.__add__element__("loginBU", "login url", None, None, None, "https://offcampus.bu.edu/login/")
+        self.__add__element__("loginBU", "add listing url", None, None, None, "https://offcampus.bu.edu/user/add-listing/")
+        self.__add__element__("loginBU", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
+        self.__add__element__("loginBU", "submit button", None, "//input[@type=\"submit\"]", None, None)
+        self.__add__element__("loginBU", "username", "username", None, None, self.credentials["username1"])
+        self.__add__element__("loginBU", "password", "password", None, None, self.credentials["password1"])
+
+        self.__add__element__("loginBC", "login url", None, None, None, "https://offcampushousing.bc.edu/login/")
+        self.__add__element__("loginBC", "add listing url", None, None, None, "https://offcampushousing.bc.edu/user/add-listing/")
+        self.__add__element__("loginBC", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
+        self.__add__element__("loginBC", "submit button", None, "//input[@type=\"submit\"]", None, None)
+        self.__add__element__("loginBC", "username", "username", None, None, self.credentials["username1"])
+        self.__add__element__("loginBC", "password", "password", None, None, self.credentials["password1"])
+
+        self.__add__element__("loginSuffolk", "login url", None, None, None, "https://offcampushousing.suffolk.edu/login/")
+        self.__add__element__("loginSuffolk", "add listing url", None, None, None, "https://offcampushousing.suffolk.edu/user/add-listing/")
+        self.__add__element__("loginSuffolk", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
+        self.__add__element__("loginSuffolk", "submit button", None, "//input[@type=\"submit\"]", None, None)
+        self.__add__element__("loginSuffolk", "username", "username", None, None, self.credentials["username1"])
+        self.__add__element__("loginSuffolk", "password", "password", None, None, self.credentials["password1"])
+
+        self.__add__element__("loginMass Art", "login url", None, None, None, "https://offcampus.massart.edu/login/")
+        self.__add__element__("loginMass Art", "add listing url", None, None, None, "https://offcampus.massart.edu/user/add-listing/")
+        self.__add__element__("loginMass Art", "link", None, "//form[@id=\"login\"]/preceding-sibling::a", None, None)
+        self.__add__element__("loginMass Art", "submit button", None, "//input[@type=\"submit\"]", None, None)
+        self.__add__element__("loginMass Art", "username", "username", None, None, self.credentials["username1"])
+        self.__add__element__("loginMass Art", "password", "password", None, None, self.credentials["password1"])
+
+        self.__add__element__("loginHarvard", "login url", None, None, None, "https://www.harvardhousingoffcampus.com/login/")
+        self.__add__element__("loginHarvard", "add listing url", None, None, None, "https://www.harvardhousingoffcampus.com/user/add-listing/")
+        self.__add__element__("loginHarvard", "submit button", None, "//input[@type=\"submit\"]", None, None)
+        self.__add__element__("loginHarvard", "username", "username", None, None, self.credentials["username1"])
+        self.__add__element__("loginHarvard", "password", "password", None, None, self.credentials["password1"])
+
         self.__add__element__("hidden", "gmaps", None, None, None, self.credentials["api_key"])
         self.credentials = None
     def get_bool(self, page, name): return self.data[page][name]["value"] == "Y"

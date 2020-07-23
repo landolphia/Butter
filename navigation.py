@@ -20,15 +20,30 @@ class Navigator:
         self.log.debug(task)
         self.tasks.append(task)
     def start(self):
-        self.login()
-        self.add_listing()
-        self.fill_address()
-        self.fill_rent()
-        self.fill_amenities()
-        self.fill_contact()
-        self.fill_photos()
+        for s in ["loginBU", "loginBC", "loginHarvard", "loginSuffolk", "loginMass Art"]:
+            self.login_site(s)
+           # self.add_listing()
+           # self.fill_address()
+           # self.fill_rent()
+           # self.fill_amenities()
+           # self.fill_contact()
+           # self.fill_photos()
     def close(self):
         self.elements.quit()
+    def login_site(self, site):
+        self.log.info("Logging into " + str(site))
+        self.elements.go(site, "login url")
+
+        if site != "loginHarvard":
+            self.elements.wait(site, "link")
+            self.elements.click(site, "link")
+
+        self.elements.wait(site, "username")
+        self.elements.fill_input(site, "username")
+        self.elements.fill_input(site, "password")
+
+        self.elements.click(site, "submit button")
+        input("Logged in.")
     def login(self):
         self.elements.go("login", "login url")
 

@@ -20,14 +20,15 @@ class Navigator:
         self.log.debug(task)
         self.tasks.append(task)
     def start(self):
-        for s in ["loginBU", "loginBC", "loginHarvard", "loginSuffolk", "loginMass Art"]:
+        #for s in ["loginBU", "loginBC", "loginHarvard", "loginSuffolk", "loginMass Art"]:
+        for s in ["loginBC", "loginHarvard", "loginSuffolk", "loginMass Art"]:
             self.login_site(s)
-           # self.add_listing()
-           # self.fill_address()
-           # self.fill_rent()
-           # self.fill_amenities()
-           # self.fill_contact()
-           # self.fill_photos()
+            self.add_listing(s)
+            self.fill_address()
+            self.fill_rent(s)
+            self.fill_amenities()
+            self.fill_contact()
+            self.fill_photos()
     def close(self):
         self.elements.quit()
     def login_site(self, site):
@@ -43,7 +44,6 @@ class Navigator:
         self.elements.fill_input(site, "password")
 
         self.elements.click(site, "submit button")
-        input("Logged in.")
     def login(self):
         self.elements.go("login", "login url")
 
@@ -56,8 +56,8 @@ class Navigator:
         self.elements.fill_input("login", "password")
 
         self.elements.click("login", "submit button")
-    def add_listing(self):
-        self.elements.go("login", "add listing url")
+    def add_listing(self, site):
+        self.elements.go(site, "add listing url")
 
         self.elements.wait("location", "full address")
 
@@ -86,8 +86,11 @@ class Navigator:
         self.elements.wait("location", "property name")
 
         self.elements.fill_input_not_null("location", "property name", "[TEST]") #FIXME Fix this before release
+
+        input("Fill in searchable neighborhood if applicable.")
+
         self.elements.press_enter("location", "property name")
-    def fill_rent(self):
+    def fill_rent(self, site):
         self.elements.wait("rent", "rent link")
         self.elements.click("rent", "rent link")
 
@@ -106,14 +109,15 @@ class Navigator:
         self.elements.checkbox("rent", "security")
 
         self.elements.fill_input_not_null("rent", "specials", " ")
+
         self.elements.press_enter("rent", "specials")
 
         if self.payload.get_bool("rent", "floorplans yes"):
             self.fill_floorplans()
-            self.fill_specifics(True)
+            self.fill_specifics(True, site)
         else:
             self.fill_floorplan()
-            self.fill_specifics(False)
+            self.fill_specifics(False, site)
     def fill_floorplan(self):
         self.elements.wait("rent", "bedrooms")
         
@@ -200,7 +204,7 @@ class Navigator:
             self.elements.submit_fp("floorplans", "name", i, fp_id)
 
             i = i + 1
-    def fill_specifics(self, fp):
+    def fill_specifics(self, fp, site):
         self.elements.wait("specifics", "link")
         self.elements.click("specifics", "link")
 
@@ -220,8 +224,11 @@ class Navigator:
             self.elements.fill_input_date("specifics", "start date")
             self.elements.fill_input_date("specifics", "end date")
 
-        self.elements.radio("specifics", "renew yes")
-        self.elements.submit("specifics", "renew yes")
+    
+        if site != "loginHarvard":
+            self.elements.radio("specifics", "renew yes")
+        
+        self.elements.submit("specifics", "available ongoing")
     def fill_amenities(self):
         self.elements.wait("amenities", "link")
         self.elements.click("amenities", "link")
@@ -324,6 +331,7 @@ class Navigator:
         self.elements.fill_input("contact", "instagram")
         self.elements.fill_input("contact", "website")
 
+        self.elements.submit("contact", "name")
         #TODO
         #self.elements.fill_input("contact", "lease link")
         #self.elements.fill_input("contact", "lease button")

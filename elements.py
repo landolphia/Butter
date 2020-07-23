@@ -2,6 +2,7 @@ import logging
 import sys
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -38,11 +39,19 @@ class Elements:
             self.payload = payload
     def __get_element__(self, page, name):
         identifier = self.payload.xpath(page, name)
+        element = None
+
         if identifier:
-            element = self.driver.find_element_by_xpath(identifier)
+            try:
+                element = self.driver.find_element_by_xpath(identifier)
+            except NoSuchElementException:
+                self.log.warning("Element not found, skipping.")
         else:
             identifier = self.payload.id(page, name)
-            element = self.driver.find_element_by_id(identifier)
+            try:
+                element = self.driver.find_element_by_id(identifier)
+            except NoSuchElementException:
+                self.log.warning("Element not found, skipping.")
         if not element:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
 
@@ -50,48 +59,61 @@ class Elements:
     def __get_element_fp__(self, page, name, fp_nb, fp_id):
         name = name + str(fp_nb)
         identifier = self.payload.xpath(page, name)
+        element = None
+
 
         if identifier:
             identifier = identifier.replace("FP_ID", str(fp_id))
-            element = self.driver.find_element_by_xpath(identifier)
+            try:
+                element = self.driver.find_element_by_xpath(identifier)
+            except NoSuchElementException:
+                self.log.warning("Element not found, skipping.")
         else:
             identifier = self.payload.id(page, name)
             if identifier:
                 identifier = identifier.replace("FP_ID", str(fp_id))
-            element = self.driver.find_element_by_id(identifier)
+            try:
+                element = self.driver.find_element_by_id(identifier)
+            except NoSuchElementException:
+                self.log.warning("Element not found, skipping.")
         if not element:
             self.log.error("The type of the element wasn't recognized. [" + page + "/" + name + "]")
 
         return element
     def checkbox(self, page, name):
         element = self.__get_element__(page, name)
-        value = self.payload.get_value(page, name)
+        
+        if element != None:
+            value = self.payload.get_value(page, name)
 
-        #FIXME Add a type field to the payload data for each element
-        #self.log.debug("FIX ME NOW! Add type to payload.")
-        # Temp fix for bools
-        if str(value).lower() == "y": value = True
-        if value == None: value = False 
+            #FIXME Add a type field to the payload data for each element
+            #self.log.debug("FIX ME NOW! Add type to payload.")
+            # Temp fix for bools
+            if str(value).lower() == "y": value = True
+            if value == None: value = False 
 
-        if value == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+            if value == True:
+                self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
+            else:
+                self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def checkbox_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
+        if element != None:
+            value = self.payload.get_value(page, name + str(fp_nb))
 
-        #FIXME Add a type field to the payload data for each element
-        #self.log.debug("FIX ME NOW! Add type to payload.")
-        if str(value).lower() == "y": value = True
-        if value == None: value = False 
+            #FIXME Add a type field to the payload data for each element
+            #self.log.debug("FIX ME NOW! Add type to payload.")
+            if str(value).lower() == "y": value = True
+            if value == None: value = False 
 
-        if value == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
+            if value == True:
+                self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
+            else:
+                self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def clear(self, page, name): self.__get_element__(page, name).clear()
-    def click(self, page, name): self.__get_element__(page, name).click()
+    def click(self, page, name):
+        self.log.debug("Clicking on [" + str(page) + "/" + str(name) + "]")
+        self.__get_element__(page, name).click()
     def click_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).click()
     def current_url(self):
         return self.driver.current_url
@@ -104,11 +126,13 @@ class Elements:
                 option.click()
     def dropdown_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
+        
+        if element != None:
+            value = self.payload.get_value(page, name + str(fp_nb))
 
-        for option in element.find_elements_by_tag_name('option'):
-            if option.text.strip().lower() == str(value).lower():
-                option.click()
+            for option in element.find_elements_by_tag_name('option'):
+                if option.text.strip().lower() == str(value).lower():
+                    option.click()
     def fill_input(self, page, name):
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)
@@ -127,22 +151,28 @@ class Elements:
         self.driver.execute_script("arguments[0].value = '" + value + "'", element)
     def fill_input_date_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-        if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with  .")
-            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
-            sys.exit()
 
-        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
-        self.log.debug("Check date.")
+        if element != None:
+            value = self.payload.get_value(page, name + str(fp_nb))
+            if not value:
+                self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with  .")
+                self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
+                sys.exit()
+
+            self.driver.execute_script("arguments[0].value = '" + value + "'", element)
+            self.log.debug("Check date.")
     def fill_input_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-        if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with  .")
-            value = " "
 
-        element.send_keys(value)
+        if element != None:
+            value = self.payload.get_value(page, name + str(fp_nb))
+            if not value:
+                self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with  .")
+                value = " "
+
+            element.send_keys(value)
+        else:
+            self.log.debug("Element not found " + str(page) + "/" + str(name))
     def empty_and_fill_input(self, page, name):
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)
@@ -159,11 +189,13 @@ class Elements:
         element.send_keys("$" + str(value))
     def fill_input_money_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
 
-        element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(Keys.DELETE)
-        element.send_keys("$" + str(value))
+        if element != None:
+            value = self.payload.get_value(page, name + str(fp_nb))
+
+            element.send_keys(Keys.CONTROL + "a")
+            element.send_keys(Keys.DELETE)
+            element.send_keys("$" + str(value))
     def fill_input_not_null(self, page, name, default):
         element = self.__get_element__(page, name)
         value = self.payload.get_value(page, name)

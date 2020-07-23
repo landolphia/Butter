@@ -29,6 +29,7 @@ class Payload:
                 "offset": cell_offset,
                 "value": value
             }
+            self.log.debug("#" + str(cell_offset) + " = " + str(value) + "[" + str(css_id) + "]")
         else: # Duplicate key
             self.log.error("Error scraping initial data. Exiting." +
                     "\nPage = " + str(page) +
@@ -153,7 +154,7 @@ class Payload:
         self.__add__element__("amenities", "internet","amenity[1]-303", None, 43, None)
         self.__add__element__("amenities", "living room","amenity[1]-200", None, 44, None)
         self.__add__element__("amenities", "microwave","amenity[1]-204", None, 45, None)
-        self.__add__element__("amenities", "patio","amenity[1]-6", None, None, 46)
+        self.__add__element__("amenities", "patio","amenity[1]-6", None, 46, None)
         self.__add__element__("amenities", "private garden","amenity[1]-205", None, 47, None)
         self.__add__element__("amenities", "shared garden","amenity[1]-206", None, 48, None)
         self.__add__element__("amenities", "smoke free","amenity[1]-41", None, 49, None)
@@ -222,6 +223,7 @@ class Payload:
             self.__add__element__("floorplans", "link", None, "//a[@data-target=\"floorplans\"]", None, None)
             self.__add__element__("floorplans", "add link", None, "//button[@name=\"create-floorplan\"]", None, None)
             while(self.floorplan_found(i)):
+                self.log.debug("Initializing floorplan #" + str(i))
                 self.init_floorplan(i)
                 i = i + 1
 
@@ -233,7 +235,7 @@ class Payload:
         self.__add__element__("contact", "name", "contact_name", None, 114, None)
         self.__add__element__("contact", "phone", "contact_phone", None, 115, None)
         self.__add__element__("contact", "text", "sms", None, 116, None)
-        self.__add__element__("contact", "email", None, "//input[@class=\"select2-search__field\"]", 117, None)
+        self.__add__element__("contact", "email", None, "/html/body/span/span/span[1]/input", 117, None)
         self.__add__element__("contact", "email arrow", "select2-email-container", None, None, None)
         self.__add__element__("contact", "office hours", "contact_time", None, 118, None)
         self.__add__element__("contact", "twitter", "twitter", None, 119, None)

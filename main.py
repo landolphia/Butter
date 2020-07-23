@@ -9,11 +9,8 @@ import spreadsheet
 from logging import handlers
 
 
-VERSION = "0.2.5"
+VERSION = "[RUSH to 1.0]"
 
-#TODO Investergate this
-#def install(package):
-#    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 def init_log(logLevel):
     log = logging.getLogger("bLog")
     log.setLevel(logging.DEBUG)

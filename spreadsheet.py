@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 
-LISTING = "listing.xlsx"
+LISTING = "listings.xlsx"
 SHEET_NAME = 0
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0

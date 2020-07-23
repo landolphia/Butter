@@ -59,10 +59,14 @@ class Navigator:
     
         self.elements.dropdown("location", "state")
 
+        if self.payload.get_value("location", "exact flag") == "N":
+            self.add_task("You might want to adjust the map marker on the location page.")
         self.elements.checkbox("location", "exact flag")
 
 
         self.elements.submit("location", "address form")
+
+        self.add_task("You might want to adjust the searchable neighborhood on the location page.")
 
         self.elements.wait("location", "property name")
 
@@ -286,23 +290,24 @@ class Navigator:
         self.elements.tinyMCE("amenities", "description", "amenities", "tinymce")
         self.elements.submit("amenities", "wd in unit")
     def fill_contact(self):
-        self.add_task("The contact page needs to be filled manually.")
-        #self.elements.wait("contact", "link")
-        #self.elements.click("contact", "link")
+        self.elements.wait("contact", "link")
+        self.elements.click("contact", "link")
 
-        #self.elements.wait("contact", "name")
-        #self.elements.fill_input("contact", "name")
-        #self.elements.fill_input("contact", "phone")
-        #self.elements.fill_input("contact", "text")
+        self.elements.wait("contact", "name")
+        self.elements.empty_and_fill_input("contact", "name")
+        self.elements.empty_and_fill_input("contact", "phone")
+        self.elements.empty_and_fill_input("contact", "text")
 
-        #self.elements.click("contact", "email arrow")
-        #self.elements.fill_input("contact", "email")
+        self.elements.wait("contact", "email arrow")
+        self.elements.click("contact", "email arrow")
+        self.elements.fill_input("contact", "email")
+        self.elements.press_enter("contact", "email")
 
-        #self.elements.fill_input("contact", "office hours")
-        #self.elements.fill_input("contact", "twitter")
-        #self.elements.fill_input("contact", "facebook")
-        #self.elements.fill_input("contact", "instagram")
-        #self.elements.fill_input("contact", "website")
+        self.elements.empty_and_fill_input("contact", "office hours")
+        self.elements.fill_input("contact", "twitter")
+        self.elements.fill_input("contact", "facebook")
+        self.elements.fill_input("contact", "instagram")
+        self.elements.fill_input("contact", "website")
 
         #TODO
         #self.elements.fill_input("contact", "lease link")
@@ -313,7 +318,7 @@ class Navigator:
         self.add_task("The photos' descriptions and types need to be entered manually.")
 
         photos = []
-        for root, dirs, files in os.walk("./images/"):
+        for root, dirs, files in os.walk("./post/images/"):
             for f in files:
                 if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".gif") or f.endswith(".png"):
                     path = os.path.join(root, f)

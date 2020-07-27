@@ -1339,339 +1339,390 @@
 					"value" : "//button[@name=\"create-floorplan\"]"
 				}
 			},
+
+
 			{
-				"actions" : ["GET_FP_ID", "FILL_INPUT_FP"],
-				"cell" : 142,
-				"offset" : 36,
+				"actions" : ["WAIT_FP", "GET_CELL_DATA_FP", "FILL_INPUT_FP"],
+				"cell" : 173,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-name"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "FILL_INPUT_FP"],
-				"cell" : 143,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "FILL_INPUT_FP"],
+				"cell" : 174,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-specials"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
-				"cell" : 144,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "DROPDOWN_FP"],
+				"cell" : 175,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-bedrooms"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
-				"cell" : 145,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "DROPDOWN_FP"],
+				"cell" : 176,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-bathrooms"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
-				"cell" : 146,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "DROPDOWN_FP"],
+				"cell" : 177,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-occupants"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "FILL_INPUT_FP"],
-				"cell" : 147,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "FILL_INPUT_FP"],
+				"cell" : 178,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-sqft"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "FILL_INPUT_FP_MONEY"],
-				"cell" : 148,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "FILL_INPUT_MONEY_FP"],
+				"cell" : 179,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-rent_value"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "DROPDOWN_FP"],
-				"cell" : 149,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "DROPDOWN_FP"],
+				"cell" : 180,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-per_bedroom"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 150,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 182,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-423"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 183,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-1"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 151,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 184,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-78"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 152,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 185,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-79"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 153,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 186,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-20"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 154,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 187,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-202"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 155,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 188,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-15"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 156,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 189,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-26"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 157,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 190,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-80"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 191,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-8"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 158,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 192,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-7"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 159,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 193,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-82"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 194,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-21"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 160,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 195,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-357"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 196,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-355"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 197,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-351"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 198,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-303"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 161,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 199,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-200"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 162,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 200,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-468"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 163,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 201,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-204"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 164,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 202,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-71"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 203,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-227"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 204,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-6"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 165,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 205,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-205"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 206,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-136"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 166,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 207,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-amenity[1]-206"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 208,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-41"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 167,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 209,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-207"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 168,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 210,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-208"
 				}
 			},
 			{
-				"actions" : ["GET_FP_ID", "CHECKBOX_FP"],
-				"cell" : 169,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "CHECKBOX_FP"],
+				"cell" : 211,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-amenity[1]-203"
 				}
 			},
-			
-			
-			{ "actions" : ["availability and dates"]},
-
 			{
-				"actions" : ["borken"],
-				"cell" : 170,
-				"offset" : 36,
+				"actions" : ["IF_DATE_NOT_FP", "RADIO_FP"],
+				"cell" : 212,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-move-in-not"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : 170,
-				"offset" : 36,
+				"actions" : ["IF_DATE_NOW_FP", "RADIO_FP"],
+				"cell" : 212,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-move-in-now"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : 170,
-				"offset" : 36,
+				"actions" : ["IF_DATE_SPECIFIC_FP", "RADIO_FP"],
+				"cell" : 212,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-move-in-date"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : 170,
-				"offset" : 36,
+				"actions" : ["IF_DATE_RANGE_FP", "RADIO_FP"],
+				"cell" : 212,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-move-in-range"
 				}
 			},
 			{
-				"actions" : ["IF_DATE_SPECIFIC_FP", "GET_DATE_FP", "FILL_INPUT_DATE_FP"],
-				"cell" : 171,
-				"offset" : 36,
+				"actions" : ["IF_DATE_SPECIFIC_FP", "FILL_INPUT_DATE_FP"],
+				"cell" : 212,
+				"date cell" : 213,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-start"
 				}
 			},
 			{
-				"actions" : ["IF_DATE_SPECIFIC_FP", "GET_DATE_FP", "FILL_INPUT_DATE_FP"],
-				"actions" : [],
-				"cell" : 172,
-				"offset" : 36,
+				"actions" : ["IF_DATE_RANGE_FP", "FILL_INPUT_DATE_FP"],
+				"cell" : 212,
+				"date cell" : 213,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-start"
+				}
+			},
+			{
+				"actions" : ["IF_DATE_RANGE_FP", "FILL_INPUT_DATE_FP"],
+				"cell" : 212,
+				"date cell" : 214,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-end"
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA_FP", "FILL_TINYMCE_FP"],
-				"cell" : 173,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "FILL_INPUT_FP"],
+				"cell" : 215,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-description"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : 174,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "FILL_INPUT_FP"],
+				"cell" : 216,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-virtual-tour"
 				}
 			},
 			{
-				"actions" : [],
-				"cell" : 175,
-				"offset" : 36,
+				"actions" : ["GET_CELL_DATA_FP", "FILL_INPUT_FP"],
+				"cell" : 217,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-website"
@@ -1679,8 +1730,7 @@
 			},
 			{
 				"actions" : [],
-				"cell" : 176,
-				"offset" : 36,
+				"cell" : 218,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-lease"
@@ -1688,15 +1738,18 @@
 			},
 			{
 				"actions" : [],
-				"cell" : 177,
-				"offset" : 36,
+				"cell" : 219,
 				"identifier" : {
 					"type" : "id",
 					"value" : "floorplan-FP_ID-image"
 				}
 			},
 			{
-				"actions" : ["CLICK TO SAVE"]
+				"actions" : ["SUBMIT_FP", "WAIT_FP"],
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-FP_ID-name"
+				}
 			}
 		]
 	}

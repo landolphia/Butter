@@ -5,7 +5,6 @@ import sys
 
 import dom
 import payload
-import spreadsheet
 
 
 OFFLINE_CACHE = "./scrape/offline_data.json"
@@ -155,30 +154,22 @@ class Navigator:
             self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
             self.log.warning("Some fields might be doubled in the contact page")
             self.log.warning("Check cells' #s after  amenities.")
+            self.log.warning("Go through sites according to spreadsheet cells")
             self.add_task("Lease needs to be filled in manually in contact page.")
             self.add_task("The photos' descriptions and types need to be entered manually.")
 
-            #i = 0
-            #while i < 2:
-            #    for p in self.pl.repeat:
-            #        self.log.debug("Repeat : " + str(p))
-            #        self.log.warning("Floorplan #" + str(i))
-            #        for e in self.pl.repeat[p]:
-            #            self.dom.process_actions(e, iteration = i)
-            #    i = i + 1
+            i = 0
+            self.log.debug("Found " + str(self.dom.fp_number) + " floorplans")
+            while i < self.dom.fp_number:
+                for p in self.pl.repeat:
+                    self.log.warning("Floorplan #" + str(i))
+                    for e in self.pl.repeat[p]:
+                        self.dom.process_actions(e, iteration = i)
+                i = i + 1
 
-
-            #        if self.payload.get_bool("rent", "floorplans yes"):
-            #            self.fill_floorplans()
-            #            self.fill_specifics(True)
-            #        else:
-            #            self.fill_floorplan()
-            #            self.fill_specifics(False)
-            #for e in self.pl.repeat["floorplans"]:
-            #   result = self.dom.process_actions(e)
 
             #self.task_list()
-            input("One down.")
+            input("One site down.")
     def add_task(self, task):
         self.log.debug(task)
         self.tasks.append(task)

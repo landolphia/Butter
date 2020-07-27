@@ -119,6 +119,7 @@ def main():
     log.debug("Finished in %s seconds." % (time.time() - start_time))
     log.error("TODO Compile payload element into arrays when actions are the same.")
     log.error("TODO Add required to json object?")
+    log.error("TODO Add picture folders info in spreadsheet")
     input("Check that the data has been entered correctly and press ENTER.")
 
 main()

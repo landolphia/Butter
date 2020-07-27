@@ -7,6 +7,7 @@ import pandas as pd
 import pprint
 import xlsxwriter
 import re
+import sys
 
 from datetime import datetime
 
@@ -16,10 +17,13 @@ SCRAPINGS = "./scrape/scrapings.xlsx"
 MAX_COLUMN_WIDTH = 60
 
 # Slurp
-LISTING = "./post/listing_master.xlsx"
+LISTING = "./post/listing_master_fp.xlsx"
 SHEET_NAME = 0
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
+
+FP_START = 173
+FP_LENGTH = 47
 
 re_address = re.compile("(.*),(.*),(.*),(.*)")
 re_num = re.compile("([a-zA-Z#\ .]*)([0-9]+)([a-zA-Z#\ .]*)")
@@ -49,40 +53,49 @@ class Spreadsheet:
         # This replaces empty cells with None (instead of nan)
         self.data = self.data.where(pd.notnull(self.data), None)
         self.geo = geohelper.GeoHelper(creds)
+        self.fp_offset =  FP_LENGTH
     def cell_exists(self, depth): return self.data.shape[0] > depth  # Used to determine if there are any more floorplans
+    def get_floorplan_number(self):
+        i = 0
+        offset = FP_START
+        while (self.cell_exists(offset)):
+            offset = offset + FP_LENGTH
+            i = i+1
+
+        return i
     def get_key(self, key): return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
     def parse_date(self, date):
-       if date == None: return None
-       if not isinstance(date, datetime):
-           self.log.error("This date is not valid \'" + str(date) + "\'.\nPlease check the data in the spreadsheet.")
-           self.log.warning("This is the only format accepted for dates 'DD/MM/202Y'.")
-           sys.exit()
-       date = date.strftime("%m/%d/%Y")
-    
-       return date
+        if date == None: return None
+        if not isinstance(date, datetime):
+            self.log.error("This date is not valid \'" + str(date) + "\'.\nPlease check the data in the spreadsheet.")
+            self.log.warning("This is the only format accepted for dates 'DD/MM/202Y'.")
+            sys.exit()
+        date = date.strftime("%m/%d/%Y")
+
+        return date
     def parse_address(self, address):
-       old = address
-       address = address.strip()
-       result = re_address.split(address)
-       result = list(filter(None, result))
-    
-       temp_add = re_num.split(result[0])
-       temp_add = list(filter(None, temp_add))
-       temp_add[0] = temp_add[0].strip()
-       temp_add[1] = temp_add[1].strip()
-       temp_unit = result[1][1:].strip()
-    
-       zipcode = self.geo.get_zip(old)
-       return {
-               "full": old,
-               "number": temp_add[0],
-               "name": temp_add[1],
-               "unit": temp_unit[1:],
-               "city": result[2],
-               "state": result[3],
-               "zip": zipcode
-               }    
-    # Output
+        old = address
+        address = address.strip()
+        result = re_address.split(address)
+        result = list(filter(None, result))
+
+        temp_add = re_num.split(result[0])
+        temp_add = list(filter(None, temp_add))
+        temp_add[0] = temp_add[0].strip()
+        temp_add[1] = temp_add[1].strip()
+        temp_unit = result[1][1:].strip()
+
+        zipcode = self.geo.get_zip(old)
+        return {
+                "full": old,
+                "number": temp_add[0],
+                "name": temp_add[1],
+                "unit": temp_unit[1:],
+                "city": result[2],
+                "state": result[3],
+                "zip": zipcode
+                }    
+        # Output
     def get_columns(self, data):
         columns = []
 
@@ -136,7 +149,7 @@ class Spreadsheet:
                 worksheet.set_column(col, col, widths[col])
                 col = col + 1
                 row = 1
-                
+
             # Filling in worksheet with data
             for unit in data[lead]:
                 col = 0
@@ -154,14 +167,14 @@ class Spreadsheet:
                     worksheet.set_row(row, 16)
                     col = col + 1
                 row = row + 1
-        
+
             # Write key to spreadsheet
             row = row + 2
             for k in kw.get_keywords():
                 worksheet.write(row, 0, "", color_formats[kw.get_keywords()[k]]["bright"])
                 worksheet.write(row, 1, str(k), color_formats[kw.get_keywords()[k]]["dim"])
                 row = row + 1
-    
+
         workbook.close()
 
         self.log.info(str(SCRAPINGS) + " created.")

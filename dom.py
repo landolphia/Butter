@@ -91,6 +91,7 @@ class DOM:
         g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
         self.ss = spreadsheet.Spreadsheet(slurp=g_key) 
         self.address = self.ss.parse_address(self.ss.get_key(0))
+        self.fp_number = self.ss.get_floorplan_number()
     def process_actions(self, element, **kwargs):
         self.log.debug("Processing action list for [" + str(element) + "].")
 
@@ -139,17 +140,137 @@ class DOM:
                 e.send_keys(Keys.DELETE)
                 e.send_keys(str(value))
             elif a == "FILL_INPUT": self.__fill_input__(element)
-            elif a == "FILL_INPUT_FP":
+            elif a == "FILL_INPUT_DATE_FP":
                 fp_nb = argument
-                e = self.__get_element_fp__(element)
-                cell = element["cell"] + (fp_nb * element["offset"])
-                value = self.ss.get_key(cell).lower()
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["date cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
 
                 if not value:
-                    self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
-                    value = "[DEFAULT_VALUE]"
+                    self.log.ERROR("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
+                    sys.exit()
+
+                value = self.ss.parse_date(value)
+                self.driver.execute_script("arguments[0].value = '" + value + "'", e)
+            elif a == "FILL_INPUT_MONEY_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+
+                e.send_keys(Keys.CONTROL + "a")
+                e.send_keys(Keys.DELETE)
+                e.send_keys("$" + str(value))
+            elif a == "GET_DATE_FP":
+                fp_nb = argument
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                element["get result"] = self.ss.get_key(cell)
+                self.log.debug("Getting cell #" + str(cell) + " = [" + str(element["get result"]) + "]")
+            elif a == "SUBMIT_FP":
+                fp_id = self.get_fp_id()
+                self.__get_element_fp__(element, fp_id).submit()
+            elif a == "RADIO_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = element["get result"]
+                if value == True:
+                    e = self.__get_element_fp__(element, fp_id)
+                    e.click()
+            elif a == "DROPDOWN_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                self.log.debug("Value for FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
+
+                for option in e.find_elements_by_tag_name('option'):
+                    if option.text.strip().lower() == str(value).lower():
+                        option.click()
+            elif a == "CHECKBOX_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                self.log.debug("Value for FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
+                if not e:
+                    self.log.debug("Skipped [" + str(element["identifier"]) + "]")
+                    return
+
+                if value == True:
+                    self.driver.execute_script("arguments[0].setAttribute('checked','true')", e)
+                else:
+                    self.driver.execute_script("arguments[0].removeAttribute('checked')", e)
+            elif a == "FILL_INPUT_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                self.log.debug("Value for FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
+
+                if not value:
+                    self.log.warning("The value for " + str(element["identifier"]) + " is missing. Skipping.")
+                    return
 
                 e.send_keys(value)
+            elif a == "IF_DATE_NOW_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                value = (str(value).lower() == "now")
+                element["get result"] = value
+                if not value:
+                    return
+            elif a == "IF_DATE_NOT_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                value = (str(value).lower() == "not available")
+                element["get result"] = value
+                if not value:
+                    return
+            elif a == "IF_DATE_RANGE_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                value = (str(value).lower() == "between two dates")
+                element["get result"] = value
+                if not value:
+                    return
+            elif a == "IF_DATE_SPECIFIC_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+                value = (str(value).lower() == "between two dates")
+                value = ("a specific date" in self.ss.get_key(element["cell"]).lower())
+                element["get result"] = value
+                if not value:
+                    return
+            elif a == "WAIT_FP":
+                fp_id = self.get_fp_id()
+                identifier = {
+                        "type" : element["identifier"]["type"],
+                        "value" : element["identifier"]["value"].replace("FP_ID", fp_id)
+                        }
+                self.__wait__(identifier)
+            elif a == "GET_CELL_DATA_FP":
+                fp_nb = argument
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                element["get result"] = self.ss.get_key(cell)
             elif a == "FILL_INPUT_DATE":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
@@ -226,10 +347,6 @@ class DOM:
                     result.append(self.__get_attribute__(e, element["attribute"]))
 
                 return result
-            elif a == "GET_FP_ID":
-                url = str(self.current_url())
-                fp_id = url.rsplit('/', 1)[-1]
-                element["FP_ID"] = fp_id
             elif a == "GET_PASSWORD":
                 identifier = element["password"]
                 self.log.debug("Password: " + str(identifier))
@@ -247,6 +364,11 @@ class DOM:
                 self.log.warning("Do this instead. IF_VALUE_IS and add a test_value in the json object.")
                 self.log.debug("Value = " + str(self.ss.get_key(element["cell"])))
                 value = (self.ss.get_key(element["cell"]).lower() == "now")
+                element["get result"] = value
+                if not value:
+                    return
+            elif a == "IF_DATE_NOT":
+                value = (self.ss.get_key(element["cell"]).lower() == "not available")
                 element["get result"] = value
                 if not value:
                     return
@@ -319,6 +441,11 @@ class DOM:
             #value = "[DEFAULT_VALUE]"
 
         e.send_keys(value)
+    def get_fp_id(self):
+        url = str(self.current_url())
+        fp_id = url.rsplit('/', 1)[-1]
+
+        return fp_id
     def __get_element__(self, identifier):
         element = None
         if identifier["type"] == "xpath":
@@ -338,12 +465,15 @@ class DOM:
         return element
     def current_url(self):
         return self.driver.current_url
-    def __get_element_fp__(self, element):
+    def __get_element_fp__(self, element, fp_id):
         self.log.debug("Identifier before : " + str(element["identifier"]["value"]))
-        element["identifier"]["value"] = element["identifier"]["value"].replace("FP_ID", element["FP_ID"])
+        identifier = {
+                "type" : element["identifier"]["type"],
+                "value" : element["identifier"]["value"].replace("FP_ID", fp_id)
+                }
         self.log.debug("Identifier after : " + str(element["identifier"]["value"]))
 
-        e = self.__get_element__(element["identifier"])
+        e = self.__get_element__(identifier)
 
         return e
     def __get_elements__(self, identifier):

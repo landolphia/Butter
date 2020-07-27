@@ -131,6 +131,13 @@ class DOM:
                 for option in e.find_elements_by_tag_name('option'):
                     if option.text.strip().lower() == str(value).lower():
                         option.click()
+            elif a == "EMPTY_AND_FILL_INPUT":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                e.send_keys(Keys.CONTROL + "a")
+                e.send_keys(Keys.DELETE)
+                e.send_keys(str(value))
             elif a == "FILL_INPUT": self.__fill_input__(element)
             elif a == "FILL_INPUT_FP":
                 fp_nb = argument
@@ -306,9 +313,10 @@ class DOM:
         e = self.__get_element__(element["identifier"])
         value = element["get result"]
         self.log.debug("Filling input [" + element["identifier"]["value"] + "] with \"" + str(value) + "\"")
-        if not value: #FIXME Bail?
-            self.log.warning("The value for " + str(element) + " is missing. It will be replaced with [DEFAULT_VALUE].")
-            value = "[DEFAULT_VALUE]"
+        if not value: #FIXME Bail is good?
+            return
+            #self.log.warning("The value for " + str(element) + " is missing. It will be replaced with [DEFAULT_VALUE].")
+            #value = "[DEFAULT_VALUE]"
 
         e.send_keys(value)
     def __get_element__(self, identifier):
@@ -371,6 +379,7 @@ class DOM:
 
     def upload_photos(self, uploader, photo_list):
         photos = []
+        # Getting picture list from folder
         for root, dirs, files in os.walk("./post/images/"):
             for f in files:
                 if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".gif") or f.endswith(".png"):
@@ -388,7 +397,7 @@ class DOM:
 
             if os.path.isfile(photos[i]):
                 time.sleep(1)
-                pyautogui.write(path, interval=0.075)
+                pyautogui.write(path, interval=0.05)
                 pyautogui.press('enter')
                 self.wait_for_new_list_element(photo_list, uploads)
                 uploads = uploads + 1

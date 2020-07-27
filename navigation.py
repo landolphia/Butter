@@ -146,7 +146,7 @@ class Navigator:
             self.dom.go(s["login"])
             for p in self.pl.run_once:
                 if p == "add listing": self.dom.go(s["add listing"])
-                if p in ["login", "location", "address", "rent", "specifics", "amenities"]:#, "floorplans"]:#, "amenities", "contact", "photos"]
+                if p in ["login", "location", "address", "rent", "specifics", "amenities", "contact", "photos"]:
                     self.log.debug("Run once : " + str(p))
                     for e in self.pl.run_once[p]:
                         self.dom.process_actions(e)

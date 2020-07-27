@@ -1191,24 +1191,24 @@
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA", "WAIT", "FILL_INPUT"],
-				"cell" : 119,
+				"actions" : ["GET_CELL_DATA", "WAIT", "EMPTY_AND_FILL_INPUT"],
+				"cell" : 159,
 				"identifier" : {
 					"type" : "id",
 					"value" : "contact_name"
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 120,
+				"actions" : ["GET_CELL_DATA", "EMPTY_AND_FILL_INPUT"],
+				"cell" : 160,
 				"identifier" : {
 					"type" : "id",
 					"value" : "contact_phone"
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 121,
+				"actions" : ["GET_CELL_DATA", "EMPTY_AND_FILL_INPUT"],
+				"cell" : 161,
 				"identifier" : {
 					"type" : "id",
 					"value" : "sms"
@@ -1222,8 +1222,8 @@
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA", "WAIT", "FILL_INPUT"],
-				"cell" : 122,
+				"actions" : ["GET_CELL_DATA", "WAIT", "EMPTY_AND_FILL_INPUT"],
+				"cell" : 162,
 				"identifier" : {
 					"type" : "xpath",
 					"value" : "//span[@class='select2-search select2-search--dropdown']/input[1]"
@@ -1231,7 +1231,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 125,
+				"cell" : 163,
 				"identifier" : {
 					"type" : "id",
 					"value" : "contact_time"
@@ -1239,7 +1239,7 @@
 			},	
 			{
 				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 124,
+				"cell" : 164,
 				"identifier" : {
 					"type" : "id",
 					"value" : "twitter"
@@ -1247,7 +1247,7 @@
 			},	
 			{
 				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 123,
+				"cell" : 165,
 				"identifier" : {
 					"type" : "id",
 					"value" : "facebook"
@@ -1255,15 +1255,15 @@
 			},	
 			{
 				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 124,
+				"cell" : 166,
 				"identifier" : {
 					"type" : "id",
 					"value" : "instagram"
 				}
 			},	
 			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 127,
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT", "SUBMIT"],
+				"cell" : 167,
 				"identifier" : {
 					"type" : "id",
 					"value" : "website"
@@ -1271,7 +1271,7 @@
 			},	
 			{
 				"actions" : [],
-				"cell" : 128,
+				"cell" : 168,
 				"identifier" : {
 					"type" : "id",
 					"value" : "lease_link"
@@ -1279,7 +1279,7 @@
 			},	
 			{
 				"actions" : [],
-				"cell" : 129,
+				"cell" : 169,
 				"identifier" : {
 					"type" : "id",
 					"value" : "lease_upload"
@@ -1306,16 +1306,16 @@
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT", "SUBMIT"],
-				"cell" : 132,
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 170,
 				"identifier" : {
 					"type" : "id",
 					"value" : "virtual_tour"
 				}
 			},
 			{
-				"actions" : [],
-				"note" : "Add a video tour cell in the template.",
+				"actions" : ["GET_CELL_DATA", "FILL_INPUT", "SUBMIT"],
+				"cell" : 171,
 				"identifier" : {
 					"type" : "id",
 					"value" : "video"

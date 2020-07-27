@@ -111,18 +111,18 @@ class Navigator:
     # POSTER TEST
     def __get_sites__(self):
         return [
-                #{
-                #    "login" : "https://offcampus.bu.edu/login/",
-                #    "add listing" : "https://offcampus.bu.edu/user/add-listing/"
-                #},
+                {
+                    "login" : "https://offcampus.bu.edu/login/",
+                    "add listing" : "https://offcampus.bu.edu/user/add-listing/"
+                },
                 #{
                 #    "login" : "https://offcampushousing.bc.edu/login/",
                 #    "add listing" : "https://offcampushousing.bc.edu/user/add-listing/"
                 #},
-                {
-                    "login" : "https://offcampus.massart.edu/login/",
-                    "add listing" : "https://offcampus.massart.edu/user/add-listing/"
-                }
+                #{
+                #    "login" : "https://offcampus.massart.edu/login/",
+                #    "add listing" : "https://offcampus.massart.edu/user/add-listing/"
+                #},
                 #{
                 #    "login" : "https://www.harvardhousingoffcampus.com/login/",
                 #    "add listing" : "https://www.harvardhousingoffcampus.com/user/add-listing/"
@@ -145,12 +145,12 @@ class Navigator:
             self.tasks = []
             self.dom.go(s["login"])
             for p in self.pl.run_once:
-                if p == "login": self.dom.go(s["add listing"])
-                if p in ["login", "location", "address", "rent", "floorplans"]:#, "specifics", "floorplan", "amenities", "contact", "photos"]
+                if p == "add listing": self.dom.go(s["add listing"])
+                if p in ["login", "location", "address", "rent"]:#, "floorplans"]:#, "specifics", "floorplan", "amenities", "contact", "photos"]
                     self.log.debug("Run once : " + str(p))
                     for e in self.pl.run_once[p]:
                         self.dom.process_actions(e)
-            self.add_task("Check location page and fill in details (campuses?).")
+            self.add_task("TODO searchable neighborhoods")
             self.log.warning("Add date parsing.")
             self.log.warning("Email addresses will be removed from the description, leading to the amenities maybe not saving.")
             self.log.warning("Some fields might be doubled in the contact page")
@@ -158,14 +158,14 @@ class Navigator:
             self.add_task("Lease needs to be filled in manually in contact page.")
             self.add_task("The photos' descriptions and types need to be entered manually.")
 
-            i = 0
-            while i < 2:
-                for p in self.pl.repeat:
-                    self.log.debug("Repeat : " + str(p))
-                    self.log.warning("Floorplan #" + str(i))
-                    for e in self.pl.repeat[p]:
-                        self.dom.process_actions(e, iteration = i)
-                i = i + 1
+            #i = 0
+            #while i < 2:
+            #    for p in self.pl.repeat:
+            #        self.log.debug("Repeat : " + str(p))
+            #        self.log.warning("Floorplan #" + str(i))
+            #        for e in self.pl.repeat[p]:
+            #            self.dom.process_actions(e, iteration = i)
+            #    i = i + 1
 
 
             #        if self.payload.get_bool("rent", "floorplans yes"):
@@ -177,7 +177,8 @@ class Navigator:
             #for e in self.pl.repeat["floorplans"]:
             #   result = self.dom.process_actions(e)
 
-            self.task_list()
+            #self.task_list()
+            input("One down.")
     def add_task(self, task):
         self.log.debug(task)
         self.tasks.append(task)

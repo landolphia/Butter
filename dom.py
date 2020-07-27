@@ -113,9 +113,7 @@ class DOM:
             elif a == "CHECKBOX":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
-
-                if str(value).lower() == "y": value = True
-                if value == None: value = False 
+                self.log.debug("Checkbox [" + str(element["identifier"]) + "] = " + str(value))
 
                 if value == True:
                     self.driver.execute_script("arguments[0].setAttribute('checked','true')", e)
@@ -125,6 +123,7 @@ class DOM:
             elif a == "DROPDOWN":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
+                self.log.debug("Value for dropdown = " + str(value))
 
                 for option in e.find_elements_by_tag_name('option'):
                     if option.text.strip().lower() == str(value).lower():
@@ -260,9 +259,9 @@ class DOM:
                 element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
             elif a == "GO": self.go(element["url"])
             elif a == "IF_FALSE":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "y")
+                element["get result"] = (not self.ss.get_key(element["cell"]))
             elif a == "IF_TRUE":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() == "y")
+                element["get result"] = self.ss.get_key(element["cell"])
             elif a == "IF_DATE_NOW":
                 element["get result"] = (self.ss.get_key(element["cell"]).lower() != "ongoing")
             elif a == "IF_DATE_RANGE":
@@ -270,8 +269,8 @@ class DOM:
             elif a == "IF_DATE_SPECIFIC":
                 element["get result"] = (self.ss.get_key(element["cell"]).lower() != "on a specific date")
             elif a == "IF_NOT_FP":
-                if (self.ss.get_key(element["fp cell"]).lower() == "y"):
-                    return False
+                if self.ss.get_key(element["fp cell"]):
+                    return
             elif a == "IF_UNKNOWN":
                 element["get result"] = (self.ss.get_key(element["cell"]).lower() != "unknown")
             elif a == "IF_YES":
@@ -280,7 +279,6 @@ class DOM:
                 element["get result"] = (self.ss.get_key(element["cell"]).lower() != "no")
             elif a == "IF_NOT_HARVARD":
                 if "harvardhousingoffcampus" in self.current_url():
-                    self.log.warning("Make sure this condition is right.")
                     return True
             elif a == "PRESS_ENTER":
                 e = self.__get_element__(element["identifier"])
@@ -336,6 +334,8 @@ class DOM:
             sys.exit()
 
         return element
+    def current_url(self):
+        return self.driver.current_url
     def __get_element_fp__(self, element):
         self.log.debug("Identifier before : " + str(element["identifier"]["value"]))
         element["identifier"]["value"] = element["identifier"]["value"].replace("FP_ID", element["FP_ID"])
@@ -408,42 +408,10 @@ class DOM:
         self.hold.until(condition)
         self.log.debug("New element added.")
 
-#TODO Below
-
-    def __get_attribute__(self, element, attribute): return element.get_attribute(attribute)
-    def process_actions_with_context(self, element, context):
-        result = None
-        for a in element["actions"]["list"]:
-            if a == "APPEND_AND_GO": self.go(element["value"]["content"] + context)
-            if a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
-            if a == "GET_ELEMENTS_ATTRIBUTES":
-                elements = self.__get_elements__(element["identifier"])
-                result = []
-                for e in elements:
-                    result.append(self.__get_attribute__(e, element["value"]["content"]))
-
-        return result
-
 #TODO NOT TREATED BELOW
 #TODO
 
-    def checkbox_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-
-        #FIXME Add a type field to the payload data for each element
-        #self.log.debug("FIX ME NOW! Add type to payload.")
-        if str(value).lower() == "y": value = True
-        if value == None: value = False 
-
-        if value == True:
-            self.driver.execute_script("arguments[0].setAttribute('checked','true')", element)
-        else:
-            self.driver.execute_script("arguments[0].removeAttribute('checked')", element)
     def clear(self, page, name): self.__get_element__(page, name).clear()
-    def click_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).click()
-    def current_url(self):
-        return self.driver.current_url
     def dropdown_fp(self, page, name, fp_nb, fp_id):
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))

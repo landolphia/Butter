@@ -1,4 +1,4 @@
-{
+{	
 	"mode" : "POST",
 	"run once" : {
 		"login" : [
@@ -33,17 +33,14 @@
 				}
 			}
 		],
+		"add listing" : [
+			{
+				"actions" : ["ADD_LISTING"]
+			}
+		],
 		"location" : [
 			{
-				"actions" : ["WAIT"],
-				"cell" : 0,
-				"identifier" : {
-					"type" : "id",
-					"value": "address-autocomplete-place"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT", "PRESS_ENTER"],
+				"actions" : ["WAIT", "GET_CELL_DATA", "FILL_INPUT", "PRESS_ENTER"],
 				"cell" : 1,
 				"identifier" : {
 					"type" : "xpath",
@@ -115,7 +112,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "WAIT", "DROPDOWN"],
-				"cell" : 6,
+				"cell" : 35,
 				"identifier" : {
 					"type" : "id",
 					"value" : "buildingtype"
@@ -123,7 +120,7 @@
 			},
 			{
 				"actions" : ["IF_FALSE", "RADIO"],
-				"cell" : 7,
+				"cell" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "multi-unit-no"
@@ -131,7 +128,7 @@
 			},
 			{
 				"actions" : ["IF_TRUE", "RADIO"],
-				"cell" : 7,
+				"cell" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "multi-unit-yes"
@@ -139,7 +136,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 13,
+				"cell" : 42,
 				"identifier" : {
 					"type" : "id",
 					"value" : "security_deposit_amenities-231"
@@ -147,7 +144,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 14,
+				"cell" : 43,
 				"identifier" : {
 					"type" : "id",
 					"value" : "security_deposit_amenities-161"
@@ -155,7 +152,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 15,
+				"cell" : 44,
 				"identifier" : {
 					"type" : "id",
 					"value" : "security_deposit_amenities-162"
@@ -163,7 +160,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 16,
+				"cell" : 45,
 				"identifier" : {
 					"type" : "id",
 					"value" : "security_deposit_amenities-165"
@@ -171,7 +168,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 17,
+				"cell" : 46,
 				"identifier" : {
 					"type" : "id",
 					"value" : "security_deposit_amenities-164"
@@ -179,7 +176,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 18,
+				"cell" : 47,
 				"identifier" : {
 					"type" : "id",
 					"value" : "security_deposit_amenities-163"
@@ -187,8 +184,61 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "FILL_INPUT_NOT_NULL", "PRESS_ENTER"],
-				"cell" : 19,
+				"cell" : 48,
 				"default" : " ",
+				"identifier" : {
+					"type" : "id",
+					"value" : "specials"
+				}
+			},
+			{
+				"actions" : ["IF_NOT_FP", "WAIT", "GET_CELL_DATA", "WAIT", "DROPDOWN"],
+				"cell" : 37,
+				"fp cell" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-bedrooms"
+				}
+			},
+			{
+				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "DROPDOWN"],
+				"cell" : 38,
+				"fp cell" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-bathrooms"
+				}
+			},
+			{
+				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "FILL_INPUT"],
+				"cell" : 39,
+				"fp cell" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-sqft"
+				}
+			},
+			{
+				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "FILL_INPUT_MONEY"],
+				"cell" : 40,
+				"fp cell" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-rent_value"
+				}
+			},
+			{
+				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "DROPDOWN"],
+				"cell" : 41,
+				"fp cell" : 36,
+				"identifier" : {
+					"type" : "id",
+					"value" : "floorplan-0-per_bedroom"
+				}
+			},
+			{
+				"actions" : ["IF_NOT_FP", "PRESS_ENTER"],
+				"fp cell" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "specials"
@@ -206,7 +256,7 @@
 			{
 				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "WAIT", "DROPDOWN"],
 				"cell" : 22,
-				"fp cell" : 7,
+				"fp cell" : 36,
 				"identifier" : {
 					"type" : "id",
 					"value" : "max-occupants"
@@ -309,55 +359,6 @@
 				"identifier" : {
 					"type" : "id",
 					"value" : "renew-option-no"
-				}
-			}
-		],
-		"floorplan": [
-			{
-				"actions" : ["GET_CELL_DATA", "WAIT", "DROPDOWN"],
-				"cell" : 8,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-0-bedrooms"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "DROPDOWN"],
-				"cell" : 9,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-0-bathrooms"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT"],
-				"cell" : 10,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-0-sqft"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "FILL_INPUT_MONEY"],
-				"cell" : 11,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-0-rent_value"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "DROPDOWN"],
-				"cell" : 12,
-				"identifier" : {
-					"type" : "id",
-					"value" : "floorplan-0-per_bedroom"
-				}
-			},
-			{
-				"actions" : ["PRESS_ENTER"],
-				"identifier" : {
-					"type" : "id",
-					"value" : "specials"
 				}
 			}
 		],
@@ -1137,7 +1138,7 @@
 					"value" : "video"
 				}
 			}
-		],
+		]
 	},
 	"repeat" : {
 		"floorplans" : [
@@ -1409,32 +1410,10 @@
 			},
 			
 			
-			availability = str(self.ss.get_key(offset+28)).lower()
-			value = ("Y" if availability == "not available" else None)
-			self.__add__element__("floorplans", "availability not" + str(n), "floorplan-FP_ID-move-in-not", None, None, value)
-			value = ("Y" if availability == "a specific date" else None)
-			self.__add__element__("floorplans", "availability specific" + str(n), "floorplan-FP_ID-move-in-date", None, None, value)
-			value = ("Y" if availability == "between two dates" else None)
-			self.__add__element__("floorplans", "availability range" + str(n), "floorplan-FP_ID-move-in-range", None, None, value)
-			value = ("Y" if availability == "ongoing" else None)
-			self.__add__element__("floorplans", "availability ongoing" + str(n), "floorplan-FP_ID-move-in-now", None, None, value)
-
-			date = None
-			if self.get_value("floorplans", "availability specific" + str(n)) != None:
-			date = self.ss.parse_date(self.ss.get_key(offset+29))
-			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
-			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
-			elif self.get_value("floorplans", "availability range" + str(n)) != None:
-			date = self.ss.parse_date(self.ss.get_key(offset+29))
-			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
-			date = self.ss.parse_date(self.ss.get_key(offset+30))
-			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
-			else:
-			self.__add__element__("floorplans", "start date" + str(n), "floorplan-FP_ID-start", None, offset + 29, date)
-			self.__add__element__("floorplans", "end date" + str(n), "floorplan-FP_ID-end", None, offset + 30, date)
+			{ "actions" : ["availability and dates"]},
 
 			{
-				actions : [], borken
+				"actions" : ["borken"],
 				"cell" : 170,
 				"offset" : 36,
 				"identifier" : {
@@ -1532,8 +1511,10 @@
 					"type" : "id",
 					"value" : "floorplan-FP_ID-image"
 				}
+			},
+			{
+				"actions" : ["CLICK TO SAVE"]
 			}
-			//save at the end
 		]
 	}
 }

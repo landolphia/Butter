@@ -16,7 +16,7 @@ SCRAPINGS = "./scrape/scrapings.xlsx"
 MAX_COLUMN_WIDTH = 60
 
 # Slurp
-LISTING = "./post/listing_fp.xlsx"
+LISTING = "./post/listing_master.xlsx"
 SHEET_NAME = 0
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
@@ -49,7 +49,7 @@ class Spreadsheet:
         # This replaces empty cells with None (instead of nan)
         self.data = self.data.where(pd.notnull(self.data), None)
         self.geo = geohelper.GeoHelper(creds)
-    def cell_exists(self, depth): return self.data.shape[0] > depth  # FIXME Is this unused?
+    def cell_exists(self, depth): return self.data.shape[0] > depth  # Used to determine if there are any more floorplans
     def get_key(self, key): return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
     def parse_date(self, date):
        if date == None: return None

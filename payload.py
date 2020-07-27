@@ -5,7 +5,7 @@ import sys
 
 
 PAYLOAD_FILE = "payload.json"
-PAYLOAD_TEST = "payload_test.json"
+PAYLOAD_TEST = "payload_master.json"
 
 class Payload:
     def __init__(self, mode, test):

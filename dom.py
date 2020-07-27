@@ -219,7 +219,7 @@ class DOM:
             elif a == "GET_DATE":
                 identifier = element["date cell"]
                 element["get result"] = self.ss.get_key(identifier)
-                self.log.debug("Getting date in cell # " + str(identifier) + " = [" + str(element["get result"]) + "]")
+                self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_ELEMENTS_ATTRIBUTE":
                 #TODO handle StaleElement exception
                 if not "attribute" in element:
@@ -263,20 +263,40 @@ class DOM:
             elif a == "IF_TRUE":
                 element["get result"] = self.ss.get_key(element["cell"])
             elif a == "IF_DATE_NOW":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "ongoing")
+                self.log.warning("Do this instead. IF_VALUE_IS and add a test_value in the json object.")
+                self.log.debug("Value = " + str(self.ss.get_key(element["cell"])))
+                value = (self.ss.get_key(element["cell"]).lower() == "now")
+                element["get result"] = value
+                if not value:
+                    return
             elif a == "IF_DATE_RANGE":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "between two dates")
+                value = (self.ss.get_key(element["cell"]).lower() == "between two dates")
+                element["get result"] = value
+                if not value:
+                    return
             elif a == "IF_DATE_SPECIFIC":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "on a specific date")
+                value = (self.ss.get_key(element["cell"]).lower() == "on a specific date")
+                element["get result"] = value
+                if not value:
+                    return
             elif a == "IF_NOT_FP":
                 if self.ss.get_key(element["fp cell"]):
                     return
             elif a == "IF_UNKNOWN":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "unknown")
+                value = (self.ss.get_key(element["cell"]).lower() == "unknown")
+                element["get result"] = value
+                if not value:
+                    return
             elif a == "IF_YES":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "yes")
+                value = (self.ss.get_key(element["cell"]).lower() == "yes")
+                element["get result"] = value
+                if not value:
+                    return
             elif a == "IF_NO":
-                element["get result"] = (self.ss.get_key(element["cell"]).lower() != "no")
+                value = (self.ss.get_key(element["cell"]).lower() == "no")
+                element["get result"] = value
+                if not value:
+                    return
             elif a == "IF_NOT_HARVARD":
                 if "harvardhousingoffcampus" in self.current_url():
                     return True

@@ -255,7 +255,7 @@
 			},
 			{
 				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "WAIT", "DROPDOWN"],
-				"cell" : 22,
+				"cell" : 50,
 				"fp cell" : 36,
 				"identifier" : {
 					"type" : "id",
@@ -264,7 +264,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 23,
+				"cell" : 51,
 				"identifier" : {
 					"type" : "id",
 					"value" : "allow_sublets-display"
@@ -272,7 +272,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 24,
+				"cell" : 52,
 				"identifier" : {
 					"type" : "id",
 					"value" : "sublet-display"
@@ -280,7 +280,7 @@
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 25,
+				"cell" : 53,
 				"identifier" : {
 					"type" : "id",
 					"value" : "shared-display"
@@ -288,7 +288,7 @@
 			},
 			{
 				"actions" : ["IF_DATE_NOW", "RADIO"],
-				"cell" : 26,
+				"cell" : 54,
 				"identifier" : {
 					"type" : "id",
 					"value" : "move-in-now"
@@ -296,7 +296,7 @@
 			},
 			{
 				"actions" : ["IF_DATE_SPECIFIC", "RADIO"],
-				"cell" : 26,
+				"cell" : 54,
 				"identifier" : {
 					"type" : "id",
 					"value" : "move-in-date"
@@ -304,7 +304,7 @@
 			},
 			{
 				"actions" : ["IF_DATE_RANGE", "RADIO"],
-				"cell" : 26,
+				"cell" : 54,
 				"identifier" : {
 					"type" : "id",
 					"value" : "move-in-range"
@@ -312,8 +312,8 @@
 			},
 			{
 				"actions" : ["IF_DATE_SPECIFIC", "GET_DATE", "FILL_INPUT_DATE"],
-				"cell" : 26,
-				"date cell" : 27,
+				"date cell" : 55,
+				"cell" : 54,
 				"identifier" : {
 					"type" : "id",
 					"value" : "start"
@@ -321,8 +321,8 @@
 			},
 			{
 				"actions" : ["IF_DATE_RANGE", "GET_DATE", "FILL_INPUT_DATE"],
-				"cell" : 26,
-				"date cell" : 27,
+				"date cell" : 55,
+				"cell" : 54,
 				"identifier" : {
 					"type" : "id",
 					"value" : "start"
@@ -330,8 +330,8 @@
 			},
 			{
 				"actions" : ["IF_DATE_RANGE", "GET_DATE", "FILL_INPUT_DATE"],
-				"cell" : 26,
-				"date cell" : 28,
+				"date cell" : 56,
+				"cell" : 54,
 				"identifier" : {
 					"type" : "id",
 					"value" : "end"
@@ -339,7 +339,7 @@
 			},
 			{
 				"actions" : ["IF_UNKNOWN", "RADIO"],
-				"cell" : 29,
+				"cell" : 57,
 				"identifier" : {
 					"type" : "id",
 					"value" : "renew-option-unknown"
@@ -347,7 +347,7 @@
 			},
 			{
 				"actions" : ["IF_YES", "RADIO"],
-				"cell" : 29,
+				"cell" : 57,
 				"identifier" : {
 					"type" : "id",
 					"value" : "renew-option-yes"
@@ -355,7 +355,7 @@
 			},
 			{
 				"actions" : ["IF_NO", "RADIO", "SUBMIT"],
-				"cell" : 29,
+				"cell" : 57,
 				"identifier" : {
 					"type" : "id",
 					"value" : "renew-option-no"

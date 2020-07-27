@@ -112,6 +112,9 @@ class DOM:
                     sys.exit()
             elif a == "CHECKBOX":
                 e = self.__get_element__(element["identifier"])
+                if not e:
+                    self.log.debug("Skipped [" + str(element["identifier"]) + "]")
+                    return
                 value = element["get result"]
                 self.log.debug("Checkbox [" + str(element["identifier"]) + "] = " + str(value))
 
@@ -194,24 +197,6 @@ class DOM:
                     result = result.replace(element["fluff"], "")
                 
                 return result
-            elif a == "GET_CAT_POLICY":
-                e = self.__get_element__(element["identifier"])
-                identifier = element["cell"]
-                policy = self.ss.get_key(identifier).lower()
-
-                if "cat" in policy:
-                    element["get result"] = "Y"
-                else:
-                    element["get result"] = False
-            elif a == "GET_DOG_POLICY":
-                e = self.__get_element__(element["identifier"])
-                identifier = element["cell"]
-                policy = self.ss.get_key(identifier).lower()
-
-                if "dog" in policy:
-                    element["get result"] = "Y"
-                else:
-                    element["get result"] = False
             elif a == "GET_CELL_DATA":
                 identifier = element["cell"]
                 element["get result"] = self.ss.get_key(identifier)
@@ -242,17 +227,6 @@ class DOM:
                 identifier = element["password"]
                 self.log.debug("Password: " + str(identifier))
                 element["get result"] = credentials.Credentials().get_credentials("private.slr")[str(identifier)]
-            elif a == "GET_PET_POLICY":
-                e = self.__get_element__(element["identifier"])
-                identifier = element["cell"]
-                policy = self.ss.get_key(identifier).lower()
-
-                if "not allowed" in policy:
-                    element["get result"] = "Pets Not Allowed"
-                elif "considered" in policy:
-                    element["get result"] = "Pets Considered"
-                else: # Assumed to be allowed
-                    element["get result"] = "Pets Allowed"
             elif a == "GET_USERNAME": 
                 identifier = element["username"]
                 self.log.debug("Username: " + str(identifier))

@@ -354,7 +354,7 @@
 				}
 			},
 			{
-				"actions" : ["IF_NO", "RADIO", "SUBMIT"],
+				"actions" : ["SUBMIT"],
 				"cell" : 57,
 				"identifier" : {
 					"type" : "id",
@@ -371,236 +371,11 @@
 				}
 			},
 			{
-				"actions" : ["GET_PET_POLICY", "WAIT", "DROPDOWN"],
-				"cell" : 31,
-				"identifier" : {
-					"type" : "id",
-					"value" : "pet_policy"
-				}
-			},
-			{
-				"actions" : ["GET_CAT_POLICY", "CHECKBOX"],
-				"cell" : 31,
-				"identifier" : {
-					"type" : "id",
-					"value" : "pet_types-27"
-				}
-			},
-			{
-				"actions" : ["GET_DOG_POLICY", "CHECKBOX"],
-				"cell" : 31,
-				"identifier" : {
-					"type" : "id",
-					"value" : "pet_types-28"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "DROPDOWN"],
-				"cell" : 32,
-				"identifier" : {
-					"type" : "id",
-					"value" : "lead_paint"
-				}
-			},
-
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 34,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-1"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 35,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-78"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 36,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-79"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 37,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-20"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 38,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-202"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 39,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-15"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 40,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-26"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 41,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-8"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 42,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-7"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 43,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-21"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 44,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-303"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 45,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-200"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 46,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-468"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 47,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-204"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 48,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-6"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 49,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-136"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 50,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-41"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 51,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-207"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 52,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-208"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 53,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[1]-203"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 54,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[8]-50"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 55,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[8]-51"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 56,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[2]-81"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 57,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[2]-45"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"actions" : ["GET_CELL_DATA", "WAIT", "DROPDOWN"],
 				"cell" : 58,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-46"
+					"value" : "pet_policy"
 				}
 			},
 			{
@@ -608,7 +383,7 @@
 				"cell" : 59,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-43"
+					"value" : "pet_types-27"
 				}
 			},
 			{
@@ -616,15 +391,15 @@
 				"cell" : 60,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-113"
+					"value" : "pet_types-28"
 				}
 			},
 			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"actions" : ["GET_CELL_DATA", "DROPDOWN"],
 				"cell" : 61,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-19"
+					"value" : "lead_paint"
 				}
 			},
 			{
@@ -632,7 +407,7 @@
 				"cell" : 62,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-133"
+					"value" : "amenity[1]-423"
 				}
 			},
 			{
@@ -640,7 +415,7 @@
 				"cell" : 63,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-10"
+					"value" : "amenity[1]-1"
 				}
 			},
 			{
@@ -648,7 +423,7 @@
 				"cell" : 64,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-74"
+					"value" : "amenity[1]-78"
 				}
 			},
 			{
@@ -656,7 +431,7 @@
 				"cell" : 65,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-44"
+					"value" : "amenity[1]-79"
 				}
 			},
 			{
@@ -664,7 +439,7 @@
 				"cell" : 66,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-11"
+					"value" : "amenity[1]-20"
 				}
 			},
 			{
@@ -672,7 +447,7 @@
 				"cell" : 67,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[2]-103"
+					"value" : "amenity[1]-202"
 				}
 			},
 			{
@@ -680,7 +455,7 @@
 				"cell" : 68,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-16"
+					"value" : "amenity[1]-15"
 				}
 			},
 			{
@@ -688,7 +463,7 @@
 				"cell" : 69,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-232"
+					"value" : "amenity[1]-26"
 				}
 			},
 			{
@@ -696,7 +471,7 @@
 				"cell" : 70,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-233"
+					"value" : "amenity[1]-80"
 				}
 			},
 			{
@@ -704,7 +479,7 @@
 				"cell" : 71,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-17"
+					"value" : "amenity[1]-8"
 				}
 			},
 			{
@@ -712,7 +487,7 @@
 				"cell" : 72,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-76"
+					"value" : "amenity[1]-7"
 				}
 			},
 			{
@@ -720,7 +495,7 @@
 				"cell" : 73,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-18"
+					"value" : "amenity[1]-82"
 				}
 			},
 			{
@@ -728,7 +503,7 @@
 				"cell" : 74,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-63"
+					"value" : "amenity[1]-21"
 				}
 			},
 			{
@@ -736,7 +511,7 @@
 				"cell" : 75,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-87"
+					"value" : "amenity[1]-357"
 				}
 			},
 			{
@@ -744,7 +519,7 @@
 				"cell" : 76,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-42"
+					"value" : "amenity[1]-355"
 				}
 			},
 			{
@@ -752,7 +527,7 @@
 				"cell" : 77,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-77"
+					"value" : "amenity[1]-351"
 				}
 			},
 			{
@@ -760,7 +535,7 @@
 				"cell" : 78,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[5]-75"
+					"value" : "amenity[1]-303"
 				}
 			},
 			{
@@ -768,7 +543,7 @@
 				"cell" : 79,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-120"
+					"value" : "amenity[1]-200"
 				}
 			},
 			{
@@ -776,7 +551,7 @@
 				"cell" : 80,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-95"
+					"value" : "amenity[1]-468"
 				}
 			},
 			{
@@ -784,7 +559,7 @@
 				"cell" : 81,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-99"
+					"value" : "amenity[1]-204"
 				}
 			},
 			{
@@ -792,7 +567,7 @@
 				"cell" : 82,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-96"
+					"value" : "amenity[1]-71"
 				}
 			},
 			{
@@ -800,7 +575,7 @@
 				"cell" : 83,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-97"
+					"value" : "amenity[1]-227"
 				}
 			},
 			{
@@ -808,7 +583,7 @@
 				"cell" : 84,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-100"
+					"value" : "amenity[1]-6"
 				}
 			},
 			{
@@ -816,7 +591,7 @@
 				"cell" : 85,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-25"
+					"value" : "amenity[1]-205"
 				}
 			},
 			{
@@ -824,7 +599,7 @@
 				"cell" : 86,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[9]-98"
+					"value" : "amenity[1]-136"
 				}
 			},
 			{
@@ -832,7 +607,7 @@
 				"cell" : 87,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-5"
+					"value" : "amenity[1]-206"
 				}
 			},
 			{
@@ -840,7 +615,7 @@
 				"cell" : 88,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-4"
+					"value" : "amenity[1]-41"
 				}
 			},
 			{
@@ -848,7 +623,7 @@
 				"cell" : 89,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-3"
+					"value" : "amenity[1]-207"
 				}
 			},
 			{
@@ -856,7 +631,7 @@
 				"cell" : 90,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-2"
+					"value" : "amenity[1]-208"
 				}
 			},
 			{
@@ -864,7 +639,7 @@
 				"cell" : 91,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-35"
+					"value" : "amenity[1]-203"
 				}
 			},
 			{
@@ -872,7 +647,7 @@
 				"cell" : 92,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-226"
+					"value" : "amenity[8]-50"
 				}
 			},
 			{
@@ -880,15 +655,7 @@
 				"cell" : 93,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-39"
-				}
-			},
-			{
-				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
-				"cell" : 94,
-				"identifier" : {
-					"type" : "id",
-					"value" : "amenity[3]-124"
+					"value" : "amenity[8]-51"
 				}
 			},
 			{
@@ -896,7 +663,7 @@
 				"cell" : 95,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-22"
+					"value" : "amenity[2]-234"
 				}
 			},
 			{
@@ -904,7 +671,7 @@
 				"cell" : 96,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[3]-23"
+					"value" : "amenity[2]-427"
 				}
 			},
 			{
@@ -912,7 +679,7 @@
 				"cell" : 97,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[4]-37"
+					"value" : "amenity[2]-85"
 				}
 			},
 			{
@@ -920,7 +687,7 @@
 				"cell" : 98,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[4]-142"
+					"value" : "amenity[2]-86"
 				}
 			},
 			{
@@ -928,7 +695,7 @@
 				"cell" : 99,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[4]-36"
+					"value" : "amenity[2]-81"
 				}
 			},
 			{
@@ -936,7 +703,7 @@
 				"cell" : 100,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[4]-38"
+					"value" : "amenity[2]-45"
 				}
 			},
 			{
@@ -944,7 +711,7 @@
 				"cell" : 101,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[7]-104"
+					"value" : "amenity[2]-46"
 				}
 			},
 			{
@@ -952,7 +719,7 @@
 				"cell" : 102,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[7]-12"
+					"value" : "amenity[2]-43"
 				}
 			},
 			{
@@ -960,7 +727,7 @@
 				"cell" : 103,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[7]-143"
+					"value" : "amenity[2]-113"
 				}
 			},
 			{
@@ -968,7 +735,7 @@
 				"cell" : 104,
 				"identifier" : {
 					"type" : "id",
-					"value" : "amenity[7]-33"
+					"value" : "amenity[2]-19"
 				}
 			},
 			{
@@ -976,12 +743,428 @@
 				"cell" : 105,
 				"identifier" : {
 					"type" : "id",
+					"value" : "amenity[2]-40"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 106,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-140"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 107,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-216"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 108,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-133"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 109,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-10"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 110,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-74"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 111,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-44"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 112,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-11"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 113,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-103"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 114,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[2]-425"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 115,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-16"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 116,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-17"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 117,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-233"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 118,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-232"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 119,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-76"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 120,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-18"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 121,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-63"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 122,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-87"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 123,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-42"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 124,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-77"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 125,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[5]-75"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 126,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-120"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 127,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-95"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 128,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-70"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 129,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-69"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 130,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-99"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 131,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-96"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 132,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-94"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 133,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-97"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 134,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-100"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 135,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-25"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 136,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-68"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 137,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[9]-98"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 138,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-5"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 139,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-4"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 140,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-3"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 141,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-2"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 142,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-35"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 143,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-226"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 144,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-39"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 145,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-124"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 146,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-22"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 147,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-23"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 148,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[3]-219"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 149,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-37"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 150,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-142"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 151,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-36"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 152,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[4]-38"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 153,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-104"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 154,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-12"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 155,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-143"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 156,
+				"identifier" : {
+					"type" : "id",
+					"value" : "amenity[7]-33"
+				}
+			},
+			{
+				"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+				"cell" : 157,
+				"identifier" : {
+					"type" : "id",
 					"value" : "amenity[7]-9"
 				}
 			},
 			{
 				"actions" : ["GET_CELL_DATA", "FILL_TINYMCE"],
-				"cell" : 117,
+				"cell" : 158,
 				"identifier" : {
 					"type" : "id",
 					"value" : "tinymce"

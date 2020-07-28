@@ -127,6 +127,9 @@ class DOM:
             elif a == "CLICK": self.__click__(element["identifier"])
             elif a == "DROPDOWN":
                 e = self.__get_element__(element["identifier"])
+                if e == None:
+                    self.log.debug("Skipped [" + str(element["identifier"]) + "]")
+                    return
                 value = element["get result"]
                 self.log.debug("Value for dropdown = " + str(value))
 
@@ -415,8 +418,10 @@ class DOM:
             elif a == "RADIO":
                 if element["get result"] == True:
                     e = self.__get_element__(element["identifier"])
-                    if e != None:
-                        e.click()
+                    if e == None:
+                        self.log.debug("Skipped [" + str(element["identifier"]) + "]")
+                        return
+                    e.click()
             elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
             elif a == "UPLOAD_IMAGES":
                 uploader = element["identifier"]

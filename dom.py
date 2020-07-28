@@ -91,6 +91,7 @@ class DOM:
         g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
         self.ss = spreadsheet.Spreadsheet(slurp=g_key) 
         self.address = self.ss.parse_address(self.ss.get_key(0))
+        self.log.warning("Posting for this address: " + str(self.address))
         self.fp_number = self.ss.get_floorplan_number()
     def process_actions(self, element, **kwargs):
         self.log.debug("Processing action list for [" + str(element) + "].")
@@ -175,7 +176,6 @@ class DOM:
                 fp_nb = argument
                 fp_id = self.get_fp_id()
                 e = self.__get_element_fp__(element, fp_id)
-                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
                 value = element["get result"]
                 if value == True:
                     e = self.__get_element_fp__(element, fp_id)
@@ -184,11 +184,11 @@ class DOM:
                 fp_nb = argument
                 fp_id = self.get_fp_id()
                 e = self.__get_element_fp__(element, fp_id)
-                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
-                value = self.ss.get_key(cell)
-                self.log.debug("Value for FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
+                value = element["get result"] #self.ss.get_key(cell)
+                self.log.debug("Value for cell#" + str(cell) + " FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
 
                 for option in e.find_elements_by_tag_name('option'):
+
                     if option.text.strip().lower() == str(value).lower():
                         option.click()
             elif a == "CHECKBOX_FP":
@@ -270,6 +270,10 @@ class DOM:
             elif a == "GET_CELL_DATA_FP":
                 fp_nb = argument
                 cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+
+                if (str(cell) == "182") or (str(cell) == "229") or (str(cell) == "276") or (str(cell) == "323") or (str(cell) == "370") or (str(cell) == "417") or (str(cell) == "464"):
+                    input("Fix bathrooms")
+
                 element["get result"] = self.ss.get_key(cell)
             elif a == "FILL_INPUT_DATE":
                 e = self.__get_element__(element["identifier"])
@@ -327,6 +331,8 @@ class DOM:
                 return result
             elif a == "GET_CELL_DATA":
                 identifier = element["cell"]
+                if str(identifier) == "3":
+                    input("Fill neighborhoods.")
                 element["get result"] = self.ss.get_key(identifier)
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_DATE":
@@ -409,7 +415,8 @@ class DOM:
             elif a == "RADIO":
                 if element["get result"] == True:
                     e = self.__get_element__(element["identifier"])
-                    e.click()
+                    if e != None:
+                        e.click()
             elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
             elif a == "UPLOAD_IMAGES":
                 uploader = element["identifier"]
@@ -471,7 +478,7 @@ class DOM:
                 "type" : element["identifier"]["type"],
                 "value" : element["identifier"]["value"].replace("FP_ID", fp_id)
                 }
-        self.log.debug("Identifier after : " + str(element["identifier"]["value"]))
+        self.log.debug("Identifier after : " + str(identifier["value"]))
 
         e = self.__get_element__(identifier)
 

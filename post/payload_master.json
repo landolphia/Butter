@@ -92,6 +92,8 @@
 					"value": "//form[@action=\"/user/add-listing\"]"
 				}
 			},
+
+
 			{
 				"actions" : ["GET_CELL_DATA", "WAIT", "FILL_INPUT_NOT_NULL", "PRESS_ENTER"],
 				"cell" : 3, 
@@ -101,6 +103,688 @@
 					"value": "property_name"
 				}
 			}
+		],
+		"neighborhoods" : [
+			{ "BU" : [
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-174[convenient_for]-606"
+					},
+					"label" : "convenient for grads BU"
+				},
+
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-174[convenient_for]-607"
+					},
+					"label" : "convenient for staff BU"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-174[convenient_for]-605"
+					},
+					"label" : "convenient for undergrads BU"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 7,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-174[location_id]"
+					},
+					"label" : "searchable neighborhood BU"
+				}
+			]},
+			{ "BC" : [
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-90[convenient_for]-376"
+					},
+					"label" : "convenient for grads BC"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-90[convenient_for]-565"
+					},
+					"label" : "convenient for staff BC"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-90[convenient_for]-374"
+					},
+					"label" : "convenient for undergrads BC"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 8,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-90[location_id]"
+					},
+					"label" : "searchable neighborhood BC"
+				}
+			]},
+			{ "Harvard" : [
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-166[convenient_for]-574"
+					},
+					"label" : "convenient for grads Harvard"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-166[convenient_for]-573"
+					},
+					"label" : "convenient for staff Harvard"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 19,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-166[convenient_for]-575"
+					},
+					"label" : "convenient for Harvard Longwood"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 20,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-166[convenient_for]-576"
+					},
+					"label" : "convenient for Harvard Cambridge"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 21,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-166[convenient_for]-577"
+					},
+					"label" : "convenient for Harvard Allston"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 18,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-166[location_id]"
+					},
+					"label" : "searchable neighborhood Harvard"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 22,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-181[status]-181"
+					},
+					"label" : "Add to Bentley"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 23,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-181[location_id]"
+					},
+					"label" : "Neighborhood Harvard/Bentley"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-181[convenient_for]-620"
+					},
+					"label" : "Convenient for Grads Harvard/Bentley"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-181[convenient_for]-621"
+					},
+					"label" : "Convenient for Staff Harvard/Bentley"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 24,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-176[status]-176"
+					},
+					"label" : "Add to MIT"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 25,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-176[location_id]"
+					},
+					"label" : "Neighborhood Harvard/MIT"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-176[convenient_for]-603"
+					},
+					"label" : "Convenient Grads Harvard/MIT"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-176[convenient_for]-604"
+					},
+					"label" : "Convenient Staff Harvard/MIT"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-176[convenient_for]-602"
+					},
+					"label" : "Convenient undergrads Harvard/MIT"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 26,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[status]-221"
+					},
+					"label" : "Add to Tufts"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 27,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[location_id]"
+					},
+					"label" : "Neighborhood Harvard/Tufts"
+				},
+				{
+					"actions" : [],
+					"action" : ["THE CELL DOESN'T EXIST IN THE SPREADSHEET", "GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[campus_id]-297"
+					},
+					"label" : "searchable Medford/Somerville Harvard/Tufts"
+				},
+				{
+					"actions" : [],
+					"action" : ["THE CELL DOESN'T EXIST IN THE SPREADSHEET", "GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[campus_id]-299"
+					},
+					"label" : "searchable Boston Harvard/Tufts"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[convenient_for]-749"
+					},
+					"label" : "Convenient Grads Harvard/Tufts"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[convenient_for]-751"
+					},
+					"label" : "Convenient Staff Harvard/Tufts"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[convenient_for]-747"
+					},
+					"label" : "Convenient undergrads Harvard/Tufts"
+				},
+				{
+					"actions" : [],
+					"action" : ["THE CELL DOESN'T EXIST IN THE SPREADSHEET", "GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-221[convenient_for]-753"
+					},
+					"label" : "Convenient visiting profs Harvard/Tufts"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 28,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-231[status]-231"
+					},
+					"label" : "Add to UofM"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 29,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-231[location_id]"
+					},
+					"label" : "Neighborhood Harvard/UofM"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-231[convenient_for]-789"
+					},
+					"label" : "Convenient Grads Harvard/UofM"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-231[convenient_for]-791"
+					},
+					"label" : "Convenient Staff Harvard/UofM"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-231[convenient_for]-787"
+					},
+					"label" : "Convenient undergrads Harvard/UofM"
+				}
+			]},
+			{ "Mass Art" : [
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-209[convenient_for]-735"
+					},
+					"label" : "convenient for grads Mass Art"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-209[convenient_for]-737"
+					},
+					"label" : "convenient for staff Mass Art"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-209[convenient_for]-733"
+					},
+					"label" : "convenient for undergrads Mass Art"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 9,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-209[location_id]"
+					},
+					"label" : "searchable neighborhood Mass Art"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 10,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-233[status]-233"
+					},
+					"label" : "Add to Berklee"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 11,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-233[location_id]"
+					},
+					"label" : "Neighborhood Berklee"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-233[convenient_for]-775"
+					},
+					"label" : "Convenient for Grads Berklee"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-233[convenient_for]-777"
+					},
+					"label" : "Convenient for Staff Berklee"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-233[convenient_for]-773"
+					},
+					"label" : "Convenient for undergrads Berklee"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 12,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-171[status]-171"
+					},
+					"label" : "Add to Architectural college"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 13,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-171[location_id]"
+					},
+					"label" : "Neighborhood Architectural college"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-171[convenient_for]-589"
+					},
+					"label" : "Convenient for Grads Architect C"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-171[convenient_for]-590"
+					},
+					"label" : "Convenient for Staff Architect C"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-171[convenient_for]-588"
+					},
+					"label" : "Convenient for undergrads Architect C"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 14,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-89[status]-89"
+					},
+					"label" : "Add to Northeastern"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 15,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-89[location_id]"
+					},
+					"label" : "Neighborhood Northeastern"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-89[convenient_for]-380"
+					},
+					"label" : "Convenient for Grads Northeastern"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-89[convenient_for]-381"
+					},
+					"label" : "Convenient for Staff Northeastern"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-89[convenient_for]-379"
+					},
+					"label" : "Convenient for undergrads Northeastern"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 16,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-227[status]-227"
+					},
+					"label" : "Add to Simmons"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 17,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-227[location_id]"
+					},
+					"label" : "Neighborhood Simmons"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-227[convenient_for]-763"
+					},
+					"label" : "Convenient for Grads Simmons"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-227[convenient_for]-765"
+					},
+					"label" : "Convenient for Staff Simmons"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-227[convenient_for]-761"
+					},
+					"label" : "Convenient for undergrads Simmons"
+				}
+			]},
+			{ "Suffolk" : [
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-111[convenient_for]-420"
+					},
+					"label" : "convenient for grads Suffolk"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-111[convenient_for]-421"
+					},
+					"label" : "convenient for staff Suffolk"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-111[convenient_for]-419"
+					},
+					"label" : "convenient for undergrads Suffolk"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 30,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-111[location_id]"
+					},
+					"label" : "searchable neighborhood Suffolk"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 31,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-144[status]-144"
+					},
+					"label" : "Add to Emerson"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 32,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-144[location_id]"
+					},
+					"label" : "searchable neighborhood Suffolk/Emerson"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-144[convenient_for]-659"
+					},
+					"label" : "convenient for grads Emerson"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-144[convenient_for]-660"
+					},
+					"label" : "convenient for staff Emerson"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-144[convenient_for]-658"
+					},
+					"label" : "convenient for undergrads Emerson"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 33,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-192[status]-192"
+					},
+					"label" : "Add to MGH"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "DROPDOWN"],
+					"cell" : 34,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-192[location_id]"
+					},
+					"label" : "searchable neighborhood Suffolk/MGH"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 4,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-192[convenient_for]-656"
+					},
+					"label" : "convenient for grads MGH"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 5,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-192[convenient_for]-657"
+					},
+					"label" : "convenient for staff MGH"
+				},
+				{
+					"actions" : ["GET_CELL_DATA", "CHECKBOX"],
+					"cell" : 6,
+					"identifier" : {
+						"type" : "id",
+						"value" : "location-fieldset-192[convenient_for]-655"
+					},
+					"label" : "convenient for undergrads MGH"
+				}
+			]}
 		],
 		"rent" : [
 			{
@@ -358,7 +1042,7 @@
 				"cell" : 57,
 				"identifier" : {
 					"type" : "id",
-					"value" : "renew-option-no"
+					"value" : "move-in-range"
 				}
 			}
 		],

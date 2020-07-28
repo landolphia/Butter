@@ -17,8 +17,8 @@ SCRAPINGS = "./scrape/scrapings.xlsx"
 MAX_COLUMN_WIDTH = 60
 
 # Slurp
-LISTING = "./post/listing_master_fp.xlsx"
-SHEET_NAME = 0
+LISTING = "./post/listings.xlsx"
+SHEET_NAME = 1
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
 

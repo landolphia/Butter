@@ -116,10 +116,13 @@ def main():
         sys.exit()
 
     navigation.Navigator(arguments["offline"], arguments["mode"],  arguments["mode"] == "POST_TEST")
+
     log.debug("Finished in %s seconds." % (time.time() - start_time))
     log.error("TODO Compile payload element into arrays when actions are the same.")
     log.error("TODO Add required to json object?")
     log.error("TODO Add picture folders info in spreadsheet")
+    log.error("TODO Missing visiting professor, and  medford/boston for tufts harvard.")
+
     input("Check that the data has been entered correctly and press ENTER.")
 
 main()

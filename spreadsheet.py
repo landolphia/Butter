@@ -18,7 +18,7 @@ MAX_COLUMN_WIDTH = 60
 
 # Slurp
 LISTING = "./post/listings.xlsx"
-SHEET_NAME = 1
+SHEET_NAME = 3
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
 
@@ -56,11 +56,13 @@ class Spreadsheet:
         self.fp_offset =  FP_LENGTH
     def cell_exists(self, depth): return self.data.shape[0] > depth  # Used to determine if there are any more floorplans
     def get_floorplan_number(self):
+        toggle = self.get_key(36)
         i = 0
-        offset = FP_START
-        while (self.cell_exists(offset)):
-            offset = offset + FP_LENGTH
-            i = i+1
+        if toggle:
+            offset = FP_START
+            while (self.cell_exists(offset)):
+                offset = offset + FP_LENGTH
+                i = i+1
 
         return i
     def get_key(self, key): return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]

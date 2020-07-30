@@ -274,8 +274,6 @@ class DOM:
                 fp_nb = argument
                 cell = element["cell"] + (fp_nb * self.ss.fp_offset)
 
-                if (str(cell) == "182") or (str(cell) == "229") or (str(cell) == "276") or (str(cell) == "323") or (str(cell) == "370") or (str(cell) == "417") or (str(cell) == "464"):
-                    input("Fix bathrooms")
 
                 element["get result"] = self.ss.get_key(cell)
             elif a == "FILL_INPUT_DATE":
@@ -334,8 +332,6 @@ class DOM:
                 return result
             elif a == "GET_CELL_DATA":
                 identifier = element["cell"]
-                if str(identifier) == "3":
-                    input("Fill neighborhoods.")
                 element["get result"] = self.ss.get_key(identifier)
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_DATE":

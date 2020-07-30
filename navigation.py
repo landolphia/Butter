@@ -114,10 +114,10 @@ class Navigator:
                 #    "login" : "https://offcampus.bu.edu/login/",
                 #    "add listing" : "https://offcampus.bu.edu/user/add-listing/"
                 #},
-                #{
-                #    "login" : "https://offcampushousing.bc.edu/login/",
-                #    "add listing" : "https://offcampushousing.bc.edu/user/add-listing/"
-                #},
+                {
+                    "login" : "https://offcampushousing.bc.edu/login/",
+                    "add listing" : "https://offcampushousing.bc.edu/user/add-listing/"
+                },
                 #{
                 #    "login" : "https://offcampus.massart.edu/login/",
                 #    "add listing" : "https://offcampus.massart.edu/user/add-listing/"
@@ -126,10 +126,10 @@ class Navigator:
                 #    "login" : "https://www.harvardhousingoffcampus.com/login/",
                 #    "add listing" : "https://www.harvardhousingoffcampus.com/user/add-listing/"
                 #},
-                {
-                    "login" : "https://offcampushousing.suffolk.edu/login/",
-                    "add listing" : "https://offcampushousing.suffolk.edu/user/add-listing/"
-                }
+                #{
+                #    "login" : "https://offcampushousing.suffolk.edu/login/",
+                #    "add listing" : "https://offcampushousing.suffolk.edu/user/add-listing/"
+                #}
         ]
 
     def __init_poster_test__(self):
@@ -150,7 +150,6 @@ class Navigator:
                     for e in self.pl.run_once[p]:
                         self.dom.process_actions(e)
 
-            self.add_task("TODO searchable neighborhoods")
             self.log.warning("Add date parsing.")
             self.log.warning("Email addresses and urls will be removed from the description, leading to the amenities maybe not saving.")
             self.log.warning("Check cells' #s after  amenities.")
@@ -168,7 +167,7 @@ class Navigator:
                 i = i + 1
 
 
-            #self.task_list()
+            self.task_list()
             input("One site down.")
     def add_task(self, task):
         self.log.debug(task)

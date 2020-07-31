@@ -152,7 +152,7 @@ class DOM:
                 value = self.ss.get_key(cell)
 
                 if not value:
-                    self.log.ERROR("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
+                    self.log.error("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
                     sys.exit()
 
                 value = self.ss.parse_date(value)
@@ -228,9 +228,10 @@ class DOM:
                 e = self.__get_element_fp__(element, fp_id)
                 cell = element["cell"] + (fp_nb * self.ss.fp_offset)
                 value = self.ss.get_key(cell)
-                value = (str(value).lower() == "now")
+                value = (str(value).lower() == "now") or (str(value).lower() == "ongoing")
                 element["get result"] = value
                 if not value:
+                    self.log.warning("The value for " + str(element["identifier"]) + " is missing. Skipping.")
                     return
             elif a == "IF_DATE_NOT_FP":
                 fp_nb = argument
@@ -241,6 +242,7 @@ class DOM:
                 value = (str(value).lower() == "not available")
                 element["get result"] = value
                 if not value:
+                    self.log.warning("The value for " + str(element["identifier"]) + " is missing. Skipping.")
                     return
             elif a == "IF_DATE_RANGE_FP":
                 fp_nb = argument
@@ -251,17 +253,18 @@ class DOM:
                 value = (str(value).lower() == "between two dates")
                 element["get result"] = value
                 if not value:
+                    self.log.warning("The value for " + str(element["identifier"]) + " is missing. Skipping.")
                     return
             elif a == "IF_DATE_SPECIFIC_FP":
                 fp_nb = argument
                 fp_id = self.get_fp_id()
                 e = self.__get_element_fp__(element, fp_id)
                 cell = element["cell"] + (fp_nb * self.ss.fp_offset)
-                value = self.ss.get_key(cell)
-                value = (str(value).lower() == "between two dates")
-                value = ("a specific date" in self.ss.get_key(element["cell"]).lower())
+                value = ("a specific date" in self.ss.get_key(cell).lower())
+                self.log.debug("Value for IF_DATE_SPECIFIC_FP = " + str(value))
                 element["get result"] = value
                 if not value:
+                    self.log.warning("The value for " + str(element["identifier"]) + " is missing. Skipping.")
                     return
             elif a == "WAIT_FP":
                 fp_id = self.get_fp_id()
@@ -276,12 +279,15 @@ class DOM:
 
 
                 element["get result"] = self.ss.get_key(cell)
+
+                cell = str(element["cell"])
+                self.log.debug("Cell #" + str(cell))
             elif a == "FILL_INPUT_DATE":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
 
                 if not value:
-                    self.log.ERROR("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
+                    self.log.error("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
                     sys.exit()
 
                 value = self.ss.parse_date(value)
@@ -333,10 +339,12 @@ class DOM:
             elif a == "GET_CELL_DATA":
                 identifier = element["cell"]
                 element["get result"] = self.ss.get_key(identifier)
+
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_DATE":
                 identifier = element["date cell"]
-                element["get result"] = self.ss.get_key(identifier)
+                value = self.ss.get_key(identifier)
+                element["get result"] = value
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_ELEMENTS_ATTRIBUTE":
                 #TODO handle StaleElement exception
@@ -564,7 +572,7 @@ class DOM:
         element = self.__get_element_fp__(page, name, fp_nb, fp_id)
         value = self.payload.get_value(page, name + str(fp_nb))
         if not value:
-            self.log.ERROR("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
+            self.log.error("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
             sys.exit()
 
         self.driver.execute_script("arguments[0].value = '" + value + "'", element)

@@ -18,7 +18,7 @@ MAX_COLUMN_WIDTH = 60
 
 # Slurp
 LISTING = "./post/listings.xlsx"
-SHEET_NAME = 3
+SHEET_NAME = 9
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
 
@@ -49,7 +49,7 @@ class Spreadsheet:
             self.log.error("Couldn't find the listing to post.\nThe file should be called '" + LISTING + "' and be placed in ./post/.")
             sys.exit()
 
-        self.data = pd.read_excel(LISTING, sheet_name = SHEET_NAME)
+        self.data = pd.read_excel(LISTING, sheet_name = SHEET_NAME, converters={"Value" : str})
         # This replaces empty cells with None (instead of nan)
         self.data = self.data.where(pd.notnull(self.data), None)
         self.geo = geohelper.GeoHelper(creds)
@@ -65,13 +65,23 @@ class Spreadsheet:
                 i = i+1
 
         return i
-    def get_key(self, key): return self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
+    def get_key(self, key):
+        result = self.data.iloc[key+VERT_OFFSET][HORIZ_OFFSET]
+
+        if result == "True": result = True
+        if result == "False": result = False 
+        if result == "None": result = None 
+
+        return result
     def parse_date(self, date):
         if date == None: return None
-        if not isinstance(date, datetime):
+        date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+
+        if not isinstance(date , datetime):
             self.log.error("This date is not valid \'" + str(date) + "\'.\nPlease check the data in the spreadsheet.")
             self.log.warning("This is the only format accepted for dates 'DD/MM/202Y'.")
             sys.exit()
+
         date = date.strftime("%m/%d/%Y")
 
         return date
@@ -97,7 +107,7 @@ class Spreadsheet:
                 "state": result[3],
                 "zip": zipcode
                 }    
-        # Output
+    # Output
     def get_columns(self, data):
         columns = []
 

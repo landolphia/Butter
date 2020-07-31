@@ -871,7 +871,7 @@
 				}
 			},
 			{
-				"actions" : ["IF_NOT_FP", "WAIT", "GET_CELL_DATA", "WAIT", "DROPDOWN"],
+				"actions" : ["IF_NOT_FP", "GET_CELL_DATA", "WAIT", "DROPDOWN"],
 				"cell" : 37,
 				"fp cell" : 36,
 				"identifier" : {

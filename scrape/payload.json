@@ -248,15 +248,6 @@
 			{
 				"actions" : ["GET_ATTRIBUTE"],
 				"attribute" : "innerText",
-				"fluff" : "Broker notes\n",
-				"identifier" : {
-					"type" : "xpath",
-					"value"	: "//strong[text()='Broker notes']/.."
-				}
-			},
-			{
-				"actions" : ["GET_ATTRIBUTE"],
-				"attribute" : "innerText",
 				"fluff" : "Remarks\n",
 				"identifier" : {
 					"type" : "xpath",
@@ -363,12 +354,12 @@
 				}
 			},
 			{
-				"actions" : ["GET_ATTRIBUTE"],
+				"actions" : ["GET_ATTRIBUTE_AND_CONCATENATE"],
 				"attribute" : "innerText",
-				"fluff" : "Broker notes\n",
+				"fluff" : "Broker Notes\n",
 				"identifier" : {
 					"type" : "xpath",
-					"value"	: "//strong[text()='Broker notes']/.."
+					"value"	: "//strong[text()='Broker Notes']/.."
 				}
 			},
 			{

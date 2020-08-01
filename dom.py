@@ -330,11 +330,32 @@ class DOM:
                     self.log.debug("Attribute = " + str(element["attribute"]))
 
                 e = self.__get_element__(element["identifier"])
+
                 if e:
-                    #result = self.__get_attribute__(e, element["attribute"])
                     attribute = e.get_attribute(element["attribute"])
                     self.log.debug("Attribute => " + str(attribute))
                     result = attribute
+                
+                if "fluff" in element:
+                    result = result.replace(element["fluff"], "")
+                
+                return result
+            elif a == "GET_ATTRIBUTE_AND_CONCATENATE":
+                result = "-"
+                if not "attribute" in element:
+                    self.log.error("Missing attribute.")
+                    sys.exit()
+                else:
+                    self.log.debug("Attribute = " + str(element["attribute"]))
+
+                elements = self.__get_elements__(element["identifier"])
+
+                result = ""
+
+                for e in elements:
+                        result = result + e.get_attribute(element["attribute"])
+
+                self.log.debug("Attribute => %s"% str(result).encode('utf-8'))
                 
                 if "fluff" in element:
                     result = result.replace(element["fluff"], "")

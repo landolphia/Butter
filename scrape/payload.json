@@ -210,6 +210,24 @@
 				}
 			},
 			{
+				"actions" : ["GET_ATTRIBUTE", "STRIP_DIVS"],
+				"attribute" : "innerText",
+				"fluff" : "Features\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Features']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE", "STRIP_DIVS"],
+				"attribute" : "innerText",
+				"fluff" : "Tags\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Tags']/.."
+				}
+			},
+			{
 				"actions" : ["GET_ATTRIBUTE"],
 				"attribute" : "innerText",
 				"fluff" : "Key / Entry Info\n",
@@ -225,6 +243,24 @@
 				"identifier" : {
 					"type" : "xpath",
 					"value"	: "//strong[text()='Showing & Tenant Info']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Broker notes\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Broker notes']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Remarks\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Remarks']/.."
 				}
 			},
 			{
@@ -329,12 +365,31 @@
 			{
 				"actions" : ["GET_ATTRIBUTE"],
 				"attribute" : "innerText",
+				"fluff" : "Broker notes\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Broker notes']/.."
+				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
 				"fluff" : "Internal Notes\n",
 				"identifier" : {
 					"type" : "xpath",
 					"value"	: "//strong[text()='Internal Notes']/.."
 				}
+			},
+			{
+				"actions" : ["GET_ATTRIBUTE"],
+				"attribute" : "innerText",
+				"fluff" : "Public Descriptions\n",
+				"identifier" : {
+					"type" : "xpath",
+					"value"	: "//strong[text()='Public Descriptions']/.."
+				}
 			}
+			
 		]
 	}
 }

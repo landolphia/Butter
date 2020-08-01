@@ -88,6 +88,7 @@ class DOM:
             self.log.error("ChromeDriver not found. Exiting. [%s]" % self.driver)
             sys.exit()
 
+        self.log.debug("Fix this: don't parse address/etc when scraping.")
         g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
         self.ss = spreadsheet.Spreadsheet(slurp=g_key) 
         self.address = self.ss.parse_address(self.ss.get_key(0))
@@ -100,7 +101,7 @@ class DOM:
         for k in kwargs:
             if k == "identifier":
                 argument = kwargs[k]
-            if k == "iteration":
+            elif k == "iteration":
                 argument = kwargs[k]
             else:
                 self.log.warning("Unrecognized argument [" + str(k) + "].")
@@ -330,7 +331,10 @@ class DOM:
 
                 e = self.__get_element__(element["identifier"])
                 if e:
-                    result = self.__get_attribute__(e, element["attribute"])
+                    #result = self.__get_attribute__(e, element["attribute"])
+                    attribute = e.get_attribute(element["attribute"])
+                    self.log.debug("Attribute => " + str(attribute))
+                    result = attribute
                 
                 if "fluff" in element:
                     result = result.replace(element["fluff"], "")
@@ -357,7 +361,10 @@ class DOM:
                 elements = self.__get_elements__(element["identifier"])
                 result = []
                 for e in elements:
-                    result.append(self.__get_attribute__(e, element["attribute"]))
+                    #result.append(self.__get_attribute__(e, element["attribute"]))
+                    attribute = e.get_attribute(element["attribute"])
+                    self.log.debug("Attribute => " + str(attribute))
+                    result.append(attribute)
 
                 return result
             elif a == "GET_PASSWORD":

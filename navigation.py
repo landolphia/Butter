@@ -5,6 +5,7 @@ import sys
 
 import dom
 import payload
+import spreadsheet
 
 
 OFFLINE_CACHE = "./scrape/offline_data.json"
@@ -36,6 +37,8 @@ class Navigator:
             self.dom = dom.DOM()
             self.__init_poster__()
         elif self.pl.mode == "POST_TEST":
+            self.log.debug("Fix availability for mfps for new template.")
+            sys.exit()
             self.dom = dom.DOM()
             self.__init_poster_test__()
         else:
@@ -52,7 +55,7 @@ class Navigator:
         with open(LEADS_IDS, 'r') as f:
             self.leads = json.load(f)
         
-        self.log.warning("This is the leads: " + str(self.leads))
+        self.log.warning("Leads = " + str(self.leads))
     def __get_offline_data__(self):
         if not os.path.isfile(OFFLINE_CACHE):
             self.log.warning("Offline cache file doesn't exist. Downloading data to file.")
@@ -64,7 +67,7 @@ class Navigator:
                 return json.load(f)
     def __get_rentals_list__(self, identifier):
         self.log.error("Pick up here.")
-        self.log.warnign("START BY CONVERTION payload.json to new format FULLY")
+        self.log.warning("START BY CONVERTION payload.json to new format FULLY")
         #DECIDE HOW THE FLOW GOES
         #DO I HAVE PASSIVE ACTIONS VS ACTIVE (AUTO TRIGGER?)
         #HOW DO I DEFINE THE FLOW?
@@ -91,15 +94,19 @@ class Navigator:
 
         # Loop units for each leads id
         units = {}
+        i = 0
         for l in self.leads:
             units[str(l)] = []
             for u in unit_ids[str(l)]:
                 unit = {}
+                i = i + 1
+                #if i > 25: break
                 for e in self.pl.repeat["unit"]:
                     result = self.dom.process_actions(e, identifier=u)
                     if "fluff" in e:
                         unit[e["fluff"].strip()] = result
                 units[str(l)].append(unit)
+        self.log.warning(str(i) + "unit" + ("s" if i>1 else "") + " scraped.")
 
         for l in self.leads:
             self.log.warning("L: " + str(l))

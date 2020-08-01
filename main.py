@@ -116,7 +116,18 @@ def main():
         sys.exit()
 
     navigation.Navigator(arguments["offline"], arguments["mode"],  arguments["mode"] == "POST_TEST")
+    
+    #    #TODO check id field becaus if it's loaded everything *should* be loaded.
+    #    log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
+    #    print("Working on: customizable lead id, store data cache on every run and date them, complete overhaul.")
 
+    #    payload = payload2.Payload2()
+    #    scr  = scraper.Scraper(payload, arguments["offline"])
+    #    units = scr.get_units()
+    #    log.info("Scraped " + str(len(units)) + " unit" + ("s" if len(units) > 1 else "") + ".")
+    #    scrapings.Scrapings().create(units, scr.get_lead_id())
+
+    #THat's for post
     log.debug("Finished in %s seconds." % (time.time() - start_time))
     log.error("TODO Compile payload element into arrays when actions are the same.")
     log.error("TODO Add required to json object?")
@@ -124,5 +135,11 @@ def main():
     log.error("TODO Missing visiting professor, and  medford/boston for tufts harvard.")
 
     input("Check that the data has been entered correctly and press ENTER.")
+
+    #That's  for scrape
+    #Look into features and keywords and other categories I might have missed.
+    #-> Remove divs from features.
+    #Do the things I said I was going to do with the scraper.
+    
 
 main()

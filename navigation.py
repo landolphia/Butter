@@ -100,13 +100,12 @@ class Navigator:
             for u in unit_ids[str(l)]:
                 unit = {}
                 i = i + 1
-                #if i > 25: break
                 for e in self.pl.repeat["unit"]:
                     result = self.dom.process_actions(e, identifier=u)
                     if "fluff" in e:
                         unit[e["fluff"].strip()] = result
                 units[str(l)].append(unit)
-        self.log.warning(str(i) + "unit" + ("s" if i>1 else "") + " scraped.")
+        self.log.info(str(i) + "unit" + ("s" if i>1 else "") + " scraped.")
 
         return units
     # POSTER TEST

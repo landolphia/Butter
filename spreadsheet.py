@@ -149,7 +149,6 @@ class Spreadsheet:
             # Getting columns width based on content
             widths = [0] * len(labels)
             for unit in data[lead]:
-                self.log.warning("Processing unit #" + unit["ID"])
                 col = 0
                 for key in unit:
                     widths[col] = min([max([len(labels[col]), len(unit[key])]), MAX_COLUMN_WIDTH])
@@ -163,10 +162,10 @@ class Spreadsheet:
 
             # Writing keywords labels
             row = 0
-            key_start = col
+            key_start = col + 1
             for k in kw.get_keywords():
-                worksheet.write(row, col, ", ".join(k["keywords"]), color_formats[k["color"]]["bright"])
                 col = col + 1
+                worksheet.write(row, col, ", ".join(k["keywords"]), color_formats[k["color"]]["bright"])
 
             # Filling in worksheet with data
             row = 2

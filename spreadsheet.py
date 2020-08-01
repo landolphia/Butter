@@ -160,33 +160,42 @@ class Spreadsheet:
             for w in widths:
                 worksheet.set_column(col, col, widths[col])
                 col = col + 1
-                row = 1
+
+            # Writing keywords labels
+            row = 0
+            key_start = col
+            for k in kw.get_keywords():
+                worksheet.write(row, col, ", ".join(k["keywords"]), color_formats[k["color"]]["bright"])
+                col = col + 1
 
             # Filling in worksheet with data
+            row = 2
             for unit in data[lead]:
                 col = 0
                 for key in unit:
                     kw_found = False
-                    for k in kw.get_keywords():
-                        if str(k).lower() in str(unit[key]).lower():
-                            kw_found = k 
-                            self.log.debug("Keyword found [" + str(k) + "] in (" + unit[key] + ")")
-                            break
+                    color = False
+                    key_offset = 0
+                    offset = 0
+                    for group in kw.get_keywords():
+                        for k in group["keywords"]:
+                            if str(k).lower() in str(unit[key]).lower():
+                                color = group["color"]
+                                kw_found = k 
+                                self.log.debug("Keyword found [" + str(k) + "] in (%s)"% str(unit[key]).encode('utf-8'))
+                                offset = key_offset
+                                break
+                        key_offset = key_offset + 1
                     if not (kw_found == False):
-                        worksheet.write(row, col, unit[key], color_formats[kw.get_keywords()[kw_found]]["dim"])
+                        worksheet.write(row, col, unit[key], color_formats[color]["dim"])
+                        worksheet.write(row, key_start + offset, "x", color_formats[color]["dim"])
                     else:
                         worksheet.write(row, col, unit[key], not_bold)
                     worksheet.set_row(row, 16)
                     col = col + 1
                 row = row + 1
 
-            # Write key to spreadsheet
-            row = row + 2
-            for k in kw.get_keywords():
-                worksheet.write(row, 0, "", color_formats[kw.get_keywords()[k]]["bright"])
-                worksheet.write(row, 1, str(k), color_formats[kw.get_keywords()[k]]["dim"])
-                row = row + 1
-
         workbook.close()
 
         self.log.info(str(SCRAPINGS) + " created.")
+        self.log.debug("Fix broker notes (elements vs element) and features (remove divs)")

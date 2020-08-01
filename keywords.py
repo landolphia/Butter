@@ -11,7 +11,6 @@ class Keywords:
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Keywords.")
 
-
         self.colors = None
 
         self.load_colors()
@@ -27,14 +26,22 @@ class Keywords:
     def get_keywords(self): return self.keywords
     def get_colors(self): return self.colors
     def get_color(self, kw):
-        if not (self.keywords[kw]):
+        found = false
+        color = None
+        for group in self.keywords:
+            if (kw in group["keywords"]):
+                found = true
+                color = group["color"]
+                break
+
+        if not found:
             self.log.error("Keyword [" + str(kw) + "] doesn't exist. Can't apply color to cell.")
             sys.exit()
 
         default = ["#C0C0C0", "#E0E0E0"]
 
         for c in self.colors:
-            if c == self.keywords[kw]:
+            if c == color:
                 self.log.warning("Found color for [" + str(kw) + "] = [" + str(c) + "]")
                 return c
 

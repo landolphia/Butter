@@ -108,11 +108,6 @@ class Navigator:
                 units[str(l)].append(unit)
         self.log.warning(str(i) + "unit" + ("s" if i>1 else "") + " scraped.")
 
-        for l in self.leads:
-            self.log.warning("L: " + str(l))
-            for u in units[str(l)]:
-                self.log.warning("Us: " + str(u))
-
         return units
     # POSTER TEST
     def __get_sites__(self):

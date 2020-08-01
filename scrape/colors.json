@@ -1,7 +1,8 @@
 {
 	"red"		: ["#FF0000", "#FF9999"],
-	"green"		: ["#00FF00", "#99FF99"],
-	"blue"		: ["#0000FF", "#9999FF"],
-	"yellow"	: ["#FFFF00", "#FFFF99"],
-	"emerald"	: ["#98F9D6", "#76D7C4"]
+	"green"		: ["#0FA37A", "#54C1A3"],
+	"blue"		: ["#1B59A3", "#5D8AC1"],
+	"yellow"	: ["#F9A217", "#FFC76F"],
+	"orange"	: ["#F96917", "#FFA36F"],
+	"candy"		: ["#E398C3", "#F2C3DD"]
 }

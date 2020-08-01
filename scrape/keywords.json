@@ -1,7 +1,26 @@
-{
-	"dog": "red",
-       	"laundry": "green",
-	"dishwasher": "blue",
-	"commonwealth": "yellow",
-	"cat": "emerald"
-}
+[
+	{
+		"keywords" : ["de"],
+		"color" : "yellow"
+	},
+	{
+		"keywords" : ["family friendly", "safe for children", "children", "under 6", "under six"],
+		"color" : "red"
+	},
+	{
+		"keywords" : ["new construction"],
+		"color" : "blue"
+	},
+	{
+		"keywords" : ["lead", "lead paint", "lead hazard"], 
+		"color" : "candy"
+	},
+	{
+		"keywords" : ["certified", "lead certificate"],	
+		"color" : "orange"
+	},
+	{
+		"keywords" : ["deleaded", "de-leaded", "no lead", "certified deleaded", "lead-free", "lead free"],
+		"color" : "green"
+	}
+]

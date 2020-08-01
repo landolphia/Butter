@@ -176,19 +176,16 @@ class Spreadsheet:
                     kw_found = False
                     color = False
                     key_offset = 0
-                    offset = 0
                     for group in kw.get_keywords():
                         for k in group["keywords"]:
                             if str(k).lower() in str(unit[key]).lower():
                                 color = group["color"]
                                 kw_found = k 
                                 self.log.debug("Keyword found [" + str(k) + "] in (%s)"% str(unit[key]).encode('utf-8'))
-                                offset = key_offset
-                                break
+                                worksheet.write(row, key_start + key_offset, "", color_formats[color]["dim"])
                         key_offset = key_offset + 1
                     if not (kw_found == False):
                         worksheet.write(row, col, unit[key], color_formats[color]["dim"])
-                        worksheet.write(row, key_start + offset, "x", color_formats[color]["dim"])
                     else:
                         worksheet.write(row, col, unit[key], not_bold)
                     worksheet.set_row(row, 16)

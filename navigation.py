@@ -12,11 +12,11 @@ OFFLINE_CACHE = "./scrape/offline_data.json"
 LEADS_IDS = "./scrape/leads.json"
 
 class Navigator:
-    def __init__(self, offline, mode, test):
+    def __init__(self, offline, mode):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Navigator.")
 
-        self.pl = payload.Payload(mode, test)
+        self.pl = payload.Payload(mode)
 
         if self.pl.mode == "SCRAPE":
             if offline:
@@ -29,18 +29,12 @@ class Navigator:
             with open(OFFLINE_CACHE, 'w') as f:
                 json.dump(self.units, f) 
 
-            #TODO FIXME scrape vs post?
             spreadsheet.Spreadsheet(output=self.units)
         elif self.pl.mode == "POST":
-            print("Posting has been disabled in this version.")
-            sys.exit()
-            self.dom = dom.DOM()
-            self.__init_poster__()
-        elif self.pl.mode == "POST_TEST":
             self.log.debug("Fix availability for mfps for new template.")
             sys.exit()
             self.dom = dom.DOM()
-            self.__init_poster_test__()
+            self.__init_poster__()
         else:
             self.log.error("[" + self.pl.mode + "] is not a valid mode.")
             sys.exit()
@@ -108,7 +102,7 @@ class Navigator:
         self.log.info(str(i) + "unit" + ("s" if i>1 else "") + " scraped.")
 
         return units
-    # POSTER TEST
+    # POSTER
     def __get_sites__(self):
         return [
                 #{
@@ -133,7 +127,7 @@ class Navigator:
                 #}
         ]
 
-    def __init_poster_test__(self):
+    def __init_poster__(self):
         self.log.debug("Initializing Poster.")
 
         #TODO extract tasks to module?
@@ -175,92 +169,3 @@ class Navigator:
         self.tasks.append(task)
     def task_list(self):
         self.dom.task_list(self.tasks)
-
-    # POSTER
-    def __init_poster__(self):
-        self.log.debug("Initializing Poster.")
-
-        #TODO extract tasks to module?
-        self.tasks = []
-
-        # Process run once 
-        for p in self.pl.run_once:
-            self.log.debug("Run once : " + str(p))
-            for e in self.pl.run_once[p]:
-                self.dom.process_actions(e)
-
-#/FLOORPLANS
-#    def fill_floorplans(self):
-#        i = 0
-#        fp_number = self.payload.get_value("floorplans", "total number")
-#
-#        while i < fp_number:
-#            # FIXME Should click edit instead of add for the first floorplan
-#            # I can probably find the element with some kind of sibling logic
-#            self.elements.wait("floorplans", "link")
-#            self.elements.click("floorplans", "link")
-#
-#            self.elements.wait("floorplans", "add link")
-#            self.elements.click("floorplans", "add link")
-#
-#            url = str(self.elements.current_url())
-#            fp_id = url.rsplit('/', 1)[-1]
-#            self.log.debug("Filling floorplan #" + str(i) + " [ID=" + str(fp_id) + "]")
-#
-#            self.elements.fill_input_fp("floorplans", "name", i, fp_id)
-#            self.elements.fill_input_fp("floorplans", "specials", i, fp_id)
-#
-#            self.elements.dropdown_fp("floorplans", "bedrooms", i, fp_id)
-#            self.elements.dropdown_fp("floorplans", "bathrooms", i, fp_id)
-#            self.elements.dropdown_fp("floorplans", "occupants", i, fp_id)
-#
-#            self.elements.fill_input_fp("floorplans", "square feet", i, fp_id)
-#            self.elements.fill_input_money_fp("floorplans", "monthly rent", i, fp_id)
-#
-#            self.elements.dropdown_fp("floorplans", "rental type", i, fp_id)
-#            self.elements.dropdown_fp("floorplans", "occupants", i, fp_id)
-#
-#            self.elements.checkbox_fp("floorplans", "ac", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "carpet", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "dining room", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "disability access", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "dishwasher", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "fireplace", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "furnished", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "garbage disposal", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "hardwood", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "high-speed internet", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "living room", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "microwave", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "patio", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "private garden", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "shared garden", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "smoke free", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "additional storage", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "included storage", i, fp_id)
-#            self.elements.checkbox_fp("floorplans", "study", i, fp_id)
-#
-#            # Floorplans/Availability
-#            self.elements.radio_fp("floorplans", "availability not", i, fp_id)
-#            self.elements.radio_fp("floorplans", "availability ongoing", i, fp_id)
-#
-#            if self.elements.radio_fp("floorplans", "availability specific", i, fp_id):
-#                self.elements.fill_input_date_fp("floorplans", "start date", i, fp_id)
-#
-#            if self.elements.radio_fp("floorplans", "availability range", i, fp_id):
-#                self.elements.fill_input_date_fp("floorplans", "start date", i, fp_id)
-#                self.elements.fill_input_date_fp("floorplans", "end date", i, fp_id)
-#
-#            # Floorplans/Description++
-#
-#            self.elements.fill_input_fp("floorplans", "description", i, fp_id)
-#            self.elements.fill_input_fp("floorplans", "virtual tour", i, fp_id)
-#            self.elements.fill_input_fp("floorplans", "webpage", i, fp_id)
-#            self.elements.fill_input_fp("floorplans", "lease", i, fp_id)
-#
-#            self.add_task("If the specific floorplan [" + str(fp_id) + "] has a photo you need to add it manually.")
-#            #self.send_keys_fp_by_id("floorplans", "image")
-#
-#            self.elements.submit_fp("floorplans", "name", i, fp_id)
-#
-#            i = i + 1

@@ -48,8 +48,6 @@ def process_args(args):
             logLevel = logging.INFO
         elif a == "POST":
             app_mode = "POST"
-        elif a == "POST_TEST":
-            app_mode = "POST_TEST"
         elif a == "SCRAPE":
             app_mode = "SCRAPE"
         elif a == "OFFLINE":
@@ -110,12 +108,12 @@ def main():
 
     start_time = time.time()
 
-    if not arguments["mode"] in ["SCRAPE", "POST", "POST_TEST"]:
+    if not arguments["mode"] in ["SCRAPE", "POST"]:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. Use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
         instructions(None)
         sys.exit()
 
-    navigation.Navigator(arguments["offline"], arguments["mode"],  arguments["mode"] == "POST_TEST")
+    navigation.Navigator(arguments["offline"], arguments["mode"])
     
     #    #TODO check id field becaus if it's loaded everything *should* be loaded.
     #    log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")

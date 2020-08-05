@@ -4,19 +4,15 @@ import os
 import sys
 
 
-PAYLOAD_FILE = "payload.json"
-PAYLOAD_TEST = "payload_master.json"
+PAYLOAD_FILE = "payload_master.json"
 
 class Payload:
-    def __init__(self, mode, test):
+    def __init__(self, mode):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Payload.")
 
         self.mode = mode
-        if test:
-            self.payload_file = "./post/" + PAYLOAD_TEST 
-        else:
-            self.payload_file = mode.lower() + "/" + PAYLOAD_FILE 
+        self.payload_file = mode.lower() + "/" + PAYLOAD_FILE 
 
         if not os.path.isfile(self.payload_file):
             self.log.error("Couldn't find the payload file. [" + self.payload_file+ "].")

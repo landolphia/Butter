@@ -7,7 +7,7 @@ import navigation
 from logging import handlers
 
 
-VERSION = "0.3"
+VERSION = "0.9"
 
 
 def init_log(logLevel):
@@ -42,18 +42,20 @@ def process_args(args):
     for a in args:
         if a == "DEBUG":
             logLevel = logging.DEBUG
-        elif a == "WARNING":
-            logLevel = logging.WARNING
+        elif a == "HELP":
+            manual = True
         elif a == "INFO":
             logLevel = logging.INFO
+        elif a == "OFFLINE":
+            offline = True
         elif a == "POST":
             app_mode = "POST"
         elif a == "SCRAPE":
             app_mode = "SCRAPE"
-        elif a == "OFFLINE":
-            offline = True
-        elif a == "HELP":
-            manual = True
+        elif a == "UNLEADED":
+            app_mode = "UNLEADED"
+        elif a == "WARNING":
+            logLevel = logging.WARNING
         else:
             if i != 1:
                 print("Argument #" + str(i) + " ignored. [" + str(a) + "]")
@@ -67,9 +69,10 @@ def process_args(args):
 
 def instructions(mode):
     if not mode:
-        print("This script can run in two modes:")
-        print("-SCRAPE crawls through online listings and creates a spreadsheet, highlighting keywords. \"py main.py SCRAPE\"")
+        print("This script can run in three modes:")
         print("-POST takes the data from a spreadsheet to post an ad online. \"py main.py POST\"\n")
+        print("-SCRAPE crawls through online listings and creates a spreadsheet, highlighting keywords. \"py main.py SCRAPE\"")
+        print("-UNLEADED crawls through online listings and matches the result against the unleaded database. \"py main.py UNLEADED\"")
     elif mode == "SCRAPE":
         print("SCRAPE: all the configuration files for scraping listings are in ./scrape/\n")
         print("- colors.json defines the colors used to highlight keywords.")
@@ -92,13 +95,15 @@ def instructions(mode):
         print("\nThe script will create a file named scrapings.xlsx in ./scrape/ when done.")
     elif mode == "POST":
         print("POST: all the configuration files for posting an ad are in ./post/\n")
-        print("***WARNING! Ad posting is disabled in this version.***")
         print("- listing.xlsx is a spreadsheet containing the data needed to post an ad online.")
         print("Check https://docs.google.com/spreadsheets/d/1ouOvF9nybzSelj8eB4efmsiA9Magd5Iq9yzJU1xIp58/edit?usp=sharing for the template.")
         print(" The following file should not be modified.")
         print("- payload.json contains data about HTML elements and the actions the script should take to scrape listings.")
         print("\n The script will run and go through the ad posting process, filling in information based on the spreadsheet.")
         print("When done, a list of tasks that need to be handled manually will pop up.")
+    elif mode == "UNLEADED":
+        print("UNLEADED: uses the config files in SCRAPE (./scrape/leads.json)")
+        print("The script goes through the listings and creates a spreadsheet based on the data from https://eohhs.ehs.state.ma.us/")
 def main():
     arguments = process_args(sys.argv)
 
@@ -108,24 +113,14 @@ def main():
 
     start_time = time.time()
 
-    if not arguments["mode"] in ["SCRAPE", "POST"]:
+    if not arguments["mode"] in ["SCRAPE", "POST", "UNLEADED"]:
         log.error("Invalid mode \'" + str(arguments["mode"]) + "\'. Use 'SCRAPE' or 'POST' to run the script in the appropriate mode.")
         instructions(None)
         sys.exit()
 
     navigation.Navigator(arguments["offline"], arguments["mode"])
     
-    #    #TODO check id field becaus if it's loaded everything *should* be loaded.
-    #    log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
-    #    print("Working on: customizable lead id, store data cache on every run and date them, complete overhaul.")
-
-    #    payload = payload2.Payload2()
-    #    scr  = scraper.Scraper(payload, arguments["offline"])
-    #    units = scr.get_units()
-    #    log.info("Scraped " + str(len(units)) + " unit" + ("s" if len(units) > 1 else "") + ".")
-    #    scrapings.Scrapings().create(units, scr.get_lead_id())
-
-    #THat's for post
+    #That's for post
     log.debug("Finished in %s seconds." % (time.time() - start_time))
     log.error("TODO Compile payload element into arrays when actions are the same.")
     log.error("TODO Add required to json object?")
@@ -138,6 +133,10 @@ def main():
     #Look into features and keywords and other categories I might have missed.
     #-> Remove divs from features.
     #Do the things I said I was going to do with the scraper.
+    #TODO check id field becaus if it's loaded everything *should* be loaded.
+    #log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
+    #print("Working on: customizable lead id, store data cache on every run and date them, complete overhaul.")
+
     
 
 main()

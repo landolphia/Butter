@@ -3,6 +3,7 @@ import spreadsheet
 
 import logging
 import os
+import pandas
 import pyautogui
 import sys
 import time
@@ -137,6 +138,7 @@ class DOM:
                 for option in e.find_elements_by_tag_name('option'):
                     if option.text.strip().lower() == str(value).lower():
                         option.click()
+                        break
             elif a == "EMPTY_AND_FILL_INPUT":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
@@ -371,6 +373,25 @@ class DOM:
                 value = self.ss.get_key(identifier)
                 element["get result"] = value
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
+            elif a == "GET_TABLE_ROWS":
+                elements = self.__get_element__(element["identifier"])
+                result = []
+                df = pandas.read_html(elements.get_attribute('outerHTML'))
+                df = df[0]
+                for i in range(len(df)):
+                    r = {
+                        "town" : df.iloc[i,0],
+                        "address" : df.iloc[i,1],
+                        "unit" : (str(df.iloc[i,2]) if (pandas.notna(df.iloc[i,2])) else None),
+                        "date" : df.iloc[i,3],
+                        "ins_type" : df.iloc[i,4],
+                        "outcome" : df.iloc[i,5],
+                        "inspector" : df.iloc[i,6],
+                        "license" : (str(df.iloc[i,7]) if (pandas.notna(df.iloc[i,7])) else None),
+                    }
+                    result.append(r)
+
+                return result 
             elif a == "GET_ELEMENTS_ATTRIBUTE":
                 #TODO handle StaleElement exception
                 if not "attribute" in element:

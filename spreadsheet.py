@@ -12,6 +12,9 @@ import sys
 from datetime import datetime
 
 
+# Pulk 
+PULK_FILE = "./unleaded/leadyleads.xlsx"
+
 # Output
 SCRAPINGS = "./scrape/scrapings.xlsx"
 MAX_COLUMN_WIDTH = 60
@@ -40,6 +43,8 @@ class Spreadsheet:
                 self.create(kwargs[k])
             elif k == "slurp":
                 self.slurp(kwargs[k])
+            elif k == "lead":
+                self.pulk(kwargs[k])
             else:
                 self.log.warning("Unrecognized argument [" + str(k) + "].")
                 sys.exit()
@@ -107,6 +112,44 @@ class Spreadsheet:
                 "state": result[3],
                 "zip": zipcode
                 }    
+    # Pulk
+    def pulk(self, data):
+        if os.path.isfile(PULK_FILE):
+            self.log.warning("Deleting current scrapings [" + str(PULK_FILE) + "].")
+            os.remove(PULK_FILE)
+
+        workbook = xlsxwriter.Workbook(PULK_FILE)
+        worksheet = workbook.add_worksheet("Lead safety")
+
+        row = 1
+        for lead in data:
+            number = lead["address"]["number"]
+            number = (number if not number == None else "N/A")
+            street = lead["address"]["street"]
+            street = (street if not street == None else "N/A")
+            city = lead["address"]["city"]
+            city = (city if not city == None else "N/A")
+            address = str(number + " " + street + ", " + city)
+            results = [address]
+            for r in lead["rows"]:
+                result = []
+                if "date" in r:
+                    date = r["date"]
+                    date = (date if not date == None else "[No date]")
+                    insp = r["ins_type"]
+                    insp = (insp if not insp == None else "[No type]")
+                    outcome = r["outcome"] 
+                    outcome = (outcome if not outcome == None else "[No outcome]")
+                    result = (str(date) + ": " + str(insp) + "->" + str(outcome))
+                else:
+                    result = r
+                results.append(result)
+            row = row + 1    
+            worksheet.write_row(row, 0, results)
+
+        workbook.close()
+
+        self.log.info(str(PULK_FILE) + " created.")
     # Output
     def get_columns(self, data):
         columns = []

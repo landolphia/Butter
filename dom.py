@@ -373,6 +373,34 @@ class DOM:
                 value = self.ss.get_key(identifier)
                 element["get result"] = value
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
+            elif a == "CLICK_UNIT_LINK":
+                identifier = { "type" : None, "value" : None}
+                identifier["type"] = element["identifier"]["type"]
+                identifier["value"] = element["identifier"]["value"]
+                self.log.debug("Identifier before: " + str(identifier))
+                unit = element["get result"]
+                if unit == None:
+                    #FIXME If unit is None, or there is no result for unit, check if there is an entry for the whole building.
+                    self.log.debug("Unit was None.")
+                    unit = ""
+                    input("None unit.")
+                unit.replace("APT ", "")
+                self.log.debug("Unit #: " + str(unit))
+                identifier["value"] = identifier["value"].replace("UNIT_ID", unit)
+                self.log.debug("Identifier after: " + str(identifier))
+                self.log.debug("Element after: " + str(element))
+
+                e = self.__get_element__(identifier)
+                if e != None:
+                    e.click()
+                    return True
+                else:
+                    self.log.debug("Didn't find specific unit")
+                    self.log.debug("Add case for whole building/not unit!")
+                    self.log.debug("break fix this. Get whole building if needed, and color results")
+                    self.log.debug("sHOULD BE &nbsp;")
+                    input("Look for whole building here.")
+                    return False
             elif a == "GET_TABLE_ROWS":
                 elements = self.__get_element__(element["identifier"])
                 result = []

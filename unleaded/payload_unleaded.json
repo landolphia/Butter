@@ -1,0 +1,55 @@
+{
+	"mode" : "UNLEADED",
+	"trigger" : {
+		"dropdown" : {
+			"actions"  : ["WAIT", "DROPDOWN"],
+			"identifier" : {
+				"type" : "id",
+				"value" : "ctl00_ContentPlaceHolder1_ddlTown"
+			}
+		},
+		"street" : {
+			"actions" : ["FILL_INPUT"],
+			"identifier" : {
+				"type" : "id",
+				"value" : "ctl00_ContentPlaceHolder1_txtAddress"
+			}
+		},
+		"number" : {
+			"actions" : ["FILL_INPUT"],
+			"identifier" : {
+				"type" : "id",
+				"value" : "ctl00_ContentPlaceHolder1_txtStreetNumber"
+			}
+		},
+		"button" : {
+			"actions" : ["CLICK"],
+			"identifier" : {
+				"type" : "id",
+				"value" : "ctl00_ContentPlaceHolder1_btnSearch"
+			}
+		},
+		"no_result" : {
+			"actions" : ["GET_ATTRIBUTE"],
+			"attribute" : "innerText",
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "/html/body/form/table[1]/tbody/tr[6]/td/div/table/tbody/tr/td"
+			}
+		},
+		"result" : {
+			"actions" : ["WAIT", "GET_TABLE_ROWS"],
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "/html/body/form/table[1]/tbody/tr[5]/td/table/tbody/tr[1]/td/div/table"
+			}
+		},
+		"unit_link" : {
+			"actions" : ["CLICK_UNIT_LINK"],
+			"identifier" : {
+				"type" : "xpath",
+				"value" : "//td[.:'UNIT_ID']/following-sibling::td"
+			}
+		}
+	}
+}

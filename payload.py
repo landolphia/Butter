@@ -5,14 +5,23 @@ import sys
 
 
 PAYLOAD_FILE = "payload.json"
+PAYLOAD_UNLEADED_FILE = "payload_unleaded.json"
 
 class Payload:
-    def __init__(self, mode):
+    def __init__(self, mode, *args):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Payload.")
 
         self.mode = mode
-        self.payload_file = mode.lower() + "/" + PAYLOAD_FILE 
+        
+        self.payload_file = None
+        for a in args:
+            if a == "unleaded":
+                self.payload_file = mode.lower() + "/" + PAYLOAD_UNLEADED_FILE 
+            else:
+                self.log.warning("Unrecognized argument for Payload [" + str(a) + "]")
+        if self.payload_file == None:
+            self.payload_file = mode.lower() + "/" + PAYLOAD_FILE 
 
         if not os.path.isfile(self.payload_file):
             self.log.error("Couldn't find the payload file. [" + self.payload_file+ "].")
@@ -32,3 +41,6 @@ class Payload:
         self.repeat = {}
         if "repeat" in data:
             self.repeat = data["repeat"]
+        self.trigger = {}
+        if "trigger" in data:
+            self.trigger = data["trigger"]

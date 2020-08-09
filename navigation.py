@@ -53,7 +53,7 @@ class Navigator:
 
             self.__check_unleaded_database__()
 
-            #spreadsheet.Spreadsheet(output=self.units)
+            spreadsheet.Spreadsheet(lead=results)
         else:
             self.log.error("[" + self.pl.mode + "] is not a valid mode.")
             sys.exit()
@@ -220,139 +220,91 @@ class Navigator:
 
         self.log.info("THIS : " + str(units))
         return units
-    def __check_unleaded_database__(self):
-        #g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
-        #self.geo = geohelper.GeoHelper(g_key)
+    def __get_addresses__(self):
+        g_key = credentials.Credentials().get_credentials("private.slr")["api_key"]
+        self.geo = geohelper.GeoHelper(g_key)
 
-        #self.addresses = []
-        #for leads in self.units:
-        #    self.log.info("Found leads.")
-        #    for u in self.units[leads]:
-        #        if "On Market" in u:
-        #            self.addresses.append(self.geo.get_street_and_state(u["On Market"]))
-        #        else:
-        #            self.log.warning("No address in this unit.")
-        #            self.log.warning(str(u))
-        #i = 0
-        #temp = []
-        #for a in self.addresses:
-        #    self.log.info("Address #" + str(i) + " = " + str(a))
-        #    i = i + 1
-        #    if not a in temp:
-        #        temp.append(a)
-        #        self.log.debug("Adding address")
-        #    else:
-        #        self.log.debug("Skipping dupe")
+        self.addresses = []
+        for leads in self.units:
+            for u in self.units[leads]:
+                if ("On Market" in u):
+                    self.addresses.append(self.geo.get_street_city_and_unit(u["On Market"]))
+                elif ("Off Market" in u):
+                    self.addresses.append(self.geo.get_street_city_and_unit(u["Off Market"]))
+                elif ("Pending" in u):
+                    self.addresses.append(self.geo.get_street_city_and_unit(u["Pending"]))
+                else:
+                    self.log.warning("No address in this unit.")
+                    self.log.warning(str(u))
 
-        #self.addresses = temp
+        # Checking for duplicate entries
+        i = 0
+        temp = []
+        for a in self.addresses:
+            self.log.info("Address #" + str(i) + " = " + str(a))
+            i = i + 1
+            if not a in temp:
+                temp.append(a)
+                self.log.debug("Adding address")
+            else:
+                self.log.debug("Skipping dupe")
 
-        #self.log.debug("Saving data to cache file.")
-        #with open("./unleaded/offline_addresses.json", 'w') as f:
-        #    json.dump(self.addresses, f) 
+        self.addresses = temp
+
+        self.log.debug("Saving data to cache file.")
+        with open("./unleaded/offline_addresses.json", 'w') as f:
+            json.dump(self.addresses, f) 
 
         #input("Saved")
         #with open("./unleaded/offline_addresses.json") as f:
         #    self.addresses = json.load(f)
+    def __check_unleaded_database__(self):
+        self.__get_addresses__()
 
-        #if not hasattr(self, "dom"):
-        #    self.dom = dom.DOM()
+        if not hasattr(self, "dom"):
+            self.dom = dom.DOM()
        
-        ## Dropdown city
-        #dropdown = {
-        #        "actions"  : ["WAIT", "DROPDOWN"],
-        #        "identifier" : {
-        #            "type" : "id",
-        #            "value" : "ctl00_ContentPlaceHolder1_ddlTown"
-        #            }
-        #        }
-        ## Name 
-        #street = {
-        #        "actions" : ["FILL_INPUT"],
-        #        "identifier" : {
-        #            "type" : "id",
-        #            "value" : "ctl00_ContentPlaceHolder1_txtAddress"
-        #            }
-        #        }
-        ## Number
-        #number = {
-        #        "actions" : ["FILL_INPUT"],
-        #        "identifier" : {
-        #            "type" : "id",
-        #            "value" : "ctl00_ContentPlaceHolder1_txtStreetNumber"
-        #            }
-        #        }
-        ## Button
-        #button = {
-        #        "actions" : ["CLICK"],
-        #        "identifier" : {
-        #            "type" : "id",
-        #            "value" : "ctl00_ContentPlaceHolder1_btnSearch"
-        #            }
-        #        }
-        ## Result
-        #no_result = {
-        #        "actions" : ["GET_ATTRIBUTE"],
-        #        "attribute" : "innerText",
-        #        "identifier" : {
-        #            "type" : "xpath",
-        #            "value" : "/html/body/form/table[1]/tbody/tr[6]/td/div/table/tbody/tr/td"
-        #            }
-        #        }
-        #result = {
-        #        "actions" : ["WAIT", "GET_TABLE_ROWS"],
-        #        "identifier" : {
-        #            "type" : "xpath",
-        #            "value" : "/html/body/form/table[1]/tbody/tr[5]/td/table/tbody/tr[1]/td/div/table"
-        #            }
-        #        }
-        #link = {
-        #        "actions" : ["CLICK"],
-        #        "identifier" : {
-        #            "type" : "xpath",
-        #            "value" : "//a[.='View Detail']"
-        #            }
-        #        }
+        self.pl = payload.Payload("unleaded", "unleaded")
 
-        #results = []
-        #for a in self.addresses:
-        #    self.dom.go("https://eohhs.ehs.state.ma.us/leadsafehomes/default.aspx")
-        #    dropdown["get result"] = a["city"]
-        #    street["get result"] = a["street"]
-        #    number["get result"] = a["number"]
-        #    self.log.debug("Address = " + str(a))
-        #    if (a["city"] != None) and (a["street"] != None) and (a["number"] != None):
-        #        self.dom.process_actions(street)
-        #        self.dom.process_actions(number)
-        #        self.dom.process_actions(dropdown)
-        #        self.dom.process_actions(button)
-        #        rows = self.dom.process_actions(no_result)
-        #        if rows != "No records are found. Please try another combination.":
-        #            self.log.debug("There's a link.")
-        #            self.dom.process_actions(link)
-        #            rows = self.dom.process_actions(result)
-        #        else:
-        #            rows = [rows]
-        #    else:
-        #        rows = ["Invalid address. Skipped."]
-        #    self.log.debug("Rows = " + str(rows))
-        #    results.append({
-        #            "address" : a,
-        #            "rows" : rows 
-        #            })
+        results = []
+        for a in self.addresses:
+            self.dom.go("https://eohhs.ehs.state.ma.us/leadsafehomes/default.aspx")
+            self.pl.trigger["dropdown"]["get result"] = a["city"]
+            self.pl.trigger["street"]["get result"] = a["street"]
+            self.pl.trigger["number"]["get result"] = a["number"]
+            self.pl.trigger["unit_link"]["get result"] = a["unit"]
+            self.log.debug("Address = " + str(a))
+            if (a["city"] != None) and (a["street"] != None) and (a["number"] != None):
+                self.dom.process_actions(self.pl.trigger["street"])
+                self.dom.process_actions(self.pl.trigger["number"])
+                self.dom.process_actions(self.pl.trigger["dropdown"])
+                self.dom.process_actions(self.pl.trigger["button"])
+                rows = self.dom.process_actions(self.pl.trigger["no_result"])
+                if rows != "No records are found. Please try another combination.":
+                    self.log.debug("Trying to find unit #" + str(self.pl.trigger["unit_link"]["get result"]))
+                    if self.dom.process_actions(self.pl.trigger["unit_link"]) == True:
+                        rows = self.dom.process_actions(self.pl.trigger["result"])
+                    else:
+                        rows = ["No information found for this unit."]
+                else:
+                    rows = [rows]
+            else:
+                rows = ["Invalid address. Skipped."]
+            self.log.debug("Rows = " + str(rows))
+            results.append({
+                    "address" : a,
+                    "rows" : rows 
+                    })
 
-        #self.log.debug("Saving data to cache file.")
-        #with open("./unleaded/offline_results.json", 'w') as f:
-        #    json.dump(results, f) 
+        self.log.debug("Saving data to cache file.")
+        with open("./unleaded/offline_results.json", 'w') as f:
+            json.dump(results, f) 
 
         #input("Saved")
-        with open("./unleaded/offline_results.json") as f:
-            results = json.load(f)
+        #with open("./unleaded/offline_results.json") as f:
+        #    results = json.load(f)
 
-        for r in results:
-            self.log.debug("Rows for [" + str(r["address"]) + "]")
-            for row in r["rows"]:
-                self.log.debug("-> [" + str(row) + "]")
-                
-        spreadsheet.Spreadsheet(lead=results)
-
-        self.log.warning("Check if there is more than one link to click.")
+        #for r in results:
+        #    self.log.debug("Rows for [" + str(r["address"]) + "]")
+        #    for row in r["rows"]:
+        #        self.log.debug("-> [" + str(row) + "]")

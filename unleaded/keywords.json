@@ -1,0 +1,14 @@
+[
+	{
+		"keywords" : ["full initial", "issued"],
+		"color" : "green"
+	},
+	{
+		"keywords" : ["comprehensive initial", "no hazards found"],
+		"color" : "green"
+	},
+	{
+		"keywords" : ["deleading", "issued"],
+		"color" : "green"
+	}
+]

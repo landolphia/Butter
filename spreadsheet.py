@@ -121,6 +121,19 @@ class Spreadsheet:
         workbook = xlsxwriter.Workbook(PULK_FILE)
         worksheet = workbook.add_worksheet("Lead safety")
 
+        bold = workbook.add_format({"bold": True})
+        not_bold = workbook.add_format({"bold": False})
+
+        color_formats = {}
+        kw = keywords.Keywords("unleaded")
+        colors = kw.get_colors()
+        for c in colors:
+            bright = workbook.add_format()
+            bright.set_bg_color(colors[c][0])
+            dim = workbook.add_format()
+            dim.set_bg_color(colors[c][1])
+            color_formats[c] = {"bright": bright, "dim"   : dim}
+
         row = 1
         for lead in data:
             number = lead["address"]["number"]
@@ -129,8 +142,10 @@ class Spreadsheet:
             street = (street if not street == None else "N/A")
             city = lead["address"]["city"]
             city = (city if not city == None else "N/A")
-            address = str(number + " " + street + ", " + city)
-            results = [address]
+            unit = lead["address"]["unit"]
+            unit = ((" #" + str(unit)) if not unit == None else "")
+            address = str(number + " " + street + unit + ", " + city)
+            results = [unit, address]
             for r in lead["rows"]:
                 result = []
                 if "date" in r:
@@ -145,7 +160,19 @@ class Spreadsheet:
                     result = r
                 results.append(result)
             row = row + 1    
-            worksheet.write_row(row, 0, results)
+
+            kw_found = False
+            color = False
+            for group in kw.get_keywords():
+                for k in group["keywords"]:
+                    if str(k).lower() in str(result).lower():
+                        color = group["color"]
+                        kw_found = k 
+                        self.log.debug("Keyword found [" + str(k) + "] in (%s)"% str(result).encode('utf-8'))
+            if not (kw_found == False):
+                worksheet.write_row(row, 0, results, color_formats[color]["dim"])
+            else:
+                worksheet.write_row(row, 0, results, not_bold)
 
         workbook.close()
 
@@ -174,7 +201,7 @@ class Spreadsheet:
         not_bold = workbook.add_format({"bold": False})
 
         color_formats = {}
-        kw = keywords.Keywords()
+        kw = keywords.Keywords("scrape")
         colors = kw.get_colors()
         for c in colors:
             bright = workbook.add_format()

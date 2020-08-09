@@ -2,26 +2,28 @@ import json
 import logging
 import os.path
 
-COLOR_FILE = "./scrape/colors.json"
-KEYWORD_FILE = "./scrape/keywords.json"
+COLOR_FILE = "colors.json"
+KEYWORD_FILE = "keywords.json"
 
 
 class Keywords:
-    def __init__(self):
+    def __init__(self, mode):
         self.log = logging.getLogger("bLog")
         self.log.debug("Initializing Keywords.")
 
         self.colors = None
 
-        self.load_colors()
-        self.load_keywords()
-    def load_colors(self):
-        self.log.debug("Loading colors configuration file [" + COLOR_FILE + "].")
-        with open(COLOR_FILE) as data_file:
+        self.load_colors(mode)
+        self.load_keywords(mode)
+    def load_colors(self, mode):
+        f = "./" + str(mode).lower() + "/" + COLOR_FILE
+        self.log.debug("Loading colors configuration file [" + f + "].")
+        with open(f) as data_file:
             self.colors = json.load(data_file)
-    def load_keywords(self):
-        self.log.debug("Loading keywords configuration file [" + KEYWORD_FILE + "].")
-        with open(KEYWORD_FILE) as data_file:
+    def load_keywords(self, mode):
+        f = "./" + str(mode).lower() + "/" + KEYWORD_FILE 
+        self.log.debug("Loading keywords configuration file [" + f + "].")
+        with open(f) as data_file:
             self.keywords = json.load(data_file)
     def get_keywords(self): return self.keywords
     def get_colors(self): return self.colors

@@ -41,14 +41,23 @@
 			"actions" : ["WAIT", "GET_TABLE_ROWS"],
 			"identifier" : {
 				"type" : "xpath",
-				"value" : "/html/body/form/table[1]/tbody/tr[5]/td/table/tbody/tr[1]/td/div/table"
+				"value" : "//table[@id='ctl00_ContentPlaceHolder1_dgOffice' or @id='ctl00_ContentPlaceHolder1_gvAddress']"
 			}
 		},
 		"unit_link" : {
 			"actions" : ["CLICK_UNIT_LINK"],
 			"identifier" : {
 				"type" : "xpath",
-				"value" : "//td[.:'UNIT_ID']/following-sibling::td"
+				"value_bak" : "//td[text()='UNIT_ID']/following-sibling::td",
+				"value" : "/html/body/form/table[1]/tbody/tr[6]/td/div/table"
+			},
+			"unit" : {
+				"type" : "xpath",
+				"value" : "//table[@id='ctl00_ContentPlaceHolder1_gvAddress']/*/tr[position()=UNIT_NB]"
+			},
+			"pages" : {
+				"type" : "xpath",
+				"value" : "//*[@id=\"ctl00_ContentPlaceHolder1_gvAddress\"]/tbody/tr[12]/td/table/tbody/tr/td"
 			}
 		}
 	}

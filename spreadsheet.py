@@ -21,7 +21,7 @@ MAX_COLUMN_WIDTH = 60
 
 # Slurp
 LISTING = "./post/listings.xlsx"
-SHEET_NAME = 9
+SHEET_NAME = 12
 HORIZ_OFFSET = 3
 VERT_OFFSET = 0
 
@@ -165,10 +165,10 @@ class Spreadsheet:
             color = False
             for group in kw.get_keywords():
                 for k in group["keywords"]:
-                    if str(k).lower() in str(result).lower():
+                    if str(k).lower() in str(results).lower():
                         color = group["color"]
                         kw_found = k 
-                        self.log.debug("Keyword found [" + str(k) + "] in (%s)"% str(result).encode('utf-8'))
+                        self.log.debug("Keyword found [" + str(k) + "] in (%s)"% str(results).encode('utf-8'))
             if not (kw_found == False):
                 worksheet.write_row(row, 0, results, color_formats[color]["dim"])
             else:

@@ -121,22 +121,24 @@ def main():
     navigation.Navigator(arguments["offline"], arguments["mode"])
     
     #That's for post
-    log.debug("Finished in %s seconds." % (time.time() - start_time))
     log.error("TODO Compile payload element into arrays when actions are the same.")
     log.error("TODO Add required to json object?")
     log.error("TODO Add picture folders info in spreadsheet")
     log.error("TODO Missing visiting professor, and  medford/boston for tufts harvard.")
 
-    input("Check that the data has been entered correctly and press ENTER.")
+    #That's for unleaded
+    log.error("Check that EXACT address is matched (11 vs 119)")
+    log.error("Check whole building if unit isn't found.")
+    log.error("Test None unit.")
 
     #That's  for scrape
-    #Look into features and keywords and other categories I might have missed.
-    #-> Remove divs from features.
-    #Do the things I said I was going to do with the scraper.
-    #TODO check id field becaus if it's loaded everything *should* be loaded.
-    #log.debug("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
-    #print("Working on: customizable lead id, store data cache on every run and date them, complete overhaul.")
+    log.error("Look into features and keywords and other categories I might have missed.")
+    log.error("-> Remove divs from features.")
+    log.error("Do the things I said I was going to do with the scraper.")
+    log.error("TODO multiple leads scraping (get ids from file), fuzzy keyword matching.")
+    log.error("Working on: customizable lead id, store data cache on every run and date them, complete overhaul.")
 
-    
+    log.error("Finished in %s seconds." % (time.time() - start_time))
+    input("Check that the data has been entered correctly and press ENTER.")
 
 main()

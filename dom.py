@@ -374,33 +374,47 @@ class DOM:
                 element["get result"] = value
                 self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "CLICK_UNIT_LINK":
-                identifier = { "type" : None, "value" : None}
-                identifier["type"] = element["identifier"]["type"]
-                identifier["value"] = element["identifier"]["value"]
-                self.log.debug("Identifier before: " + str(identifier))
-                unit = element["get result"]
-                if unit == None:
-                    #FIXME If unit is None, or there is no result for unit, check if there is an entry for the whole building.
-                    self.log.debug("Unit was None.")
-                    unit = ""
-                    input("None unit.")
-                unit.replace("APT ", "")
-                self.log.debug("Unit #: " + str(unit))
-                identifier["value"] = identifier["value"].replace("UNIT_ID", unit)
-                self.log.debug("Identifier after: " + str(identifier))
-                self.log.debug("Element after: " + str(element))
+                pages_td = element["pages"]
+                current_page = 2
+                result = False
+                clicked = False
+                while result == False:
+                    #self.__search_units_lead__()
+                    self.log.debug("Trying to get unit element.")
+                    e = self.__find_unit_link__(element)
+                    if e != None:
+                        self.log.debug("Unit was found. Clicking.")
+                        e.click()
+                        return True
+                    else:
+                        self.log.debug("Unit not found on this page.")
 
-                e = self.__get_element__(identifier)
-                if e != None:
-                    e.click()
-                    return True
-                else:
-                    self.log.debug("Didn't find specific unit")
-                    self.log.debug("Add case for whole building/not unit!")
-                    self.log.debug("break fix this. Get whole building if needed, and color results")
-                    self.log.debug("sHOULD BE &nbsp;")
-                    input("Look for whole building here.")
-                    return False
+                    clicked = False
+                    pages = self.__get_elements__(pages_td)
+                    for p in pages:
+                        link = None
+                        try:
+                            self.log.debug("Trying to get page link.")
+                            link = p.find_element_by_css_selector("a")
+                        except NoSuchElementException:
+                            self.log.warning("Element was not found. [" + str("a") + "]")
+
+                        if link != None:
+                            html = self.driver.execute_script("return arguments[0].innerText;", link)
+                            if str(current_page) == str(html):
+                                self.log.debug("Clicking on page: " + str(current_page))
+                                current_page = current_page + 1
+                                link.click()
+                                clicked = True
+
+                        if clicked == True:
+                            self.log.debug("Clicked on page #" + str(current_page) + " link.")
+                            break
+
+                    if clicked == False:
+                        self.log.debug("Add case for whole building/not unit! (Should be &nbsp;)")
+                        input("Look for whole building here.")
+                        return False 
             elif a == "GET_TABLE_ROWS":
                 elements = self.__get_element__(element["identifier"])
                 result = []
@@ -417,6 +431,7 @@ class DOM:
                         "inspector" : df.iloc[i,6],
                         "license" : (str(df.iloc[i,7]) if (pandas.notna(df.iloc[i,7])) else None),
                     }
+                    self.log.debug("Added result: " + str(r))
                     result.append(r)
 
                 return result 
@@ -524,6 +539,50 @@ class DOM:
     def __click__(self, identifier):
         self.log.debug("Clicking on [" + str(identifier) + "].")
         self.__get_element__(identifier).click()
+    def __find_unit_link__(self, element):
+        e = self.__get_element__(element["identifier"])
+        self.log.debug("Element = " + str(e.get_attribute("innerHTML")))
+        unit = str(element["get result"])
+        self.log.debug("Unit = " + unit)
+        result = []
+        df = pandas.read_html(e.get_attribute('outerHTML'))
+        df = df[0]
+ 
+        limit = min(len(df), 10)
+        self.log.debug("Limit = " + str(limit))
+        r = {}
+        found = False
+        for i in range(limit):
+            if (str(df.iloc[i, 4]) == unit):
+                r = {
+                    "number" : df.iloc[i,0],
+                    "street" : df.iloc[i,1],
+                    "community" : df.iloc[i,2],
+                    "city" : df.iloc[i,3],
+                    "unit" : (str(df.iloc[i,4]) if (pandas.notna(df.iloc[i,4])) else None),
+                    "link" : df.iloc[i,5]
+                }
+                found = True
+                self.log.debug("Row #" + str(i) + ": " + str(r))
+                break
+ 
+        if found == True:
+            self.log.debug("i = " + str(i) + " / " + str(limit))
+            self.log.debug("Element = " + str(e))
+            self.log.debug("Element outerHTML = " + str(e.get_attribute("outerHTML")))
+            unit_identifier = {
+                    "type" : "xpath",
+                    "value" : "//table[@id='ctl00_ContentPlaceHolder1_gvAddress']/*/tr[position()=UNIT_NB]/td[position()=6]"
+                    }
+            self.log.debug("I = " + str(i+2))
+            unit_identifier["value"] = unit_identifier["value"].replace("UNIT_NB", str(i+2))
+            ue = self.__get_element__(unit_identifier)
+            self.log.debug("UElement = " + str(ue))
+            self.log.debug("Unit element = " + str(ue.get_attribute("innerHTML")))
+ 
+            return ue
+        else:
+            return None 
     def __fill_input__(self, element):
         e = self.__get_element__(element["identifier"])
         value = element["get result"]

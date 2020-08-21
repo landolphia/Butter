@@ -1,14 +1,6 @@
 [
 	{
-		"keywords" : ["full initial", "issued"],
-		"color" : "green"
-	},
-	{
-		"keywords" : ["comprehensive initial", "no hazards found"],
-		"color" : "green"
-	},
-	{
-		"keywords" : ["deleading", "issued"],
+		"keywords" : ["Comprehensive Initial Inspection->No Hazards Found", "Reoccupancy Reinspection->Passed", "Letter of Full Initial Insp Comp->Issued", "Final Deleading Reinspection->Passed", "Letter of Full Deleading Comp->Issued", "Reoccupancy Reinspection->Passed"],
 		"color" : "green"
 	}
 ]

@@ -1033,6 +1033,14 @@
 				}
 			},
 			{
+				"actions" : ["IF_NO", "RADIO"],
+				"cell" : 57,
+				"identifier" : {
+					"type" : "id",
+					"value" : "renew-option-NO"
+				}
+			},
+			{
 				"actions" : ["SUBMIT"],
 				"cell" : 57,
 				"identifier" : {

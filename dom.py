@@ -126,77 +126,6 @@ class DOM:
                     self.driver.execute_script("arguments[0].setAttribute('checked','true')", e)
                 else:
                     self.driver.execute_script("arguments[0].removeAttribute('checked')", e)
-            elif a == "CLICK": self.__click__(element["identifier"])
-            elif a == "DROPDOWN":
-                e = self.__get_element__(element["identifier"])
-                if e == None:
-                    self.log.debug("Skipped [" + str(element["identifier"]) + "]")
-                    return
-                value = element["get result"]
-                self.log.debug("Value for dropdown = " + str(value))
-
-                for option in e.find_elements_by_tag_name('option'):
-                    if option.text.strip().lower() == str(value).lower():
-                        option.click()
-                        break
-            elif a == "EMPTY_AND_FILL_INPUT":
-                e = self.__get_element__(element["identifier"])
-                value = element["get result"]
-
-                e.send_keys(Keys.CONTROL + "a")
-                e.send_keys(Keys.DELETE)
-                e.send_keys(str(value))
-            elif a == "FILL_INPUT": self.__fill_input__(element)
-            elif a == "FILL_INPUT_DATE_FP":
-                fp_nb = argument
-                fp_id = self.get_fp_id()
-                e = self.__get_element_fp__(element, fp_id)
-                cell = element["date cell"] + (fp_nb * self.ss.fp_offset)
-                value = self.ss.get_key(cell)
-
-                if not value:
-                    self.log.error("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
-                    sys.exit()
-
-                value = self.ss.parse_date(value)
-                self.driver.execute_script("arguments[0].value = '" + value + "'", e)
-            elif a == "FILL_INPUT_MONEY_FP":
-                fp_nb = argument
-                fp_id = self.get_fp_id()
-                e = self.__get_element_fp__(element, fp_id)
-                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
-                value = self.ss.get_key(cell)
-
-                e.send_keys(Keys.CONTROL + "a")
-                e.send_keys(Keys.DELETE)
-                e.send_keys("$" + str(value))
-            elif a == "GET_DATE_FP":
-                fp_nb = argument
-                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
-                element["get result"] = self.ss.get_key(cell)
-                self.log.debug("Getting cell #" + str(cell) + " = [" + str(element["get result"]) + "]")
-            elif a == "SUBMIT_FP":
-                fp_id = self.get_fp_id()
-                self.__get_element_fp__(element, fp_id).submit()
-            elif a == "RADIO_FP":
-                fp_nb = argument
-                fp_id = self.get_fp_id()
-                e = self.__get_element_fp__(element, fp_id)
-                value = element["get result"]
-                if value == True:
-                    e = self.__get_element_fp__(element, fp_id)
-                    e.click()
-            elif a == "DROPDOWN_FP":
-                fp_nb = argument
-                fp_id = self.get_fp_id()
-                e = self.__get_element_fp__(element, fp_id)
-                value = element["get result"] #self.ss.get_key(cell)
-                self.log.debug("Value for cell#" + str(cell) + " FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
-
-                for option in e.find_elements_by_tag_name('option'):
-
-                    if option.text.strip().lower() == str(value).lower():
-                        option.click()
             elif a == "CHECKBOX_FP":
                 fp_nb = argument
                 fp_id = self.get_fp_id()
@@ -212,6 +141,38 @@ class DOM:
                     self.driver.execute_script("arguments[0].setAttribute('checked','true')", e)
                 else:
                     self.driver.execute_script("arguments[0].removeAttribute('checked')", e)
+            elif a == "CLICK": self.__click__(element["identifier"])
+            elif a == "DROPDOWN":
+                e = self.__get_element__(element["identifier"])
+                if e == None:
+                    self.log.debug("Skipped [" + str(element["identifier"]) + "]")
+                    return
+                value = element["get result"]
+                self.log.debug("Value for dropdown = " + str(value))
+
+                for option in e.find_elements_by_tag_name('option'):
+                    if option.text.strip().lower() == str(value).lower():
+                        option.click()
+                        break
+            elif a == "DROPDOWN_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                value = element["get result"] #self.ss.get_key(cell)
+                self.log.debug("Value for cell#" + str(cell) + " FP#" + str(fp_nb) + " ID[" + str(fp_id) + "] = " + str(value))
+
+                for option in e.find_elements_by_tag_name('option'):
+
+                    if option.text.strip().lower() == str(value).lower():
+                        option.click()
+            elif a == "EMPTY_AND_FILL_INPUT":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                e.send_keys(Keys.CONTROL + "a")
+                e.send_keys(Keys.DELETE)
+                e.send_keys(str(value))
+            elif a == "FILL_INPUT": self.__fill_input__(element)
             elif a == "FILL_INPUT_FP":
                 fp_nb = argument
                 fp_id = self.get_fp_id()
@@ -225,6 +186,75 @@ class DOM:
                     return
 
                 e.send_keys(value)
+            elif a == "FILL_INPUT_DATE":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                if not value:
+                    self.log.error("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
+                    sys.exit()
+
+                value = self.ss.parse_date(value)
+                self.driver.execute_script("arguments[0].value = '" + value + "'", e)
+            elif a == "FILL_INPUT_DATE_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["date cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+
+                if not value:
+                    self.log.error("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
+                    sys.exit()
+
+                value = self.ss.parse_date(value)
+                self.driver.execute_script("arguments[0].value = '" + value + "'", e)
+            elif a == "FILL_INPUT_MONEY":
+                e = self.__get_element__(element["identifier"])
+                value = element["get result"]
+
+                e.send_keys(Keys.CONTROL + "a")
+                e.send_keys(Keys.DELETE)
+                e.send_keys("$" + str(value))
+            elif a == "FILL_INPUT_MONEY_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                value = self.ss.get_key(cell)
+
+                e.send_keys(Keys.CONTROL + "a")
+                e.send_keys(Keys.DELETE)
+                e.send_keys("$" + str(value))
+            elif a == "GET_DATE":
+                identifier = element["date cell"]
+                value = self.ss.get_key(identifier)
+                element["get result"] = value
+                self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
+            elif a == "GET_DATE_FP":
+                fp_nb = argument
+                cell = element["cell"] + (fp_nb * self.ss.fp_offset)
+                element["get result"] = self.ss.get_key(cell)
+                self.log.debug("Getting cell #" + str(cell) + " = [" + str(element["get result"]) + "]")
+            elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
+            elif a == "SUBMIT_FP":
+                fp_id = self.get_fp_id()
+                self.__get_element_fp__(element, fp_id).submit()
+            elif a == "RADIO":
+                if element["get result"] == True:
+                    e = self.__get_element__(element["identifier"])
+                    if e == None:
+                        self.log.debug("Skipped [" + str(element["identifier"]) + "]")
+                        return
+                    e.click()
+            elif a == "RADIO_FP":
+                fp_nb = argument
+                fp_id = self.get_fp_id()
+                e = self.__get_element_fp__(element, fp_id)
+                value = element["get result"]
+                if value == True:
+                    e = self.__get_element_fp__(element, fp_id)
+                    e.click()
             elif a == "IF_DATE_NOW_FP":
                 fp_nb = argument
                 fp_id = self.get_fp_id()
@@ -269,6 +299,7 @@ class DOM:
                 if not value:
                     self.log.warning("The value for " + str(element["identifier"]) + " is missing. Skipping.")
                     return
+            elif a == "WAIT": self.__wait__(element["identifier"])
             elif a == "WAIT_FP":
                 fp_id = self.get_fp_id()
                 identifier = {
@@ -276,6 +307,11 @@ class DOM:
                         "value" : element["identifier"]["value"].replace("FP_ID", fp_id)
                         }
                 self.__wait__(identifier)
+            elif a == "GET_CELL_DATA":
+                identifier = element["cell"]
+                element["get result"] = self.ss.get_key(identifier)
+
+                self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "GET_CELL_DATA_FP":
                 fp_nb = argument
                 cell = element["cell"] + (fp_nb * self.ss.fp_offset)
@@ -285,23 +321,6 @@ class DOM:
 
                 cell = str(element["cell"])
                 self.log.debug("Cell #" + str(cell))
-            elif a == "FILL_INPUT_DATE":
-                e = self.__get_element__(element["identifier"])
-                value = element["get result"]
-
-                if not value:
-                    self.log.error("The value for " + str(element["identifier"]) + " is missing.\nCheck the spreadsheet for errors.")
-                    sys.exit()
-
-                value = self.ss.parse_date(value)
-                self.driver.execute_script("arguments[0].value = '" + value + "'", e)
-            elif a == "FILL_INPUT_MONEY":
-                e = self.__get_element__(element["identifier"])
-                value = element["get result"]
-
-                e.send_keys(Keys.CONTROL + "a")
-                e.send_keys(Keys.DELETE)
-                e.send_keys("$" + str(value))
             elif a == "FILL_INPUT_NOT_NULL":
                 e = self.__get_element__(element["identifier"])
                 value = element["get result"]
@@ -363,16 +382,6 @@ class DOM:
                     result = result.replace(element["fluff"], "")
                 
                 return result
-            elif a == "GET_CELL_DATA":
-                identifier = element["cell"]
-                element["get result"] = self.ss.get_key(identifier)
-
-                self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
-            elif a == "GET_DATE":
-                identifier = element["date cell"]
-                value = self.ss.get_key(identifier)
-                element["get result"] = value
-                self.log.debug("Getting cell #" + str(identifier) + " = [" + str(element["get result"]) + "]")
             elif a == "CLICK_UNIT_LINK":
                 pages_td = element["pages"]
                 current_page = 2
@@ -511,26 +520,10 @@ class DOM:
             elif a == "PRESS_ENTER":
                 e = self.__get_element__(element["identifier"])
                 if e: e.send_keys(Keys.ENTER)
-            elif a == "RADIO":
-                if element["get result"] == True:
-                    e = self.__get_element__(element["identifier"])
-                    if e == None:
-                        self.log.debug("Skipped [" + str(element["identifier"]) + "]")
-                        return
-                    e.click()
-            elif a == "SUBMIT": self.__get_element__(element["identifier"]).submit()
             elif a == "UPLOAD_IMAGES":
                 uploader = element["identifier"]
                 photo_list = element["list"]
                 self.upload_photos(uploader, photo_list)
-            elif a == "UNFLUFF":
-                self.log.warning("UNFLUIFF")
-                input("LKJASF")
-                return element
-                #content = content.replace(data[l]["fluff"], "")
-                #self.log.debug("LAKJSD")
-                #sys.exit()
-            elif a == "WAIT": self.__wait__(element["identifier"])
             elif a == "WAIT_FOR_CONTENT": self.__wait_for_content__(element["identifier"])
             else:   
                 self.log.error("Invalid action [" + str(a) + "]")
@@ -693,60 +686,7 @@ class DOM:
         self.hold.until(condition)
         self.log.debug("New element added.")
 
-#TODO NOT TREATED BELOW
-#TODO
-
-    def clear(self, page, name): self.__get_element__(page, name).clear()
-    def dropdown_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-
-        for option in element.find_elements_by_tag_name('option'):
-            if option.text.strip().lower() == str(value).lower():
-                option.click()
-    def fill_input_date_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-        if not value:
-            self.log.error("The value for " + str(page) + "/" + str(name) + " is missing.\nCheck the spreadsheet for errors.")
-            sys.exit()
-
-        self.driver.execute_script("arguments[0].value = '" + value + "'", element)
-        self.log.debug("Check date.")
-    def fill_input_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-        if not value:
-            self.log.warning("The value for " + str(page) + "/" + str(name) + " is missing. It will be replaced with [DEFAULT_VALUE].")
-            value = "[DEFAULT_VALUE]"
-
-        element.send_keys(value)
-    def fill_input_money_fp(self, page, name, fp_nb, fp_id):
-        element = self.__get_element_fp__(page, name, fp_nb, fp_id)
-        value = self.payload.get_value(page, name + str(fp_nb))
-
-        element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(Keys.DELETE)
-        element.send_keys("$" + str(value))
     def quit(self): self.driver.quit()
-    def radio_fp(self, page, name, fp_nb, fp_id):
-        value = self.payload.get_value(page, name + str(fp_nb))
-        if value != None:
-            self.click_fp(page, name, fp_nb, fp_id)
-
-        return value
-    def submit_fp(self, page, name, fp_nb, fp_id): self.__get_element_fp__(page, name, fp_nb, fp_id).submit()
-    def tinyMCE(self, page, name, iframe_page, iframe_name):
-        description = self.payload.get_value(page, name)
-
-        iframe = self.__get_element__(iframe_page, iframe_name)
-        self.driver.switch_to.frame(iframe)
-
-        tinymce = self.__get_element__(page, name)
-        
-        javascript = "arguments[0].innerHTML = arguments[1];"
-        self.driver.execute_script( javascript, tinymce, description.replace('\n', '<br>'))
-        self.driver.switch_to.default_content()
     def task_list(self, tasks):
         self.hold.until(EC.presence_of_element_located((By.XPATH, "//body")))
         self.driver.execute_script("window.open('', 'todo', 'height=400,width=400,top=0, left=0, toolbar=no,menubar=no,scrollbars=yes,location=no,status=no');")
@@ -763,25 +703,3 @@ class DOM:
             javascript = javascript + str("i.appendChild(text);")
             javascript = javascript + str("l.appendChild(i);")
             self.driver.execute_script(javascript, t)
-    def get_value_money(self, page, name):
-        element = self.__get_element__(page, name)
-        value = element.get_attribute("innerText")
-
-        return int(value.replace("Rent\n$", "").replace(",","").strip())
-    def scrape_unit(self, identifier):
-        data = self.payload.data["unit"]
-
-        unit = {}
-
-        for l in data:
-            try:
-                element = self.driver.find_element_by_xpath(data[l]["xpath"])
-                content = element.get_attribute("innerText")
-                content = content.replace(data[l]["fluff"], "")
-            except NoSuchElementException:
-                self.log.warning("Element was not found. [" + str(l) + "]")
-                content = "-"
-         
-            unit[l] = content
-
-        return unit
